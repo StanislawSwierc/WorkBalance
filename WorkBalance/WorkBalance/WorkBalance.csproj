@@ -71,6 +71,7 @@
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Activity.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Page Include="Controls\DigitalClock.xaml">

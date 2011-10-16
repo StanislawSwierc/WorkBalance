@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:WorkBalance" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WorkBalance.MainWindow"
         Title="MainWindow" Height="164" Width="397.5" ResizeMode="NoResize">
     <Grid DataContext="{Binding Main, Source={StaticResource Locator}}">
-        <Button Content="Toggle Timer" Margin="0,8,8,0" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="52" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110"/>
+        <Button Content="{Binding ToggleTimerActionName, Mode=OneWay}" Margin="0,8,8,0" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="52" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110"/>
     	<local:DigitalClock Margin="8,8,0,0" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Time="{Binding Clock, Mode=OneWay}" RenderTransformOrigin="0.5,0.5" BorderBrush="Black" Foreground="#FF2AD82A" HorizontalAlignment="Left">
     		<local:DigitalClock.Effect>
     			<DropShadowEffect BlurRadius="8"/>
