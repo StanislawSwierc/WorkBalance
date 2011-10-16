@@ -8,6 +8,8 @@
              xmlns:WorkBalance="clr-namespace:WorkBalance"
              mc:Ignorable="d">
   <Application.Resources>
-    <WorkBalance:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+  	<ResourceDictionary>
+  		<WorkBalance:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+  	</ResourceDictionary>
   </Application.Resources>
 </Application>

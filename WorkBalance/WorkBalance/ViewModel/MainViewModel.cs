@@ -1,4 +1,8 @@
 using GalaSoft.MvvmLight;
+using System;
+using System.Windows.Threading;
+using GalaSoft.MvvmLight.Command;
+using System.Windows.Input;
 
 namespace WorkBalance.ViewModel
 {
@@ -16,6 +20,10 @@ namespace WorkBalance.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private static readonly TimeSpan c_Interval = TimeSpan.FromMinutes(25);
+
+        DispatcherTimer m_Timer;
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -29,8 +37,44 @@ namespace WorkBalance.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
+            m_Clock = c_Interval;
+
+            m_Timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
+            m_Timer.Tick += HandleTick;
+
+            m_ToggleTimerCommand = new RelayCommand(ToggleCommand);
         }
 
-        public string Text { get { return "Hello from MainViewModel"; } }
+        private void ToggleCommand()
+        {
+            m_Timer.IsEnabled ^= true;
+            if (!m_Timer.IsEnabled)
+            {
+                Clock = c_Interval;
+            }
+        }
+
+        void HandleTick(object sender, EventArgs e)
+        {
+            Clock = Clock.Subtract(TimeSpan.FromSeconds(1));
+        }
+
+
+        private TimeSpan m_Clock;
+        public TimeSpan Clock { 
+            get { return m_Clock; }
+            private set 
+            {
+                if (value != m_Clock)
+                {
+                    m_Clock = value;
+                    RaisePropertyChanged("Clock");
+                }
+            }
+        }
+
+
+        private RelayCommand m_ToggleTimerCommand;
+        public ICommand ToggleTimerCommand { get { return m_ToggleTimerCommand; } }
     }
 }
