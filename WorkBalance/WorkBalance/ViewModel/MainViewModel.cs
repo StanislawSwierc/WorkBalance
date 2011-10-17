@@ -3,6 +3,8 @@ using System;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Messaging;
+using System.Diagnostics.Contracts;
 
 namespace WorkBalance.ViewModel
 {
@@ -34,12 +36,16 @@ namespace WorkBalance.ViewModel
         private static readonly string c_StopBreakText = "Stop Break";
 
         DispatcherTimer m_Timer;
+        IMessenger m_Messenger; 
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(IMessenger messenger)
         {
+            Contract.Requires(messenger != null);
+
+            m_Messenger = messenger;
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
@@ -54,7 +60,6 @@ namespace WorkBalance.ViewModel
             m_Timer.Tick += HandleTick;
             m_ToggleTimerActionName = c_StartTimerText;
             State = TimerState.Ready;
-
             m_ToggleTimerCommand = new RelayCommand(ToggleCommand);
         }
 

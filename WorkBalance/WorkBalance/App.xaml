@@ -8,8 +8,13 @@
              xmlns:WorkBalance="clr-namespace:WorkBalance"
              mc:Ignorable="d">
   <Application.Resources>
-  	<ResourceDictionary>
-  		<WorkBalance:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+    <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes\ExpressionDark.xaml" />
+                <ResourceDictionary>
+                    <WorkBalance:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
   	</ResourceDictionary>
   </Application.Resources>
 </Application>

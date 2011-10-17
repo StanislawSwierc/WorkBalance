@@ -37,7 +37,7 @@ namespace WorkBalance
             ////    // Create run time services and view models
             ////}
 
-            Main = new MainViewModel();
+            Main = new MainViewModel(null);
         }
 
         /// <summary>
