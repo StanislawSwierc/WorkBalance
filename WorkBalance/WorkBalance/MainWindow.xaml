@@ -2,13 +2,29 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WorkBalance" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WorkBalance.MainWindow"
-        Title="MainWindow" Height="164" Width="397.5" ResizeMode="NoResize">
-    <Grid DataContext="{Binding Main, Source={StaticResource Locator}}">
-        <Button Content="{Binding ToggleTimerActionName, Mode=OneWay}" Margin="0,8,8,0" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="52" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110"/>
-    	<local:DigitalClock Margin="8,8,0,0" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Time="{Binding Clock, Mode=OneWay}" RenderTransformOrigin="0.5,0.5" BorderBrush="Black" Foreground="#FF2AD82A" HorizontalAlignment="Left">
-    		<local:DigitalClock.Effect>
-    			<DropShadowEffect BlurRadius="8"/>
-    		</local:DigitalClock.Effect>
-    	</local:DigitalClock>
-    </Grid>
+        Title="MainWindow" Height="164" Width="397.5" ResizeMode="NoResize" Background="#FF454545" WindowStyle="None">
+    <Border BorderThickness="2" BorderBrush="Black">
+		<Grid DataContext="{Binding Main, Source={StaticResource Locator}}" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Button Content="{Binding ToggleTimerActionName, Mode=OneWay}" Margin="0,8,8,0" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="52" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110" Grid.Row="1"/>
+			<local:DigitalClock VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Time="{Binding Clock, Mode=OneWay}" RenderTransformOrigin="0.5,0.5" Foreground="Yellow" HorizontalAlignment="Left" Grid.Row="1">
+				<local:DigitalClock.Effect>
+					<DropShadowEffect BlurRadius="7" Color="#FFF9FF8B" Direction="0" ShadowDepth="0"/>
+				</local:DigitalClock.Effect>
+			</local:DigitalClock>
+			<Border  HorizontalAlignment="Stretch" Grid.Row="0" Padding="1" BorderThickness="0,0,0,1" BorderBrush="Black" Background="{DynamicResource ShineBrush}" >
+				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >
+					<Button  Height="14" Width="24">
+						<TextBlock Text="_" Margin="0,-8,0,0" />
+					</Button>
+					<Button Height="14" Width="24">
+						<TextBlock Text="x" Margin="0,-4,0,0" />
+					</Button>
+				</StackPanel>
+			</Border>
+		</Grid>
+	</Border>
 </Window>
