@@ -5,22 +5,22 @@
         Title="MainWindow" Height="164" Width="397.5" ResizeMode="NoResize" Background="#FF454545" WindowStyle="None">
     <Border BorderThickness="2" BorderBrush="Black">
 		<Grid DataContext="{Binding Main, Source={StaticResource Locator}}" >
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition/>
 			</Grid.RowDefinitions>
-			<Button Content="{Binding ToggleTimerActionName, Mode=OneWay}" Margin="0,8,8,0" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="52" VerticalAlignment="Top" HorizontalAlignment="Right" Width="110" Grid.Row="1"/>
-			<local:DigitalClock VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Time="{Binding Clock, Mode=OneWay}" RenderTransformOrigin="0.5,0.5" Foreground="Yellow" HorizontalAlignment="Left" Grid.Row="1">
-				<local:DigitalClock.Effect>
-					<DropShadowEffect BlurRadius="7" Color="#FFF9FF8B" Direction="0" ShadowDepth="0"/>
-				</local:DigitalClock.Effect>
-			</local:DigitalClock>
-			<Border  HorizontalAlignment="Stretch" Grid.Row="0" Padding="1" BorderThickness="0,0,0,1" BorderBrush="Black" Background="{DynamicResource ShineBrush}" >
+			<Button Grid.Row="1" Grid.Column="1" Content="{Binding ToggleTimerActionName, Mode=OneWay}" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="52" VerticalAlignment="Top" Margin="5" />
+			<local:DigitalClock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Time="{Binding Clock, Mode=OneWay}" Foreground="Yellow" InactiveSegmentsBrush="#26000000" GlowColor="#FFFEFE00" Height="60" Width="Auto" Margin="5" d:LayoutOverrides="VerticalAlignment" />
+			<Border  HorizontalAlignment="Stretch" Grid.Row="0" Padding="1" BorderThickness="0,0,0,1" BorderBrush="Black" Background="{DynamicResource ShineBrush}" Grid.ColumnSpan="2" Grid.Column="0"  d:LayoutOverrides="GridBox" >
 				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >
 					<Button  Height="14" Width="24">
 						<TextBlock Text="_" Margin="0,-8,0,0" />
 					</Button>
-					<Button Height="14" Width="24">
+					<Button Height="14" Width="24" Command="{Binding CloseCommand, Mode=OneWay}">
 						<TextBlock Text="x" Margin="0,-4,0,0" />
 					</Button>
 				</StackPanel>

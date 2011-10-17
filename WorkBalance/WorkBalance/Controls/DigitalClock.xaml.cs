@@ -21,6 +21,65 @@ namespace WorkBalance
     {
         private static readonly int[] SevenSegmentDisplayCode = new int[] { 0x7E, 0x30, 0x6D, 0x79, 0x33, 0x5B, 0x5F, 0x70, 0x7F, 0x7B };
 
+        #region Properties
+
+        public TimeSpan Time
+        {
+            get { return (TimeSpan)GetValue(TimeProperty); }
+            set { SetValue(TimeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Time.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TimeProperty =
+            DependencyProperty.Register("Time", typeof(TimeSpan), typeof(DigitalClock), new FrameworkPropertyMetadata(TimeSpan.MinValue, OnTimeChanged));
+
+
+        public bool ShowInactiveSegments
+        {
+            get { return (bool)GetValue(ShowInactiveSegmentsProperty); }
+            set { SetValue(ShowInactiveSegmentsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowInactiveSegments.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowInactiveSegmentsProperty =
+            DependencyProperty.Register("ShowInactiveSegments", typeof(bool), typeof(DigitalClock), new FrameworkPropertyMetadata(true, OnShowInactiveSegmentsChanged));
+
+
+
+        public Brush InactiveSegmentsBrush
+        {
+            get { return (Brush)GetValue(InactiveSegmentsBrushProperty); }
+            set { SetValue(InactiveSegmentsBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for InactiveSegmentsBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty InactiveSegmentsBrushProperty =
+            DependencyProperty.Register("InactiveSegmentsBrush", typeof(Brush), typeof(DigitalClock), new UIPropertyMetadata());
+
+
+        public double GlowRadius
+        {
+            get { return (double)GetValue(GlowRadiusProperty); }
+            set { SetValue(GlowRadiusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for GlowRadius.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GlowRadiusProperty =
+            DependencyProperty.Register("GlowRadius", typeof(double), typeof(DigitalClock), new UIPropertyMetadata(10.0));
+
+
+        public Color GlowColor
+        {
+            get { return (Color)GetValue(GlowColorProperty); }
+            set { SetValue(GlowColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for GlowColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GlowColorProperty =
+            DependencyProperty.Register("GlowColor", typeof(Color), typeof(DigitalClock), new UIPropertyMetadata(Color.FromRgb(255, 255, 255)));
+
+        #endregion
+
         public DigitalClock()
         {
             this.InitializeComponent();
@@ -66,26 +125,6 @@ namespace WorkBalance
         private Path[] m1;
         private Path[] s10;
         private Path[] s1;
-
-        public TimeSpan Time
-        {
-            get { return (TimeSpan)GetValue(TimeProperty); }
-            set { SetValue(TimeProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Time.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TimeProperty =
-            DependencyProperty.Register("Time", typeof(TimeSpan), typeof(DigitalClock), new FrameworkPropertyMetadata(TimeSpan.MinValue, OnTimeChanged));
-
-        public bool ShowInactiveSegments
-        {
-            get { return (bool)GetValue(ShowInactiveSegmentsProperty); }
-            set { SetValue(ShowInactiveSegmentsProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ShowInactiveSegments.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ShowInactiveSegmentsProperty =
-            DependencyProperty.Register("ShowInactiveSegments", typeof(bool), typeof(DigitalClock), new FrameworkPropertyMetadata(true, OnShowInactiveSegmentsChanged));
 
         private static void OnShowInactiveSegmentsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {

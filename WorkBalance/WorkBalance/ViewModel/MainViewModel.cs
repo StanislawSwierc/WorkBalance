@@ -61,6 +61,7 @@ namespace WorkBalance.ViewModel
             m_ToggleTimerActionName = c_StartTimerText;
             State = TimerState.Ready;
             m_ToggleTimerCommand = new RelayCommand(ToggleCommand);
+            m_CloseCommand = new RelayCommand(() => App.Current.Shutdown());
         }
 
         private void ToggleCommand()
@@ -163,5 +164,8 @@ namespace WorkBalance.ViewModel
 
         private RelayCommand m_ToggleTimerCommand;
         public ICommand ToggleTimerCommand { get { return m_ToggleTimerCommand; } }
+
+        private RelayCommand m_CloseCommand;
+        public ICommand CloseCommand { get { return m_CloseCommand; } }
     }
 }
