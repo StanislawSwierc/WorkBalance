@@ -62,6 +62,8 @@ namespace WorkBalance.ViewModel
             State = TimerState.Ready;
             m_ToggleTimerCommand = new RelayCommand(ToggleCommand);
             m_CloseCommand = new RelayCommand(() => App.Current.Shutdown());
+            //var context = Db4objects.Db4o.Db4oFactory.OpenFile("file.yap");
+            
         }
 
         private void ToggleCommand()

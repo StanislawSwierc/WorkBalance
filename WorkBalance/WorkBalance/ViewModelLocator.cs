@@ -14,6 +14,7 @@
 
 using GalaSoft.MvvmLight;
 using WorkBalance.ViewModel;
+using System;
 
 namespace WorkBalance
 {
