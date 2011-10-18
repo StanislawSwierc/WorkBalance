@@ -90,6 +90,10 @@
     <Compile Include="Domain\InterruptionTag.cs" />
     <Compile Include="Domain\InterruptionType.cs" />
     <Compile Include="Domain\Sprint.cs" />
+    <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
+    <Compile Include="Repositories\Db4o\Repositories.cs" />
+    <Compile Include="Repositories\Repositories.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Page Include="Controls\DigitalClock.xaml">
