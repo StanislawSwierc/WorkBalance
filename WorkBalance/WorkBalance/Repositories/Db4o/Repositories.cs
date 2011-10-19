@@ -15,7 +15,7 @@ namespace WorkBalance.Repositories.Db4o
         }
     }
 
-    public class ActivityTagRepository : Db4oRepository<ActivityTag>
+    public class ActivityTagRepository : Db4oRepository<ActivityTag>, IActivityTagRepository
     {
         public ActivityTagRepository(IObjectContainer container)
             :base(container)
@@ -23,7 +23,7 @@ namespace WorkBalance.Repositories.Db4o
         }
     }
 
-    public class InterruptionRepository : Db4oRepository<Interruption>
+    public class InterruptionRepository : Db4oRepository<Interruption>, IInterruptionRepository
     {
         public InterruptionRepository(IObjectContainer container)
             : base(container)
@@ -31,7 +31,7 @@ namespace WorkBalance.Repositories.Db4o
         }
     }
 
-    public class InterruptionRecordRepository : Db4oRepository<InterruptionRecord>
+    public class InterruptionRecordRepository : Db4oRepository<InterruptionRecord>, IInterruptionRecordRepository
     {
         public InterruptionRecordRepository(IObjectContainer container)
             : base(container)
@@ -39,7 +39,7 @@ namespace WorkBalance.Repositories.Db4o
         }
     }
 
-    public class InterruptionTagRepository : Db4oRepository<InterruptionTag>
+    public class InterruptionTagRepository : Db4oRepository<InterruptionTag>, IInterruptionTagRepository
     {
         public InterruptionTagRepository(IObjectContainer container)
             : base(container)
@@ -47,7 +47,7 @@ namespace WorkBalance.Repositories.Db4o
         }
     }
 
-    public class SprintRepository : Db4oRepository<Sprint>
+    public class SprintRepository : Db4oRepository<Sprint>, ISprintRepository
     {
         public SprintRepository(IObjectContainer container)
             : base(container)
