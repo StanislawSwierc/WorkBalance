@@ -12,5 +12,18 @@ namespace WorkBalance
     /// </summary>
     public partial class App : Application
     {
+        private ViewModelLocator m_Locator;
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            m_Locator = (ViewModelLocator)Resources["Locator"];
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            m_Locator.Dispose();
+        }
     }
 }
