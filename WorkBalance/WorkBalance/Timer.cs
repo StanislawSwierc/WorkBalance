@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using GalaSoft.MvvmLight;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace WorkBalance
 {
@@ -23,9 +24,9 @@ namespace WorkBalance
         ITimerState m_InternalState;
         Dictionary<TimerState, ITimerState> m_InternalStates;
 
-        public Timer()
+        public Timer(IMessenger messenger)
+            :base(messenger)
         {
-
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 m_SprintDuration = TimeSpan.FromSeconds(10);
@@ -43,8 +44,9 @@ namespace WorkBalance
             m_InternalStates.Add(TimerState.Break, new BreakTimerState(this));
             m_InternalStates.Add(TimerState.BreakOverrun, new BreakOverrunTimerState(this));
 
-            m_State = TimerState.Break;
-            State = TimerState.Ready;
+            m_State = TimerState.Ready;
+            m_InternalState = m_InternalStates[m_State];
+            m_InternalState.Activate();
 
             m_Timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
             m_Timer.Tick += HandleTick;
@@ -73,10 +75,11 @@ namespace WorkBalance
             {
                 if (m_State != value)
                 {
+                    var oldValue = m_State;
                     m_State = value;
                     m_InternalState = m_InternalStates[m_State];
                     m_InternalState.Activate();
-                    RaisePropertyChanged("State");
+                    RaisePropertyChanged("State", oldValue, m_State, true);
                 }
             }
         }

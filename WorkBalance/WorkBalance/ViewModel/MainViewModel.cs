@@ -25,30 +25,29 @@ namespace WorkBalance.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        IMessenger m_Messenger;
-
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel(IMessenger messenger)
+            :base(messenger)
         {
             Contract.Requires(messenger != null);
 
-            m_Messenger = messenger;
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-            Timer = new WorkBalance.Timer();
+
+            if (IsInDesignMode)
+            {
+                // Code runs in Blend --> create design time data.
+            }
+            else
+            {
+                MessengerInstance.Register<PropertyChangedMessage<TimerState>>(this, m => System.Windows.MessageBox.Show(m.NewValue.ToString()));
+            }
+            Timer = new WorkBalance.Timer(MessengerInstance);
             // Translate state change notification and propagate it to the user interface
             Timer.PropertyChanged += new PropertyChangedEventHandler(
                 CreatePropertyChangedHandler("State", s => RaisePropertyChanged("ToggleTimerActionName")));
             m_ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
-            m_CloseCommand = new RelayCommand(() => App.Current.Shutdown());            
+            m_CloseCommand = new RelayCommand(() => App.Current.Shutdown());
         }
 
         public Timer Timer { get; private set; }
