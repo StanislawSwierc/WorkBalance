@@ -23,5 +23,23 @@ namespace WorkBalance
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Data.CollectionViewSource activityViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("activityViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            // activityViewSource.Source = [generic data source]
+        }
     }
 }

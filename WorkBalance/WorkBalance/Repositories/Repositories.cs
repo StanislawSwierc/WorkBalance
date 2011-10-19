@@ -8,6 +8,7 @@ namespace WorkBalance.Repositories
 {
     public interface IActivityRepository : IRepository<Activity>
     {
+        IEnumerable<Activity> GetActive();
     }
 
     public interface IActivityTagRepository : IRepository<ActivityTag>

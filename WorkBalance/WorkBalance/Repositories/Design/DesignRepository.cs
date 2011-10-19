@@ -6,16 +6,22 @@ using System.Linq.Expressions;
 
 namespace WorkBalance.Repositories.Design
 {
-    public class DesignRepository<TEntity> : IRepository<TEntity>
+    public abstract class DesignRepository<TEntity> : IRepository<TEntity>
     {
+        protected abstract TEntity CreateInstance();
+        protected IEnumerable<TEntity> CreateInstances()
+        {
+            return Enumerable.Range(0, 10).Select(i => CreateInstance());
+        }
+
         public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> expression)
         {
-            return Enumerable.Empty<TEntity>();
+            return CreateInstances();
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            return Enumerable.Empty<TEntity>();
+            return CreateInstances();
         }
 
         public void Add(TEntity entity)

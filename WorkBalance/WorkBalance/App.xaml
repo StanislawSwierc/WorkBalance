@@ -12,7 +12,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes\ExpressionDark.xaml" />
                 <ResourceDictionary>
-                    <WorkBalance:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+                    <WorkBalance:ViewModelLocator x:Key="Locator" x:Shared="True"  d:IsDataSource="True" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="Themes/ExpressionDark.xaml"/>
             </ResourceDictionary.MergedDictionaries>

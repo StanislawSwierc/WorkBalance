@@ -101,8 +101,12 @@
     <Compile Include="Repositories\Repositories.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="Views\ActivityInventoryView.xaml.cs">
+      <DependentUpon>ActivityInventoryView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\DigitalClock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -120,6 +124,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Themes\ExpressionDark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ActivityInventoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -143,6 +151,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\WorkBalance.Domain.Activity.datasource" />
+    <None Include="Properties\DataSources\WorkBalance.Domain.ActivityTag.datasource" />
+    <None Include="Properties\DataSources\WorkBalance.Domain.Interruption.datasource" />
+    <None Include="Properties\DataSources\WorkBalance.Domain.InterruptionRecord.datasource" />
+    <None Include="Properties\DataSources\WorkBalance.Domain.InterruptionTag.datasource" />
+    <None Include="Properties\DataSources\WorkBalance.Domain.Sprint.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

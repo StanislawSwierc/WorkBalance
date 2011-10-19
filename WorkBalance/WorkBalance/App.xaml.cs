@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace WorkBalance
 {
@@ -24,6 +26,17 @@ namespace WorkBalance
         {
             base.OnExit(e);
             m_Locator.Dispose();
+        }
+
+        public static void LoadStaticResources(Control element)
+        {
+            if (DesignerProperties.GetIsInDesignMode(element))
+            {
+                if (AppDomain.CurrentDomain.BaseDirectory.Contains("Blend 4"))
+                {
+                    element.Resources.Add("Locator", new ViewModelLocator());
+                }
+            } 
         }
     }
 }

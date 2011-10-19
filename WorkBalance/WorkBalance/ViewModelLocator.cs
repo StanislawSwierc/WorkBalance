@@ -65,7 +65,8 @@ namespace WorkBalance
             {
                 // Register repositories
                 container.RegisterInstance<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
-                container.RegisterType<IActivityRepository, Repositories.Db4o.ActivityRepository>();
+                //container.RegisterType<IActivityRepository, Repositories.Db4o.ActivityRepository>();
+                container.RegisterType<IActivityRepository, Repositories.Design.ActivityRepository>();
                 container.RegisterType<IActivityTagRepository, Repositories.Db4o.ActivityTagRepository>();
                 container.RegisterType<IInterruptionRepository, Repositories.Db4o.InterruptionRepository>();
                 container.RegisterType<IInterruptionRecordRepository, Repositories.Db4o.InterruptionRecordRepository>();
@@ -78,6 +79,7 @@ namespace WorkBalance
 
             // Define the lifetime of the ViewModels
             container.RegisterType<MainViewModel>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ActivityInventoryViewModel>(new ContainerControlledLifetimeManager());
             
             return container;
         }
@@ -94,5 +96,7 @@ namespace WorkBalance
         /// Gets the Main property which defines the main viewmodel.
         /// </summary>
         public MainViewModel Main { get { return m_Container.Resolve<MainViewModel>(); } }
+
+        public ActivityInventoryViewModel ActivityInventory { get { return m_Container.Resolve<ActivityInventoryViewModel>(); } }
     }
 }

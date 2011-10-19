@@ -13,6 +13,11 @@ namespace WorkBalance.Repositories.Db4o
             :base(container)
         {
         }
+
+        public IEnumerable<Activity> GetActive()
+        {
+            return Get(a => a.Active);
+        }
     }
 
     public class ActivityTagRepository : Db4oRepository<ActivityTag>, IActivityTagRepository

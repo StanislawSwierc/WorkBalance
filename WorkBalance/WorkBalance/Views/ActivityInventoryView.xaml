@@ -1,0 +1,51 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WorkBalance" 
+	mc:Ignorable="d"
+	x:Class="WorkBalance.ActivityInventoryView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="UserControl_Loaded"
+	DataContext="{Binding Source={StaticResource Locator}}"
+	>
+	<UserControl.Resources>
+		<Style x:Key="ColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
+			<Setter Property="Margin" Value="5"/>
+			<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="TextAlignment" Value="Center"/>
+		</Style>
+	</UserControl.Resources>
+	
+    <Grid x:Name="LayoutRoot" DataContext="{Binding ActivityInventory}">
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition Height="*"/>
+    	</Grid.RowDefinitions>
+    	<StackPanel Orientation="Horizontal" Grid.Row="0" Background="{DynamicResource HoverShineBrush}">
+			<Border Width="229" BorderBrush="Black" BorderThickness="0,0,1,0" >
+    			<TextBlock Text="Name" Style="{DynamicResource ColumnTextBlockStyle}"  />
+    		</Border>
+			<Border Width="63" BorderBrush="Black" BorderThickness="0,0,1,0" >
+				<TextBlock Text="Actual" Style="{DynamicResource ColumnTextBlockStyle}"  />	
+			</Border>
+    		<Border Width="63" BorderBrush="Black" BorderThickness="0,0,1,0" >
+				<TextBlock Text="Expected"  Style="{DynamicResource ColumnTextBlockStyle}" />
+			</Border>
+    		
+		</StackPanel>
+    	<ListBox ItemsSource="{Binding DesignActivities}" Grid.Row="1" >
+    		<ListBox.ItemTemplate>
+    			<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}" TextAlignment="Left" Width="220" Margin="0,0,1,0" />
+						<TextBlock Text="{Binding ActualEffort}" Width="62" Margin="0,0,1,0" TextAlignment="Center"  />
+						<TextBlock Text="{Binding ExpectedEffort}" Width="62" TextAlignment="Center" />
+					</StackPanel>
+				</DataTemplate> 		
+			</ListBox.ItemTemplate>  	
+		</ListBox>
+    </Grid>
+</UserControl>

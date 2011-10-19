@@ -47,7 +47,6 @@ namespace WorkBalance.ViewModel
             Timer.PropertyChanged += new PropertyChangedEventHandler(
                 CreatePropertyChangedHandler("State", s => RaisePropertyChanged("ToggleTimerActionName")));
             m_ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
-            m_CloseCommand = new RelayCommand(() => App.Current.Shutdown());
         }
 
         public Timer Timer { get; private set; }
@@ -89,8 +88,5 @@ namespace WorkBalance.ViewModel
 
         private RelayCommand m_ToggleTimerCommand;
         public ICommand ToggleTimerCommand { get { return m_ToggleTimerCommand; } }
-
-        private RelayCommand m_CloseCommand;
-        public ICommand CloseCommand { get { return m_CloseCommand; } }
     }
 }
