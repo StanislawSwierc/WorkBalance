@@ -96,6 +96,8 @@
     <Compile Include="Domain\Sprint.cs" />
     <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
     <Compile Include="Repositories\Db4o\Repositories.cs" />
+    <Compile Include="Repositories\Design\Repositories.cs" />
+    <Compile Include="Repositories\Design\DesignRepository.cs" />
     <Compile Include="Repositories\Repositories.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Timer.cs" />
