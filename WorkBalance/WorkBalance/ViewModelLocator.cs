@@ -28,6 +28,7 @@ namespace WorkBalance
     /// </summary>
     public class ViewModelLocator: IDisposable
     {
+        private const string c_Storage = "WorkBalance.db4o";
         private IUnityContainer m_Container;
 
         /// <summary>
@@ -50,15 +51,15 @@ namespace WorkBalance
 
         private IUnityContainer CreateContainer()
         {
-            var result = new UnityContainer();
-            m_Container.RegisterInstance<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile("WorkBalance.db4o"));
-            m_Container.RegisterType<IActivityRepository, Repositories.Db4o.ActivityRepository>();
-            m_Container.RegisterType<IActivityTagRepository, Repositories.Db4o.ActivityTagRepository>();
-            m_Container.RegisterType<IInterruptionRepository, Repositories.Db4o.InterruptionRepository>();
-            m_Container.RegisterType<IInterruptionRecordRepository, Repositories.Db4o.InterruptionRecordRepository>();
-            m_Container.RegisterType<IInterruptionTagRepository, Repositories.Db4o.InterruptionTagRepository>();
-            m_Container.RegisterType<ISprintRepository, Repositories.Db4o.SprintRepository>();
-            return result;
+            var container = new UnityContainer();
+            container.RegisterInstance<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
+            container.RegisterType<IActivityRepository, Repositories.Db4o.ActivityRepository>();
+            container.RegisterType<IActivityTagRepository, Repositories.Db4o.ActivityTagRepository>();
+            container.RegisterType<IInterruptionRepository, Repositories.Db4o.InterruptionRepository>();
+            container.RegisterType<IInterruptionRecordRepository, Repositories.Db4o.InterruptionRecordRepository>();
+            container.RegisterType<IInterruptionTagRepository, Repositories.Db4o.InterruptionTagRepository>();
+            container.RegisterType<ISprintRepository, Repositories.Db4o.SprintRepository>();
+            return container;
         }
 
         /// <summary>
