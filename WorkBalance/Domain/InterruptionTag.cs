@@ -9,5 +9,10 @@ namespace WorkBalance.Domain
     {
         public string Name { get; private set; }
         public InterruptionTag Parent { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the value indicating wheather the InterruptionTag is archived
+        /// </summary>
+        public bool Archived { get; set; }
     }
 }

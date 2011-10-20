@@ -17,5 +17,10 @@ namespace WorkBalance.Domain
             Type = type;
             Tags = new List<InterruptionTag>();
         }
+
+        /// <summary>
+        /// Gets or sets the value indicating wheather the Interruption is archived
+        /// </summary>
+        public bool Archived { get; set; }
     }
 }

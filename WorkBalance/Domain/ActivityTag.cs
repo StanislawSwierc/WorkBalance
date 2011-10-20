@@ -26,5 +26,10 @@ namespace WorkBalance.Domain
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the value indicating wheather the ActivityTag is archived
+        /// </summary>
+        public bool Archived { get; set; }
     }
 }
