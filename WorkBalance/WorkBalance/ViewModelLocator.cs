@@ -15,11 +15,14 @@
 using GalaSoft.MvvmLight;
 using WorkBalance.ViewModel;
 using System;
+using System.Linq;
 using WorkBalance.Repositories;
 using System.Reflection;
 using System.Collections.Generic;
-using Microsoft.Practices.Unity;
 using GalaSoft.MvvmLight.Messaging;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using WorkBalance.Utilities;
 
 namespace WorkBalance
 {
@@ -30,58 +33,25 @@ namespace WorkBalance
     public class ViewModelLocator: IDisposable
     {
         private const string c_Storage = "WorkBalance.db4o";
-        private IUnityContainer m_Container;
+        private CompositionContainer m_Container;
 
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
         public ViewModelLocator()
         {
+            var catalog = new DesignTimeCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            m_Container = new CompositionContainer(catalog);                
+
             if (ViewModelBase.IsInDesignModeStatic)
             {
                 // Create design time services and viewmodels
             }
             else
             {
-                // Code runs "for real"
+                m_Container.ComposeExportedValue<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
             }
-            m_Container = CreateContainer();
-        }
-
-        private IUnityContainer CreateContainer()
-        {
-            var container = new UnityContainer();
-            if (ViewModelBase.IsInDesignModeStatic)
-            {
-                // Register repositories
-                container.RegisterType<IActivityRepository, Repositories.Design.ActivityRepository>();
-                container.RegisterType<IActivityTagRepository, Repositories.Design.ActivityTagRepository>();
-                container.RegisterType<IInterruptionRepository, Repositories.Design.InterruptionRepository>();
-                container.RegisterType<IInterruptionRecordRepository, Repositories.Design.InterruptionRecordRepository>();
-                container.RegisterType<IInterruptionTagRepository, Repositories.Design.InterruptionTagRepository>();
-                container.RegisterType<ISprintRepository, Repositories.Design.SprintRepository>();
-            }
-            else
-            {
-                // Register repositories
-                container.RegisterInstance<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
-                //container.RegisterType<IActivityRepository, Repositories.Db4o.ActivityRepository>();
-                container.RegisterType<IActivityRepository, Repositories.Design.ActivityRepository>();
-                container.RegisterType<IActivityTagRepository, Repositories.Db4o.ActivityTagRepository>();
-                container.RegisterType<IInterruptionRepository, Repositories.Db4o.InterruptionRepository>();
-                container.RegisterType<IInterruptionRecordRepository, Repositories.Db4o.InterruptionRecordRepository>();
-                container.RegisterType<IInterruptionTagRepository, Repositories.Db4o.InterruptionTagRepository>();
-                container.RegisterType<ISprintRepository, Repositories.Db4o.SprintRepository>();
-            }
-            
-            // Register messenger
-            container.RegisterInstance<IMessenger>(new Messenger());
-
-            // Define the lifetime of the ViewModels
-            container.RegisterType<MainViewModel>(new ContainerControlledLifetimeManager());
-            container.RegisterType<ActivityInventoryViewModel>(new ContainerControlledLifetimeManager());
-            
-            return container;
+            m_Container.ComposeExportedValue<IMessenger>(new Messenger());
         }
 
         public void Dispose()
@@ -95,8 +65,8 @@ namespace WorkBalance
         /// <summary>
         /// Gets the Main property which defines the main viewmodel.
         /// </summary>
-        public MainViewModel Main { get { return m_Container.Resolve<MainViewModel>(); } }
+        public MainViewModel Main { get { return m_Container.GetExportedValue<MainViewModel>(); } }
 
-        public ActivityInventoryViewModel ActivityInventory { get { return m_Container.Resolve<ActivityInventoryViewModel>(); } }
+        public ActivityInventoryViewModel ActivityInventory { get { return m_Container.GetExportedValue<ActivityInventoryViewModel>(); } }
     }
 }

@@ -14,7 +14,14 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="0.469*"/>
 			</Grid.RowDefinitions>
-			<Button Grid.Row="1" Grid.Column="1" Content="{Binding ToggleTimerActionName, Mode=OneWay}" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Margin="5" Height="23" VerticalAlignment="Top" />
+			<StackPanel Grid.Row="1" Grid.Column="1">
+				<Button Grid.Row="1" Grid.Column="1" Content="{Binding ToggleTimerActionName, Mode=OneWay}" Command="{Binding ToggleTimerCommand, Mode=OneWay}" Height="20" Margin="0,2,0,0" />
+				<Button Grid.Row="1" Grid.Column="1" Content="Create Activity"  Height="20" Margin="0,2,0,0" />	
+				<Button Grid.Row="1" Grid.Column="1" Content="Open Activity Inventory" Height="20" Margin="0,2,0,0" />	
+			</StackPanel>
+			
+			
+			
 			<local:DigitalClock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Time="{Binding Timer.Time, Mode=OneWay}" Foreground="Yellow" InactiveSegmentsBrush="#26000000" GlowColor="#FFFEFE00" Height="60" Width="Auto" Margin="9,5,10,5" />
 			<Border  HorizontalAlignment="Stretch" Grid.Row="0" Padding="1" BorderThickness="0,0,0,1" BorderBrush="Black" Background="{DynamicResource ShineBrush}" Grid.ColumnSpan="2" Grid.Column="0"  d:LayoutOverrides="GridBox" >
 				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >

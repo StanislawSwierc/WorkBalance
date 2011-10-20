@@ -55,14 +55,11 @@
     </Reference>
     <Reference Include="Microsoft.Expression.Effects" />
     <Reference Include="Microsoft.Expression.Interactions" />
-    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Microsoft Enterprise Library\5.0\bin\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Reflection">
       <HintPath>..\packages\db4o-devel.8.1.184.15492\lib\net40\Mono.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MvvmLight.3.0.3\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -101,6 +98,8 @@
     <Compile Include="Repositories\Repositories.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="Utilities\DesignTimeCatalog.cs" />
+    <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />

@@ -28,6 +28,13 @@ namespace WorkBalance
             m_Locator.Dispose();
         }
 
+        /// <summary>
+        /// Loads static resources to the Resources collection of the element
+        /// </summary>
+        /// <remarks>
+        /// http://stackoverflow.com/questions/3317902/resource-with-the-name-locator-cannot-be-found-error-when-using-mvvm-light-u
+        /// </remarks>
+        /// <param name="element">Element where the resources need to be loaded</param>
         public static void LoadStaticResources(Control element)
         {
             if (DesignerProperties.GetIsInDesignMode(element))

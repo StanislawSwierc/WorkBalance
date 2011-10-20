@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Messaging;
 using System.Diagnostics.Contracts;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 
 namespace WorkBalance.ViewModel
 {
@@ -23,11 +24,13 @@ namespace WorkBalance.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
+    [Export]
     public class MainViewModel : ViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
+        [ImportingConstructor]
         public MainViewModel(IMessenger messenger)
             :base(messenger)
         {

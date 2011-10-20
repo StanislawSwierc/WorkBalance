@@ -12,7 +12,7 @@
 	>
 	<UserControl.Resources>
 		<Style x:Key="ColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
-			<Setter Property="Margin" Value="5"/>
+			<Setter Property="Margin" Value="5,1,5,2"/>
 			<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="TextAlignment" Value="Center"/>
@@ -26,7 +26,7 @@
     	</Grid.RowDefinitions>
     	<StackPanel Orientation="Horizontal" Grid.Row="0" Background="{DynamicResource HoverShineBrush}">
 			<Border Width="229" BorderBrush="Black" BorderThickness="0,0,1,0" >
-    			<TextBlock Text="Name" Style="{DynamicResource ColumnTextBlockStyle}"  />
+    			<TextBlock Text="Name" Style="{DynamicResource ColumnTextBlockStyle}"   />
     		</Border>
 			<Border Width="63" BorderBrush="Black" BorderThickness="0,0,1,0" >
 				<TextBlock Text="Actual" Style="{DynamicResource ColumnTextBlockStyle}"  />	

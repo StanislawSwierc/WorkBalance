@@ -8,12 +8,15 @@ using System.ComponentModel;
 using System.Windows.Data;
 using WorkBalance.Domain;
 using WorkBalance.Repositories;
+using System.ComponentModel.Composition;
 
 namespace WorkBalance.ViewModel
 {
+    [Export]
     public class ActivityInventoryViewModel: ViewModelBase
     {
-        public ActivityInventoryViewModel(Messenger messenger, IActivityRepository activityRepository)
+        [ImportingConstructor]
+        public ActivityInventoryViewModel(IMessenger messenger, IActivityRepository activityRepository)
             : base(messenger)
         {
             m_ActivityRepository = activityRepository;
