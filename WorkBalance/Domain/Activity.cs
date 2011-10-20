@@ -23,10 +23,9 @@ namespace WorkBalance.Domain
         public int ActualEffort { get; set; }
 
         /// <summary>
-        /// Gets or sets the value indicating wheather the Activity should 
-        /// be listed in the ActivityInventory
+        /// Gets or sets the value indicating wheather the Activity is archived
         /// </summary>
-        public bool Active { get; set; }
+        public bool Archived { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating wheather the Activity is completed
