@@ -68,5 +68,7 @@ namespace WorkBalance
         public MainViewModel Main { get { return m_Container.GetExportedValue<MainViewModel>(); } }
 
         public ActivityInventoryViewModel ActivityInventory { get { return m_Container.GetExportedValue<ActivityInventoryViewModel>(); } }
+
+        public CreateActivityViewModel CreateActivity { get { return m_Container.GetExportedValue<CreateActivityViewModel>(); } }
     }
 }

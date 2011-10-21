@@ -1,0 +1,31 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="WorkBalance.CreateActivityView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="UserControl_Loaded"
+    DataContext="{Binding Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="activityViewSource" d:DesignSource="{d:DesignInstance my:Activity, CreateList=True}" />
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot" DataContext="{Binding CreateActivity, Mode=OneWay, Source={StaticResource Locator}}">
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+    	</Grid.RowDefinitions>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="*"/>
+    		<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Center" d:LayoutOverrides="GridBox" />
+        <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  x:Name="nameTextBox" Text="{Binding Name}" VerticalAlignment="Center"  d:LayoutOverrides="GridBox" />
+		<Label Grid.Row="1" Grid.Column="0" Content="Expected Effort:" HorizontalAlignment="Left"  VerticalAlignment="Center" d:LayoutOverrides="HorizontalAlignment, GridBox" />
+        <TextBox Grid.Row="1" Grid.Column="1"   HorizontalAlignment="Stretch"  x:Name="expectedEffortTextBox" Text="{Binding ExpectedEffort}" VerticalAlignment="Center"  d:LayoutOverrides="GridBox" />      
+		<Label Grid.Row="2" Grid.Column="0" Content="Tags:" HorizontalAlignment="Left" VerticalAlignment="Center" d:LayoutOverrides="HorizontalAlignment, GridBox" />
+        <TextBox Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" Text="{Binding Tags}" VerticalAlignment="Center" d:LayoutOverrides="GridBox" />      
+    </Grid>
+</UserControl>

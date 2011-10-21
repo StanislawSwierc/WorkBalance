@@ -101,10 +101,14 @@
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
+    <Compile Include="ViewModel\CreateActivityViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Views\ActivityInventoryView.xaml.cs">
       <DependentUpon>ActivityInventoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateActivityView.xaml.cs">
+      <DependentUpon>CreateActivityView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\DigitalClock.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -127,6 +131,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ActivityInventoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CreateActivityView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
