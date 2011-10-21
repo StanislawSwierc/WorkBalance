@@ -19,7 +19,7 @@ namespace WorkBalance.Repositories.Design
         {
             return new Activity()
             {
-                Active = true,
+                Archived = true,
                 ActualEffort = 3,
                 Completed = false,
                 CreationTime = DateTime.Now,
