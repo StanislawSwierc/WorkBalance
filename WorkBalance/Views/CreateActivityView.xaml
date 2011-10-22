@@ -21,7 +21,7 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  x:Name="nameTextBox" Text="{Binding Name}" VerticalAlignment="Center" />
 		<Label Grid.Row="1" Grid.Column="0" Content="Expected Effort:" HorizontalAlignment="Left"  VerticalAlignment="Center" />
-        <TextBox Grid.Row="1" Grid.Column="1"   HorizontalAlignment="Stretch"  x:Name="expectedEffortTextBox" Text="{Binding ExpectedEffort}" VerticalAlignment="Center"  />      
+        <TextBox Grid.Row="1" Grid.Column="1"   HorizontalAlignment="Stretch"  x:Name="expectedEffortTextBox" Text="{Binding ExpectedEffort, Mode=OneWayToSource}" VerticalAlignment="Center" TextChanged="expectedEffortTextBox_TextChanged"/>      
 		<Label Grid.Row="2" Grid.Column="0" Content="Tags:" HorizontalAlignment="Left" VerticalAlignment="Center" d:LayoutOverrides="HorizontalAlignment, GridBox" />
         <TextBox Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" Text="{Binding Tags}" VerticalAlignment="Center" />      
 		<Button Grid.Row="3" Grid.Column="1" Content="Save" Command="{Binding SaveCommand, Mode=OneWay}" />

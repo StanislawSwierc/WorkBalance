@@ -13,16 +13,16 @@ using System.Windows.Shapes;
 
 namespace WorkBalance
 {
-	/// <summary>
-	/// Interaction logic for CreateActivityView.xaml
-	/// </summary>
-	public partial class CreateActivityView : UserControl
-	{
-		public CreateActivityView()
-		{
+    /// <summary>
+    /// Interaction logic for CreateActivityView.xaml
+    /// </summary>
+    public partial class CreateActivityView : UserControl
+    {
+        public CreateActivityView()
+        {
             App.LoadStaticResources(this);
-			this.InitializeComponent();
-		}
+            this.InitializeComponent();
+        }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -35,5 +35,28 @@ namespace WorkBalance
             // 	myCollectionViewSource.Source = your data
             // }
         }
-	}
+
+        private void expectedEffortTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = (TextBox)sender;
+            var text = textBox.Text;
+            bool modify = false;
+
+            if (text.Length > 1)
+            {
+                text = text.Substring(0, 1);
+                modify = true;
+            }
+            if (text.Length == 1 && (text[0] < '0' || '9' < text[0]))
+            {
+                text = string.Empty;
+                modify = true;
+            }
+            if (modify)
+            {
+                textBox.Text = text;
+            }
+        }  
+        
+    }
 }
