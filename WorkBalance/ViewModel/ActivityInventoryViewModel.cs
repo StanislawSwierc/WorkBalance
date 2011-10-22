@@ -9,6 +9,7 @@ using System.Windows.Data;
 using WorkBalance.Domain;
 using WorkBalance.Repositories;
 using System.ComponentModel.Composition;
+using System.Collections.ObjectModel;
 
 namespace WorkBalance.ViewModel
 {
@@ -20,14 +21,19 @@ namespace WorkBalance.ViewModel
             : base(messenger)
         {
             m_ActivityRepository = activityRepository;
-            m_Activities = new List<Activity>(activityRepository.GetActive());
-            m_ActivitiesView = new ListCollectionView(m_Activities);
+            Activities = new ObservableCollection<Activity>(activityRepository.GetActive());
+            MessengerInstance.Register<NotificationMessage<Activity>>(this, HandleActivityCreated);
         }
 
         IActivityRepository m_ActivityRepository;
-        List<Activity> m_Activities;
-        ListCollectionView m_ActivitiesView;
-        public ICollectionView Activities { get { return m_ActivitiesView; } }
-        public List<Activity> DesignActivities { get { return m_Activities; } }
+        public ObservableCollection<Activity> Activities { get; private set; }
+
+        public void HandleActivityCreated(NotificationMessage<Activity> notification)
+        {
+            if (notification.Notification == Notifications.ActivityCreated)
+            {
+                Activities.Add(notification.Content);
+            }
+        }
     }
 }

@@ -91,6 +91,7 @@
     <Compile Include="Domain\InterruptionTag.cs" />
     <Compile Include="Domain\InterruptionType.cs" />
     <Compile Include="Domain\Sprint.cs" />
+    <Compile Include="Notifications.cs" />
     <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
     <Compile Include="Repositories\Db4o\Repositories.cs" />
     <Compile Include="Repositories\Design\Repositories.cs" />

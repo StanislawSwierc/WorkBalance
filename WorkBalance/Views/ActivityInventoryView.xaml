@@ -7,7 +7,7 @@
 	mc:Ignorable="d"
 	x:Class="WorkBalance.ActivityInventoryView"
 	x:Name="UserControl"
-	d:DesignWidth="640" d:DesignHeight="480" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="UserControl_Loaded"
+	d:DesignWidth="640" d:DesignHeight="200" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="UserControl_Loaded"
 	DataContext="{Binding Source={StaticResource Locator}}"
 	>
 	<UserControl.Resources>
@@ -28,21 +28,21 @@
 			<Border Width="229" BorderBrush="Black" BorderThickness="0,0,1,0" >
     			<TextBlock Text="Name" Style="{DynamicResource ColumnTextBlockStyle}"   />
     		</Border>
-			<Border Width="63" BorderBrush="Black" BorderThickness="0,0,1,0" >
-				<TextBlock Text="Actual" Style="{DynamicResource ColumnTextBlockStyle}"  />	
+			<Border Width="30" BorderBrush="Black" BorderThickness="0,0,1,0" >
+				<TextBlock Text="E" Style="{DynamicResource ColumnTextBlockStyle}"  />	
 			</Border>
-    		<Border Width="63" BorderBrush="Black" BorderThickness="0,0,1,0" >
-				<TextBlock Text="Expected"  Style="{DynamicResource ColumnTextBlockStyle}" />
+    		<Border Width="30" BorderBrush="Black" BorderThickness="0,0,1,0" >
+				<TextBlock Text="A"  Style="{DynamicResource ColumnTextBlockStyle}" />
 			</Border>
     		
 		</StackPanel>
-    	<ListBox ItemsSource="{Binding DesignActivities}" Grid.Row="1" >
+    	<ListBox ItemsSource="{Binding Activities}" Grid.Row="1" >
     		<ListBox.ItemTemplate>
     			<DataTemplate>
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" TextAlignment="Left" Width="220" Margin="0,0,1,0" />
-						<TextBlock Text="{Binding ActualEffort}" Width="62" Margin="0,0,1,0" TextAlignment="Center"  />
-						<TextBlock Text="{Binding ExpectedEffort}" Width="62" TextAlignment="Center" />
+						<TextBlock Text="{Binding ExpectedEffort}" Width="30" TextAlignment="Center" />
+						<TextBlock Text="{Binding ActualEffort}" Width="30" Margin="0,0,1,0" TextAlignment="Center" />
 					</StackPanel>
 				</DataTemplate> 		
 			</ListBox.ItemTemplate>  	
