@@ -108,8 +108,8 @@
     <Compile Include="Views\ActivityInventoryView.xaml.cs">
       <DependentUpon>ActivityInventoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateActivityView.xaml.cs">
-      <DependentUpon>CreateActivityView.xaml</DependentUpon>
+    <Compile Include="Windows\CreateActivityWindow.xaml.cs">
+      <DependentUpon>CreateActivityWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\DigitalClock.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -135,9 +135,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CreateActivityView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Windows\CreateActivityWindow.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -26,12 +26,14 @@ namespace WorkBalance.ViewModel
             m_ActivityRepository = activityRepository;
             m_ActivityTagRepository = activityTagRepository;
             SaveCommand = new RelayCommand(Save, CanExecuteSave);
+            CancelCommand = new RelayCommand(Cancel);
         }
 
         public string Name { get; set; }
         public int ExpectedEffort { get; set; }
         public string Tags { get; set; }
         public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand CancelCommand { get; private set; }
 
         public bool CanExecuteSave()
         {
@@ -51,6 +53,16 @@ namespace WorkBalance.ViewModel
             m_ActivityRepository.Add(activity);
             MessengerInstance.Send(new NotificationMessage<Activity>(activity, Notifications.ActivityCreated));
         }
+
+        public void Cancel()
+        {
+            if (window != null)
+            {
+                window.Close();
+            }
+        }
+
+        public System.Windows.Window window;
 
     }
 }

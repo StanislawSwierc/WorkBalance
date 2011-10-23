@@ -16,10 +16,15 @@ namespace WorkBalance
     {
         private ViewModelLocator m_Locator;
 
-        protected override void OnActivated(EventArgs e)
+        
+        protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnActivated(e);
+            base.OnStartup(e);
             m_Locator = (ViewModelLocator)Resources["Locator"];
+            
+            this.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            MainWindow = new MainWindow();
+            MainWindow.Show();
         }
 
         protected override void OnExit(ExitEventArgs e)
