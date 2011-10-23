@@ -41,5 +41,10 @@ namespace WorkBalance
             // Load data by setting the CollectionViewSource.Source property:
             // activityViewSource.Source = [generic data source]
         }
+
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
     }
 }
