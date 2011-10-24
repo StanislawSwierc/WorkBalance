@@ -50,7 +50,7 @@ namespace WorkBalance.ViewModel
             Timer.PropertyChanged += new PropertyChangedEventHandler(
                 CreatePropertyChangedHandler("State", s => RaisePropertyChanged("ToggleTimerActionName")));
             ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
-            CreateActivityCommand = new RelayCommand<System.Windows.Window>(CreateActivity);
+            CreateActivityCommand = new RelayCommand(CreateActivity);
         }
 
         public Timer Timer { get; private set; }
@@ -79,22 +79,9 @@ namespace WorkBalance.ViewModel
             }
         }
 
-        private void CreateActivity(System.Windows.Window owner)
+        private void CreateActivity()
         {
-            // TODO: Remove UI code from here
-            var window = new WorkBalance.Windows.CreateActivityWindow();
-            window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
-            window.Owner = owner;
-            MessengerInstance.Register<NotificationMessage>(this, message =>
-            {
-                if (message.Notification == Notifications.CreateActivityWindowClose)
-                {
-                    window.Close();
-                    MessengerInstance.Unregister<NotificationMessage>(this);
-                }
-            });
-            window.ShowDialog();
-            
+            MessengerInstance.Send<NotificationMessage>(new NotificationMessage(Notifications.CreateActivityWindowOpen));
         }
 
         private Action<object, PropertyChangedEventArgs> CreatePropertyChangedHandler(string property, Action<object> handler)
@@ -109,6 +96,6 @@ namespace WorkBalance.ViewModel
         }
 
         public RelayCommand ToggleTimerCommand { get; set; }
-        public RelayCommand<System.Windows.Window> CreateActivityCommand { get; set; }
+        public RelayCommand CreateActivityCommand { get; set; }
     }
 }

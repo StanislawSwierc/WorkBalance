@@ -23,7 +23,7 @@ namespace WorkBalance
             m_Locator = (ViewModelLocator)Resources["Locator"];
             
             this.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            MainWindow = new MainWindow();
+            MainWindow = m_Locator.MainWindow;
             MainWindow.Show();
         }
 

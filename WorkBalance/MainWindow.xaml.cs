@@ -13,16 +13,23 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WorkBalance.Windows;
 using WorkBalance.ViewModel;
+using GalaSoft.MvvmLight.Messaging;
+using System.ComponentModel.Composition;
 
 namespace WorkBalance
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Export]
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly IMessenger m_Messenger;
+
+        [ImportingConstructor]
+        public MainWindow(IMessenger messenger)
         {
+            m_Messenger = messenger;
             InitializeComponent();
         }
 
@@ -38,9 +45,26 @@ namespace WorkBalance
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            // Load data by setting the CollectionViewSource.Source property:
-            // activityViewSource.Source = [generic data source]
+            m_Messenger.Register<NotificationMessage>(this, message =>
+                {
+                    if (message.Notification == Notifications.CreateActivityWindowOpen)
+                    {
+                        var window = new WorkBalance.Windows.CreateActivityWindow();
+                        window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+                        window.Owner = this;
+                        Action<NotificationMessage> action = null;
+                        action = m =>
+                        {
+                            if (m.Notification == Notifications.CreateActivityWindowClose)
+                            {
+                                window.Close();
+                                m_Messenger.Unregister<NotificationMessage>(action);
+                            }
+                        };
+                        m_Messenger.Register<NotificationMessage>(action, action);
+                        window.ShowDialog();
+                    }
+                });
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
