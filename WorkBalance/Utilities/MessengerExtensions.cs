@@ -72,5 +72,31 @@ namespace WorkBalance.Utilities
         {
             messenger.Unregister<NotificationMessage<T>>(recipient, CreateAction(notification, action));
         }
+
+
+        public static void Send(this IMessenger messenger, string notification)
+        {
+            messenger.Send<NotificationMessage>(new NotificationMessage(notification));
+        }
+        public static void Send(this IMessenger messenger, string notification, object sender)
+        {
+            messenger.Send<NotificationMessage>(new NotificationMessage(sender, notification));
+        }
+        public static void Send(this IMessenger messenger, string notification, object sender, object target)
+        {
+            messenger.Send<NotificationMessage>(new NotificationMessage(sender, target, notification));
+        }
+        public static void Send<T>(this IMessenger messenger, string notification, T content)
+        {
+            messenger.Send<NotificationMessage<T>>(new NotificationMessage<T>(content, notification));
+        }
+        public static void Send<T>(this IMessenger messenger, string notification, T content, object sender)
+        {
+            messenger.Send<NotificationMessage<T>>(new NotificationMessage<T>(sender, content, notification));
+        }
+        public static void Send<T>(this IMessenger messenger, string notification, T content, object sender, object target)
+        {
+            messenger.Send<NotificationMessage<T>>(new NotificationMessage<T>(sender, target, content, notification));
+        }
     }
 }

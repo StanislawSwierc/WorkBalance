@@ -46,15 +46,15 @@ namespace WorkBalance
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            m_Messenger.Register(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
+            m_Messenger.Register<Action>(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            m_Messenger.Unregister(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
+            m_Messenger.Unregister<Action>(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
         }
 
-        private void OpenCreateActivityWindow()
+        private void OpenCreateActivityWindow(Action callback)
         {
             var window = new WorkBalance.Windows.CreateActivityWindow();
             window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
@@ -63,6 +63,7 @@ namespace WorkBalance
             m_Messenger.Register(this, Notifications.CreateActivityWindowClose, action);
             window.ShowDialog();
             m_Messenger.Unregister(this, Notifications.CreateActivityWindowClose, action);
+            callback();
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

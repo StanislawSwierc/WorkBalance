@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Diagnostics.Contracts;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using WorkBalance.Utilities;
 
 namespace WorkBalance.ViewModel
 {
@@ -27,6 +28,8 @@ namespace WorkBalance.ViewModel
     [Export]
     public class MainViewModel : ViewModelBase
     {
+        private bool m_Enabled;
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -51,6 +54,7 @@ namespace WorkBalance.ViewModel
                 CreatePropertyChangedHandler("State", s => RaisePropertyChanged("ToggleTimerActionName")));
             ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
             CreateActivityCommand = new RelayCommand(CreateActivity);
+            m_Enabled = true;
         }
 
         public Timer Timer { get; private set; }
@@ -79,9 +83,26 @@ namespace WorkBalance.ViewModel
             }
         }
 
+        public bool Enabled
+        {
+            get
+            {
+                return m_Enabled;
+            }
+            set
+            {
+                if (m_Enabled != value)
+                {
+                    m_Enabled = value;
+                    RaisePropertyChanged("Enabled");
+                }
+            }
+        }
+
         private void CreateActivity()
         {
-            MessengerInstance.Send<NotificationMessage>(new NotificationMessage(Notifications.CreateActivityWindowOpen));
+            Enabled = false;
+            MessengerInstance.Send<Action>(Notifications.CreateActivityWindowOpen, () => Enabled = true);
         }
 
         private Action<object, PropertyChangedEventArgs> CreatePropertyChangedHandler(string property, Action<object> handler)
