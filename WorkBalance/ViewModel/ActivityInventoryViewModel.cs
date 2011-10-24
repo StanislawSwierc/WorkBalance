@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using WorkBalance.Domain;
 using WorkBalance.Repositories;
+using WorkBalance.Utilities;
 using System.ComponentModel.Composition;
 using System.Collections.ObjectModel;
 
@@ -22,18 +23,10 @@ namespace WorkBalance.ViewModel
         {
             m_ActivityRepository = activityRepository;
             Activities = new ObservableCollection<Activity>(activityRepository.GetActive());
-            MessengerInstance.Register<NotificationMessage<Activity>>(this, HandleActivityCreated);
+            MessengerInstance.Register<Activity>(this, Notifications.ActivityCreated, Activities.Add);
         }
 
         IActivityRepository m_ActivityRepository;
         public ObservableCollection<Activity> Activities { get; private set; }
-
-        public void HandleActivityCreated(NotificationMessage<Activity> notification)
-        {
-            if (notification.Notification == Notifications.ActivityCreated)
-            {
-                Activities.Add(notification.Content);
-            }
-        }
     }
 }

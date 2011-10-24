@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WorkBalance.Windows;
 using WorkBalance.ViewModel;
+using WorkBalance.Utilities;
 using GalaSoft.MvvmLight.Messaging;
 using System.ComponentModel.Composition;
 
@@ -45,26 +46,23 @@ namespace WorkBalance
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            m_Messenger.Register<NotificationMessage>(this, message =>
-                {
-                    if (message.Notification == Notifications.CreateActivityWindowOpen)
-                    {
-                        var window = new WorkBalance.Windows.CreateActivityWindow();
-                        window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
-                        window.Owner = this;
-                        Action<NotificationMessage> action = null;
-                        action = m =>
-                        {
-                            if (m.Notification == Notifications.CreateActivityWindowClose)
-                            {
-                                window.Close();
-                                m_Messenger.Unregister<NotificationMessage>(action);
-                            }
-                        };
-                        m_Messenger.Register<NotificationMessage>(action, action);
-                        window.ShowDialog();
-                    }
-                });
+            m_Messenger.Register(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            m_Messenger.Unregister(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
+        }
+
+        private void OpenCreateActivityWindow()
+        {
+            var window = new WorkBalance.Windows.CreateActivityWindow();
+            window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            window.Owner = this;
+            Action action = () => window.Close();
+            m_Messenger.Register(this, Notifications.CreateActivityWindowClose, action);
+            window.ShowDialog();
+            m_Messenger.Unregister(this, Notifications.CreateActivityWindowClose, action);
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
