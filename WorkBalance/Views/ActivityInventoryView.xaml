@@ -25,7 +25,7 @@
     		<RowDefinition Height="*"/>
     	</Grid.RowDefinitions>
     	<StackPanel Orientation="Horizontal" Grid.Row="0" Background="{DynamicResource HoverShineBrush}">
-			<Border Width="229" BorderBrush="Black" BorderThickness="0,0,1,0" >
+			<Border Width="216" BorderBrush="Black" BorderThickness="0,0,1,0" >
     			<TextBlock Text="Name" Style="{DynamicResource ColumnTextBlockStyle}"   />
     		</Border>
 			<Border Width="30" BorderBrush="Black" BorderThickness="0,0,1,0" >
@@ -40,7 +40,7 @@
     		<ListBox.ItemTemplate>
     			<DataTemplate>
 					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding Name}" TextAlignment="Left" Width="220" Margin="0,0,1,0" />
+						<TextBlock Text="{Binding Name}" TextAlignment="Left" Width="207" Margin="0,0,1,0" />
 						<TextBlock Text="{Binding ExpectedEffort}" Width="30" TextAlignment="Center" />
 						<TextBlock Text="{Binding ActualEffort}" Width="30" Margin="0,0,1,0" TextAlignment="Center" />
 					</StackPanel>
