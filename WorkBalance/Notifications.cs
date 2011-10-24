@@ -8,5 +8,6 @@ namespace WorkBalance
     public class Notifications
     {
         public const string ActivityCreated = "ActivityCreated";
+        public const string CreateActivityWindowClose = "CreateActivityWindowClose";
     }
 }

@@ -10,7 +10,7 @@
         ShowInTaskbar="False" 
         SizeToContent="Height" 
         Background="{DynamicResource WindowBackgroundBrush}"
-        DataContext="{Binding CreateActivity, Mode=OneWay, Source={StaticResource Locator}}" >
+        DataContext="{Binding CreateActivity, Mode=OneWay, Source={StaticResource Locator}}" Loaded="Window_Loaded">
     <Window.InputBindings>
         <KeyBinding Key="Escape" Command="{Binding CancelCommand}"/>
         <KeyBinding Key="Enter" Command="{Binding SaveCommand}"/>        
@@ -28,10 +28,10 @@
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Activity:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,5,0" />
-            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  x:Name="nameTextBox" Text="{Binding Name}" VerticalAlignment="Center" />
-            <TextBox Grid.Row="0" Grid.Column="2"   HorizontalAlignment="Stretch"  x:Name="expectedEffortTextBox" Text="{Binding ExpectedEffort, Mode=OneWayToSource}" TextChanged="expectedEffortTextBox_TextChanged" Margin="3,0,0,0"/>
+            <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  x:Name="nameTextBox" Text="{Binding Name}" VerticalAlignment="Center" TabIndex="1" />
+            <TextBox Grid.Row="0" Grid.Column="2"   HorizontalAlignment="Stretch"  x:Name="expectedEffortTextBox" Text="{Binding ExpectedEffort, Mode=OneWayToSource}" TextChanged="expectedEffortTextBox_TextChanged" Margin="3,0,0,0" TabIndex="2" />
             <Label Grid.Row="2" Grid.Column="0" Content="Tags:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,5,0" />
-            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" Text="{Binding Tags}" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" Text="{Binding Tags}" VerticalAlignment="Center" TabIndex="3" />
         </Grid>
     </Border>
 </Window>

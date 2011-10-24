@@ -43,13 +43,14 @@ namespace WorkBalance.ViewModel
             }
             else
             {
-                MessengerInstance.Register<PropertyChangedMessage<TimerState>>(this, m => System.Windows.MessageBox.Show(m.NewValue.ToString()));
+                //MessengerInstance.Register<PropertyChangedMessage<TimerState>>(this, m => System.Windows.MessageBox.Show(m.NewValue.ToString()));
             }
             Timer = new WorkBalance.Timer(MessengerInstance);
             // Translate state change notification and propagate it to the user interface
             Timer.PropertyChanged += new PropertyChangedEventHandler(
                 CreatePropertyChangedHandler("State", s => RaisePropertyChanged("ToggleTimerActionName")));
-            m_ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
+            ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
+            CreateActivityCommand = new RelayCommand<System.Windows.Window>(CreateActivity);
         }
 
         public Timer Timer { get; private set; }
@@ -78,6 +79,24 @@ namespace WorkBalance.ViewModel
             }
         }
 
+        private void CreateActivity(System.Windows.Window owner)
+        {
+            // TODO: Remove UI code from here
+            var window = new WorkBalance.Windows.CreateActivityWindow();
+            window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            window.Owner = owner;
+            MessengerInstance.Register<NotificationMessage>(this, message =>
+            {
+                if (message.Notification == Notifications.CreateActivityWindowClose)
+                {
+                    window.Close();
+                    MessengerInstance.Unregister<NotificationMessage>(this);
+                }
+            });
+            window.ShowDialog();
+            
+        }
+
         private Action<object, PropertyChangedEventArgs> CreatePropertyChangedHandler(string property, Action<object> handler)
         {
             return new Action<object,PropertyChangedEventArgs>(delegate(object sender, PropertyChangedEventArgs e)
@@ -89,7 +108,7 @@ namespace WorkBalance.ViewModel
             });
         }
 
-        private RelayCommand m_ToggleTimerCommand;
-        public ICommand ToggleTimerCommand { get { return m_ToggleTimerCommand; } }
+        public RelayCommand ToggleTimerCommand { get; set; }
+        public RelayCommand<System.Windows.Window> CreateActivityCommand { get; set; }
     }
 }

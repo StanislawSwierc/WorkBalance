@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WorkBalance.Windows;
+using WorkBalance.ViewModel;
 
 namespace WorkBalance
 {
@@ -38,22 +39,22 @@ namespace WorkBalance
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            System.Windows.Data.CollectionViewSource activityViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("activityViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // activityViewSource.Source = [generic data source]
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            var window = new CreateActivityWindow();
-            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            window.Owner = this;
-            window.ShowDialog();
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
+        }
+
+        private void CreateActivity_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var vm = DataContext as MainViewModel;
+            if (vm != null)
+            {
+                vm.CreateActivityCommand.Execute(this);
+            }
         }
     }
 }

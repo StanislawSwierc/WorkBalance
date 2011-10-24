@@ -52,17 +52,17 @@ namespace WorkBalance.ViewModel
             
             m_ActivityRepository.Add(activity);
             MessengerInstance.Send(new NotificationMessage<Activity>(activity, Notifications.ActivityCreated));
+            Close();
         }
 
         public void Cancel()
         {
-            if (window != null)
-            {
-                window.Close();
-            }
+            Close();
         }
 
-        public System.Windows.Window window;
-
+        private void Close()
+        {
+            MessengerInstance.Send<NotificationMessage>(new NotificationMessage(Notifications.CreateActivityWindowClose));
+        }
     }
 }

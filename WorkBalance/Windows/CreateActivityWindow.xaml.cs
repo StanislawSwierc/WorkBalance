@@ -22,9 +22,6 @@ namespace WorkBalance.Windows
         {
             App.LoadStaticResources(this);
             InitializeComponent();
-
-            var vm = (WorkBalance.ViewModel.CreateActivityViewModel)DataContext;
-            vm.window = this;
         }
 
         private void expectedEffortTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -47,6 +44,11 @@ namespace WorkBalance.Windows
             {
                 textBox.Text = text;
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            nameTextBox.Focus();
         }  
     }
 }
