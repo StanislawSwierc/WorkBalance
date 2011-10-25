@@ -13,6 +13,21 @@
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="CreateActivity_Executed"/>
     </Window.CommandBindings>
+	<Window.Triggers>
+		<EventTrigger RoutedEvent="Expander.Expanded" SourceName="expander">
+			<EventTrigger.Actions>
+				<BeginStoryboard>
+					<Storyboard>
+						<DoubleAnimation From="0" To="1" Duration="0:0:0.25" Storyboard.TargetName="activityInventory" Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(ScaleTransform.ScaleY)">
+							<DoubleAnimation.EasingFunction>
+								<BounceEase Bounces="2" Bounciness="4" />
+							</DoubleAnimation.EasingFunction>
+						</DoubleAnimation>
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger.Actions>
+		</EventTrigger>
+	</Window.Triggers>
     <Border BorderThickness="2" BorderBrush="Black">
     	<VisualStateManager.VisualStateGroups>
     		<VisualStateGroup x:Name="EnabledStateGroup">
@@ -66,7 +81,7 @@
 			
 			
 			
-			<local:DigitalClock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Time="{Binding Timer.Time, Mode=OneWay}" Foreground="Yellow" InactiveSegmentsBrush="#26000000" GlowColor="#FFFEFE00" Height="60" Width="Auto" Margin="10,5,10,0" />
+			<local:DigitalClock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Time="{Binding Timer.Time, Mode=OneWay}" Foreground="Yellow" InactiveSegmentsBrush="#26000000" GlowColor="#FFFEFE00" Height="60" Width="Auto" Margin="10,5,10,5" />
 			<Border  HorizontalAlignment="Stretch" Grid.Row="0" Padding="1" BorderThickness="0,0,0,1" BorderBrush="Black" Background="{DynamicResource ShineBrush}" Grid.ColumnSpan="2" Grid.Column="0"  d:LayoutOverrides="GridBox" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
 				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >
 					<Button  Height="14" Width="24" Click="Button_Click">
@@ -78,8 +93,12 @@
 				</StackPanel>
 			</Border>
 			<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding CurrentActivity.Name}" Foreground="{DynamicResource TextBrush}" Margin="10,0,10,0"/>
-			<Expander Grid.Row="3" Grid.ColumnSpan="2" Header="Activity Inventory">
-					<local:ActivityInventoryView Height="200"/>
+			<Expander x:Name="expander" Grid.Row="3" Grid.ColumnSpan="2" Header="Activity Inventory">
+					<local:ActivityInventoryView x:Name="activityInventory" Height="200">
+						<local:ActivityInventoryView.LayoutTransform>
+							<ScaleTransform ScaleX="1" ScaleY="0"/>
+						</local:ActivityInventoryView.LayoutTransform>
+					</local:ActivityInventoryView>
 			</Expander>
 			<Rectangle x:Name="rectangle" Grid.ColumnSpan="2" Fill="#7FF4F4F5" Grid.RowSpan="4" Visibility="Collapsed" Opacity="0" />			
 		</Grid>
