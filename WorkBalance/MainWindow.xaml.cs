@@ -14,8 +14,11 @@ using System.Windows.Shapes;
 using WorkBalance.Windows;
 using WorkBalance.ViewModel;
 using WorkBalance.Utilities;
-using GalaSoft.MvvmLight.Messaging;
+
 using System.ComponentModel.Composition;
+using ReactiveUI;
+using System.Reactive.Linq;
+using System.Reactive;
 
 namespace WorkBalance
 {
@@ -25,12 +28,13 @@ namespace WorkBalance
     [Export]
     public partial class MainWindow : Window
     {
-        private readonly IMessenger m_Messenger;
+        [Import]
+        public IMessageBus MessageBus { get; set; }
 
-        [ImportingConstructor]
-        public MainWindow(IMessenger messenger)
+        private IDisposable CreateActivityWindowOpenSubscription;
+
+        public MainWindow()
         {
-            m_Messenger = messenger;
             InitializeComponent();
         }
 
@@ -46,23 +50,34 @@ namespace WorkBalance
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            m_Messenger.Register<Action>(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
+            CreateActivityWindowOpenSubscription = MessageBus.Listen<Action>(Notifications.CreateActivityWindowOpen)
+                .ObserveOnDispatcher()
+                .Subscribe(OpenCreateActivityWindow);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            m_Messenger.Unregister<Action>(this, Notifications.CreateActivityWindowOpen, OpenCreateActivityWindow);
+            if (CreateActivityWindowOpenSubscription != null)
+            {
+                CreateActivityWindowOpenSubscription.Dispose();
+                CreateActivityWindowOpenSubscription = null;
+            }
+
         }
 
         private void OpenCreateActivityWindow(Action callback)
         {
-            var window = new WorkBalance.Windows.CreateActivityWindow();
-            window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
-            window.Owner = this;
-            Action action = () => window.Close();
-            m_Messenger.Register(this, Notifications.CreateActivityWindowClose, action);
-            window.ShowDialog();
-            m_Messenger.Unregister(this, Notifications.CreateActivityWindowClose, action);
+            var window = new WorkBalance.Windows.CreateActivityWindow()
+            {
+                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner,
+                Owner = this
+            };
+            using (MessageBus.Listen<Unit>(Notifications.CreateActivityWindowClose)
+                .ObserveOnDispatcher()
+                .Subscribe(u => window.Close()))
+            {
+                window.ShowDialog();
+            }
             callback();
         }
 

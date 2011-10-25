@@ -12,17 +12,18 @@
   See http://www.galasoft.ch/mvvm
 */
 
-using GalaSoft.MvvmLight;
+
 using WorkBalance.ViewModel;
 using System;
 using System.Linq;
 using WorkBalance.Repositories;
 using System.Reflection;
 using System.Collections.Generic;
-using GalaSoft.MvvmLight.Messaging;
+
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using WorkBalance.Utilities;
+using ReactiveUI;
 
 namespace WorkBalance
 {
@@ -43,7 +44,7 @@ namespace WorkBalance
             var catalog = new DesignTimeCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
             m_Container = new CompositionContainer(catalog);                
 
-            if (ViewModelBase.IsInDesignModeStatic)
+            if (GalaSoft.MvvmLight.ViewModelBase.IsInDesignModeStatic)
             {
                 // Create design time services and viewmodels
             }
@@ -51,7 +52,8 @@ namespace WorkBalance
             {
                 m_Container.ComposeExportedValue<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
             }
-            m_Container.ComposeExportedValue<IMessenger>(new Messenger());
+            m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());
+            
         }
 
         public void Dispose()

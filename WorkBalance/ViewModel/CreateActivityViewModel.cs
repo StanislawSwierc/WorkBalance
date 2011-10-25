@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
+
+
 using WorkBalance.Repositories;
 using System.ComponentModel.Composition;
 using WorkBalance.Domain;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using WorkBalance.Utilities;
+using ReactiveUI;
+using System.Reactive;
 
 namespace WorkBalance.ViewModel
 {
@@ -17,21 +19,21 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class CreateActivityViewModel : ViewModelBase
     {
-        private IActivityRepository m_ActivityRepository;
-        private IActivityTagRepository m_ActivityTagRepository;
+        [Import]
+        public IActivityRepository ActivityRepository;
+
+        [Import]
+        private IActivityTagRepository ActivityTagRepository;
 
         [ImportingConstructor]
-        public CreateActivityViewModel(IMessenger messenger, IActivityRepository activityRepository, IActivityTagRepository activityTagRepository)
-            : base(messenger)
+        public CreateActivityViewModel()
         {
-            m_ActivityRepository = activityRepository;
-            m_ActivityTagRepository = activityTagRepository;
             SaveCommand = new RelayCommand(Save, CanExecuteSave);
             CancelCommand = new RelayCommand(Cancel);
         }
 
         public string Name { get; set; }
-        public int ExpectedEffort { get; set; }
+        public string ExpectedEffort { get; set; }
         public string Tags { get; set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
@@ -44,16 +46,29 @@ namespace WorkBalance.ViewModel
 
         public void Save()
         {
-            string[] tags = string.IsNullOrWhiteSpace(Tags) ? new string[0] :
+            string[] tagNames = string.IsNullOrWhiteSpace(Tags) ? new string[0] :
                 Tags.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Convert tag names to real tags stored in the database
+            var tags = tagNames.Select(name =>
+            {
+                var tag = ActivityTagRepository.Get(t => t.Name == name).SingleOrDefault();
+                if (tag == null)
+                {
+                    tag = new ActivityTag() { Name = name };
+                    ActivityTagRepository.Add(tag);
+                }
+                return tag;
+            }).ToList();
 
             var activity = new Activity();
             activity.Name = Name;
-            activity.ExpectedEffort = ExpectedEffort;
+            activity.ExpectedEffort = int.Parse(ExpectedEffort);
+            activity.Tags = tags;
             
-            m_ActivityRepository.Add(activity);
-            MessengerInstance.Send(Notifications.ActivityCreated, activity);
-            MessengerInstance.Send(Notifications.ActivitySelected, activity);
+            ActivityRepository.Add(activity);
+            MessageBus.SendMessage(activity, Notifications.ActivityCreated);
+            MessageBus.SendMessage(activity, Notifications.ActivitySelected);
             Close();
         }
 
@@ -64,7 +79,7 @@ namespace WorkBalance.ViewModel
 
         private void Close()
         {
-            MessengerInstance.Send<NotificationMessage>(new NotificationMessage(Notifications.CreateActivityWindowClose));
+            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CreateActivityWindowClose);
         }
     }
 }

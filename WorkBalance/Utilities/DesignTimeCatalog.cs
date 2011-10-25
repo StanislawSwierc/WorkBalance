@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.ComponentModel;
-using GalaSoft.MvvmLight;
+
 
 namespace WorkBalance.Utilities
 {
@@ -51,7 +51,7 @@ namespace WorkBalance.Utilities
         public override System.Collections.Generic.IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
         {
             var exports = base.GetExports(definition);
-            if (ViewModelBase.IsInDesignModeStatic)
+            if (GalaSoft.MvvmLight.ViewModelBase.IsInDesignModeStatic)
             {
                 var designExports = exports.Where(export => (export.Item2.Metadata.ContainsKey(DesignTimeExportAttribute.DesignTimeMetadataName) &&
                     ((bool)export.Item2.Metadata[DesignTimeExportAttribute.DesignTimeMetadataName]) == true));

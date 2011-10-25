@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
+
+
 using System.ComponentModel;
 using System.Windows.Data;
 using WorkBalance.Domain;
@@ -12,23 +12,23 @@ using WorkBalance.Utilities;
 using System.ComponentModel.Composition;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight.Command;
+using ReactiveUI;
+using System.Reactive.Linq;
 
 namespace WorkBalance.ViewModel
 {
     [Export]
-    public class ActivityInventoryViewModel: ViewModelBase
+    public class ActivityInventoryViewModel: ViewModelBase, IPartImportsSatisfiedNotification
     {
-        [ImportingConstructor]
-        public ActivityInventoryViewModel(IMessenger messenger, IActivityRepository activityRepository)
-            : base(messenger)
+        [Import]
+        public IActivityRepository ActivityRepository { get; private set; }
+
+        public ActivityInventoryViewModel()
         {
-            m_ActivityRepository = activityRepository;
-            Activities = new ObservableCollection<Activity>(activityRepository.GetActive());
-            MessengerInstance.Register<Activity>(this, Notifications.ActivityCreated, Activities.Add);
+            Activities = new ObservableCollection<Activity>();
             SelectActivityCommand = new RelayCommand<Activity>(SelectActivity);
         }
 
-        IActivityRepository m_ActivityRepository;
         public ObservableCollection<Activity> Activities { get; private set; }
         public RelayCommand<Activity> SelectActivityCommand { get; private set; }
 
@@ -36,7 +36,19 @@ namespace WorkBalance.ViewModel
         {
             if (activity != null)
             {
-                MessengerInstance.Send(Notifications.ActivitySelected, activity);
+                MessageBus.SendMessage(activity, Notifications.ActivitySelected);
+            }
+        }
+
+        public void OnImportsSatisfied()
+        {
+            MessageBus.Listen<Activity>(Notifications.ActivityCreated)
+                .ObserveOnDispatcher()
+                .Subscribe(Activities.Add);
+
+            foreach (var activity in ActivityRepository.GetActive())
+            {
+                Activities.Add(activity);
             }
         }
     }

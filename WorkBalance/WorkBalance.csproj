@@ -55,12 +55,34 @@
     </Reference>
     <Reference Include="Microsoft.Expression.Effects" />
     <Reference Include="Microsoft.Expression.Interactions" />
+    <Reference Include="Microsoft.Reactive.Testing">
+      <HintPath>..\packages\Rx_Experimental-Testing.1.1.11011\lib\Net4-Full\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Reflection">
       <HintPath>..\packages\db4o-devel.8.1.184.15492\lib\net40\Mono.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI">
+      <HintPath>..\packages\reactiveui-core.2.5.0.0\lib\Net4\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Blend">
+      <HintPath>..\packages\reactiveui-xaml.2.5.0.0\lib\Net4\ReactiveUI.Blend.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Testing">
+      <HintPath>..\packages\reactiveui-testing.2.5.0.0\lib\Net4\ReactiveUI.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml">
+      <HintPath>..\packages\reactiveui-xaml.2.5.0.0\lib\Net4\ReactiveUI.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx_Experimental-Main.1.1.11011\lib\Net4\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\packages\Rx_Experimental-Xaml.1.1.11011\lib\Net4\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MvvmLight.3.0.3\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -101,11 +123,11 @@
     <Compile Include="Timer.cs" />
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
-    <Compile Include="Utilities\MessengerExtensions.cs" />
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
     <Compile Include="ViewModel\CreateActivityViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Views\ActivityInventoryView.xaml.cs">
       <DependentUpon>ActivityInventoryView.xaml</DependentUpon>
     </Compile>

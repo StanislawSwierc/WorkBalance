@@ -1,14 +1,19 @@
-using GalaSoft.MvvmLight;
+
 using System;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Messaging;
+
 using System.Diagnostics.Contracts;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using WorkBalance.Utilities;
 using WorkBalance.Domain;
+using ReactiveUI;
+using System.Reactive;
+using System.Reactive.Linq;
+using ReactiveUI.Xaml;
+using System.Reactive.Concurrency;
 
 namespace WorkBalance.ViewModel
 {
@@ -27,48 +32,42 @@ namespace WorkBalance.ViewModel
     /// </para>
     /// </summary>
     [Export]
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IPartImportsSatisfiedNotification
+
     {
-        private bool m_Enabled;
+        [Import]
+        public Timer Timer { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        [ImportingConstructor]
-        public MainViewModel(IMessenger messenger)
-            : base(messenger)
+        public MainViewModel()
         {
-            Contract.Requires(messenger != null);
-
-
-            if (IsInDesignMode)
-            {
-                // Code runs in Blend --> create design time data.
-            }
-            else
-            {
-                //MessengerInstance.Register<PropertyChangedMessage<TimerState>>(this, m => System.Windows.MessageBox.Show(m.NewValue.ToString()));
-            }
-            Timer = new WorkBalance.Timer(MessengerInstance);
             // Translate state change notification and propagate it to the user interface
-            Timer.PropertyChanged += new PropertyChangedEventHandler(
-                CreatePropertyChangedHandler("State", s => RaisePropertyChanged("ToggleTimerActionName")));
-            ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
+
             CreateActivityCommand = new RelayCommand(CreateActivity);
-            m_Enabled = true;
-
-            MessengerInstance.Register<Activity>(this, Notifications.ActivitySelected, HandleActivitySelected);
+            _Enabled = true;
         }
 
-        private void HandleActivitySelected(Activity activity)
+        public void OnImportsSatisfied()
         {
-            if (Timer.State != TimerState.Sprint)
-            {
-                CurrentActivity = activity;
-            }
-        }
+            var canToggleTimerCommand = Observable.CombineLatest(
+                this.WhenAny(x => x.CurrentActivity, e => e.Value),
+                Timer.WhenAny(x => x.State, e => e.Value),
+                (a, s) => (s != TimerState.Ready) || (a != null)
+                );
+            ToggleTimerCommand = new ReactiveCommand(canToggleTimerCommand, DispatcherScheduler.Instance);
+            ToggleTimerCommand.Subscribe(o => Timer.ToggleTimer());
 
-        public Timer Timer { get; private set; }
+            MessageBus.Listen<Activity>(Notifications.ActivitySelected)
+                .Where(a => Timer.State != TimerState.Sprint)
+                .ObserveOnDispatcher()
+                .Subscribe(a => CurrentActivity = a);
+
+            MessageBus.Listen<TimerState>()
+                .ObserveOnDispatcher()
+                .Subscribe(s => this.RaisePropertyChanged(x => x.ToggleTimerActionName));
+        }
 
         public string ToggleTimerActionName
         {
@@ -94,54 +93,27 @@ namespace WorkBalance.ViewModel
             }
         }
 
+        private bool _Enabled;
         public bool Enabled
         {
-            get
-            {
-                return m_Enabled;
-            }
-            set
-            {
-                if (m_Enabled != value)
-                {
-                    m_Enabled = value;
-                    RaisePropertyChanged("Enabled");
-                }
-            }
+            get { return _Enabled; }
+            set { this.RaiseAndSetIfChanged(self => self.Enabled, value); }
         }
 
-        private Activity m_CurrentActivity;
+        private Activity _CurrentActivity;
         public Activity CurrentActivity
         {
-            get { return m_CurrentActivity; }
-            set
-            {
-                if (m_CurrentActivity != value)
-                {
-                    m_CurrentActivity = value;
-                    RaisePropertyChanged("CurrentActivity");
-                }
-            }
+            get { return _CurrentActivity; }
+            set { this.RaiseAndSetIfChanged(self => self.CurrentActivity, value); }
         }
 
         private void CreateActivity()
         {
             Enabled = false;
-            MessengerInstance.Send<Action>(Notifications.CreateActivityWindowOpen, () => Enabled = true);
+            MessageBus.SendMessage<Action>(() => Enabled = true, Notifications.CreateActivityWindowOpen);
         }
 
-        private Action<object, PropertyChangedEventArgs> CreatePropertyChangedHandler(string property, Action<object> handler)
-        {
-            return new Action<object, PropertyChangedEventArgs>(delegate(object sender, PropertyChangedEventArgs e)
-            {
-                if (e.PropertyName == "State")
-                {
-                    handler(sender);
-                }
-            });
-        }
-
-        public RelayCommand ToggleTimerCommand { get; set; }
+        public ReactiveCommand ToggleTimerCommand { get; set; }
         public RelayCommand CreateActivityCommand { get; set; }
     }
 }

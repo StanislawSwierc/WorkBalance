@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GalaSoft.MvvmLight;
+
 using System.Windows.Threading;
-using GalaSoft.MvvmLight.Messaging;
+
+using System.ComponentModel.Composition;
+using WorkBalance.ViewModel;
+using ReactiveUI;
 
 namespace WorkBalance
 {
@@ -16,6 +19,7 @@ namespace WorkBalance
         BreakOverrun
     }
 
+    [Export]
     public class Timer : ViewModelBase
     {
         DispatcherTimer m_Timer;
@@ -24,8 +28,7 @@ namespace WorkBalance
         ITimerState m_InternalState;
         Dictionary<TimerState, ITimerState> m_InternalStates;
 
-        public Timer(IMessenger messenger)
-            :base(messenger)
+        public Timer()
         {
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -44,8 +47,8 @@ namespace WorkBalance
             m_InternalStates.Add(TimerState.Break, new BreakTimerState(this));
             m_InternalStates.Add(TimerState.BreakOverrun, new BreakOverrunTimerState(this));
 
-            m_State = TimerState.Ready;
-            m_InternalState = m_InternalStates[m_State];
+            _State = TimerState.Ready;
+            m_InternalState = m_InternalStates[_State];
             m_InternalState.Activate();
 
             m_Timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
@@ -53,33 +56,27 @@ namespace WorkBalance
             m_Timer.Start();
         }
 
-        private TimeSpan m_Time;
+        private TimeSpan _Time;
         public TimeSpan Time
         {
-            get { return m_Time; }
-            private set
-            {
-                if (value != m_Time)
-                {
-                    m_Time = value;
-                    RaisePropertyChanged("Time");
-                }
-            }
+            get { return _Time; }
+            private set { this.RaiseAndSetIfChanged(x => x.Time, value); }
         }
 
-        private TimerState m_State;
+        private TimerState _State;
         public TimerState State
         {
-            get { return m_State; }
+            get { return _State; }
             private set
             {
-                if (m_State != value)
+                if (_State != value)
                 {
-                    var oldValue = m_State;
-                    m_State = value;
-                    m_InternalState = m_InternalStates[m_State];
+                    var oldValue = _State;
+                    _State = value;
+                    m_InternalState = m_InternalStates[_State];
                     m_InternalState.Activate();
-                    RaisePropertyChanged("State", oldValue, m_State, true);
+                    this.RaisePropertyChanging(self => self.State);
+                    MessageBus.SendMessage<TimerState>(value);
                 }
             }
         }
@@ -112,7 +109,7 @@ namespace WorkBalance
                 m_Timer = timer;
             }
 
-            public virtual  void Activate()
+            public virtual void Activate()
             {
             }
 
@@ -135,7 +132,7 @@ namespace WorkBalance
             public override void Activate()
             {
                 m_Timer.Time = m_Timer.m_SprintDuration;
-            } 
+            }
 
             public override void ToggleTimer()
             {
