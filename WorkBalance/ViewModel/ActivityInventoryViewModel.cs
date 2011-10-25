@@ -11,6 +11,7 @@ using WorkBalance.Repositories;
 using WorkBalance.Utilities;
 using System.ComponentModel.Composition;
 using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight.Command;
 
 namespace WorkBalance.ViewModel
 {
@@ -24,9 +25,19 @@ namespace WorkBalance.ViewModel
             m_ActivityRepository = activityRepository;
             Activities = new ObservableCollection<Activity>(activityRepository.GetActive());
             MessengerInstance.Register<Activity>(this, Notifications.ActivityCreated, Activities.Add);
+            SelectActivityCommand = new RelayCommand<Activity>(SelectActivity);
         }
 
         IActivityRepository m_ActivityRepository;
         public ObservableCollection<Activity> Activities { get; private set; }
+        public RelayCommand<Activity> SelectActivityCommand { get; private set; }
+
+        private void SelectActivity(Activity activity)
+        {
+            if (activity != null)
+            {
+                MessengerInstance.Send(Notifications.ActivitySelected, activity);
+            }
+        }
     }
 }

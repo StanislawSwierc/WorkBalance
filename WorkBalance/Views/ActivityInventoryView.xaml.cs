@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using WorkBalance.ViewModel;
+using WorkBalance.Domain;
 
 namespace WorkBalance
 {
@@ -35,6 +37,16 @@ namespace WorkBalance
             // 	System.Windows.Data.CollectionViewSource myCollectionViewSource = (System.Windows.Data.CollectionViewSource)this.Resources["Resource Key for CollectionViewSource"];
             // 	myCollectionViewSource.Source = your data
             // }
+        }
+
+        private void Button_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var vm = DataContext as ActivityInventoryViewModel;
+            if (vm != null)
+            {
+                var activity = (Activity)activitiesListBox.SelectedItem;
+                vm.SelectActivityCommand.Execute(activity);
+            }
         }
 	}
 }

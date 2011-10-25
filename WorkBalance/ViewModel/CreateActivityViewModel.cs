@@ -9,6 +9,7 @@ using System.ComponentModel.Composition;
 using WorkBalance.Domain;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
+using WorkBalance.Utilities;
 
 namespace WorkBalance.ViewModel
 {
@@ -51,7 +52,8 @@ namespace WorkBalance.ViewModel
             activity.ExpectedEffort = ExpectedEffort;
             
             m_ActivityRepository.Add(activity);
-            MessengerInstance.Send(new NotificationMessage<Activity>(activity, Notifications.ActivityCreated));
+            MessengerInstance.Send(Notifications.ActivityCreated, activity);
+            MessengerInstance.Send(Notifications.ActivitySelected, activity);
             Close();
         }
 

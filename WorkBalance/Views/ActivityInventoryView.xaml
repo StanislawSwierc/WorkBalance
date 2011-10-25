@@ -8,8 +8,7 @@
 	x:Class="WorkBalance.ActivityInventoryView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="200" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="UserControl_Loaded"
-	DataContext="{Binding Source={StaticResource Locator}}"
-	>
+	DataContext="{Binding Source={StaticResource Locator}, Path=ActivityInventory}" MouseDoubleClick="Button_MouseDoubleClick">
 	<UserControl.Resources>
 		<Style x:Key="ColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
 			<Setter Property="Margin" Value="5,1,5,2"/>
@@ -19,7 +18,7 @@
 		</Style>
 	</UserControl.Resources>
 	
-    <Grid x:Name="LayoutRoot" DataContext="{Binding ActivityInventory}">
+    <Grid x:Name="LayoutRoot" >
     	<Grid.RowDefinitions>
     		<RowDefinition Height="Auto"/>
     		<RowDefinition Height="*"/>
@@ -36,15 +35,15 @@
 			</Border>
     		
 		</StackPanel>
-    	<ListBox ItemsSource="{Binding Activities}" Grid.Row="1" >
+    	<ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" >
     		<ListBox.ItemTemplate>
     			<DataTemplate>
-					<StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" TextAlignment="Left" Width="208" Margin="0,0,1,0" />
 						<TextBlock Text="{Binding ExpectedEffort}" Width="25" TextAlignment="Center" />
 						<TextBlock Text="{Binding ActualEffort}" Width="25" Margin="0,0,1,0" TextAlignment="Center" />
 					</StackPanel>
-				</DataTemplate> 		
+                </DataTemplate> 		
 			</ListBox.ItemTemplate>  	
 		</ListBox>
     </Grid>

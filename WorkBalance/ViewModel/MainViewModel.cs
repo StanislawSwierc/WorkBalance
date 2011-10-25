@@ -8,6 +8,7 @@ using System.Diagnostics.Contracts;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using WorkBalance.Utilities;
+using WorkBalance.Domain;
 
 namespace WorkBalance.ViewModel
 {
@@ -35,7 +36,7 @@ namespace WorkBalance.ViewModel
         /// </summary>
         [ImportingConstructor]
         public MainViewModel(IMessenger messenger)
-            :base(messenger)
+            : base(messenger)
         {
             Contract.Requires(messenger != null);
 
@@ -55,13 +56,23 @@ namespace WorkBalance.ViewModel
             ToggleTimerCommand = new RelayCommand(Timer.ToggleTimer);
             CreateActivityCommand = new RelayCommand(CreateActivity);
             m_Enabled = true;
+
+            MessengerInstance.Register<Activity>(this, Notifications.ActivitySelected, HandleActivitySelected);
+        }
+
+        private void HandleActivitySelected(Activity activity)
+        {
+            if (Timer.State != TimerState.Sprint)
+            {
+                CurrentActivity = activity;
+            }
         }
 
         public Timer Timer { get; private set; }
 
         public string ToggleTimerActionName
         {
-            get 
+            get
             {
                 string result = null;
                 switch (Timer.State)
@@ -99,6 +110,20 @@ namespace WorkBalance.ViewModel
             }
         }
 
+        private Activity m_CurrentActivity;
+        public Activity CurrentActivity
+        {
+            get { return m_CurrentActivity; }
+            set
+            {
+                if (m_CurrentActivity != value)
+                {
+                    m_CurrentActivity = value;
+                    RaisePropertyChanged("CurrentActivity");
+                }
+            }
+        }
+
         private void CreateActivity()
         {
             Enabled = false;
@@ -107,7 +132,7 @@ namespace WorkBalance.ViewModel
 
         private Action<object, PropertyChangedEventArgs> CreatePropertyChangedHandler(string property, Action<object> handler)
         {
-            return new Action<object,PropertyChangedEventArgs>(delegate(object sender, PropertyChangedEventArgs e)
+            return new Action<object, PropertyChangedEventArgs>(delegate(object sender, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName == "State")
                 {
