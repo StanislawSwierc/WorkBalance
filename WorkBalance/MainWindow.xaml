@@ -58,10 +58,10 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
-			<StackPanel Grid.Row="1" Grid.Column="1">
-				<Button Grid.Row="1" Grid.Column="1" Content="{Binding ToggleTimerActionName, Mode=OneWay}" Command="{Binding ToggleTimerCommand, Mode=OneTime}" Height="20" Margin="0,2,0,0" />
-				<Button Grid.Row="1" Grid.Column="1" Content="Create Activity"  Height="20" Margin="0,2,0,0" Command="{Binding CreateActivityCommand, Mode=OneTime}"/>	
-				<Button Grid.Row="1" Grid.Column="1" Content="Open Activity Inventory" Height="20" Margin="0,2,0,0" />	
+			<StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5,5,5">
+				<Button Grid.Row="1" Grid.Column="1" Content="{Binding ToggleTimerActionName, Mode=OneWay}" Command="{Binding ToggleTimerCommand, Mode=OneTime}" Height="19" />
+				<Button Grid.Row="1" Grid.Column="1" Content="Activity"  Height="19" Margin="0,2,0,0" Command="{Binding CreateActivityCommand, Mode=OneTime}"/>	
+				<Button Grid.Row="1" Grid.Column="1" Content="Interruption" Height="19" Margin="0,2,0,0" />	
 			</StackPanel>
 			
 			
