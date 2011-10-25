@@ -12,6 +12,8 @@ using GalaSoft.MvvmLight.Command;
 using WorkBalance.Utilities;
 using ReactiveUI;
 using System.Reactive;
+using ReactiveUI.Xaml;
+using System.Reactive.Concurrency;
 
 namespace WorkBalance.ViewModel
 {
@@ -25,17 +27,39 @@ namespace WorkBalance.ViewModel
         [Import]
         private IActivityTagRepository ActivityTagRepository;
 
+
+
+        private string _ExpectedEffort;
+
         [ImportingConstructor]
         public CreateActivityViewModel()
         {
-            SaveCommand = new RelayCommand(Save, CanExecuteSave);
+            int result = 0;
+            var canSave = this.WhenAny(
+                x => x.Name,
+                x => x.ExpectedEffort,
+                (n, e) => !string.IsNullOrWhiteSpace(n.Value) && int.TryParse(e.Value, out result));
+            SaveCommand = new ReactiveCommand(canSave, DispatcherScheduler.Instance);
+            SaveCommand.Subscribe(o => Save());
+
             CancelCommand = new RelayCommand(Cancel);
         }
 
-        public string Name { get; set; }
-        public string ExpectedEffort { get; set; }
+        private string _Name;
+        public string Name
+        {
+            get { return _Name; }
+            set { this.RaiseAndSetIfChanged(x => x.Name, value); }
+        }
+
+        public string ExpectedEffort
+        {
+            get { return _ExpectedEffort; }
+            set { this.RaiseAndSetIfChanged(x => x.ExpectedEffort, value); }
+        }
+
         public string Tags { get; set; }
-        public RelayCommand SaveCommand { get; private set; }
+        public ReactiveCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
         public bool CanExecuteSave()
@@ -65,7 +89,7 @@ namespace WorkBalance.ViewModel
             activity.Name = Name;
             activity.ExpectedEffort = int.Parse(ExpectedEffort);
             activity.Tags = tags;
-            
+
             ActivityRepository.Add(activity);
             MessageBus.SendMessage(activity, Notifications.ActivityCreated);
             MessageBus.SendMessage(activity, Notifications.ActivitySelected);

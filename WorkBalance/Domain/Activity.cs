@@ -41,5 +41,16 @@ namespace WorkBalance.Domain
         /// Gets or sets the collection of associated tags
         /// </summary>
         public ICollection<ActivityTag> Tags { get; set; }
+
+        /// <summary>
+        /// Gets of sets the collection of sprints
+        /// </summary>
+        public ICollection<Sprint> Sprints { get; set; }
+
+        public Activity()
+        {
+            Tags = new List<ActivityTag>();
+            Sprints = new List<Sprint>();
+        }
     }
 }

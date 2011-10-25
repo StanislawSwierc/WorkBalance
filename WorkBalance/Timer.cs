@@ -8,6 +8,13 @@ using System.Windows.Threading;
 using System.ComponentModel.Composition;
 using WorkBalance.ViewModel;
 using ReactiveUI;
+using WorkBalance.Domain;
+using System.Reactive;
+using System.Reactive.Linq;
+using WorkBalance.Repositories;
+using System.Diagnostics.Contracts;
+using ReactiveUI.Xaml;
+using System.Reactive.Concurrency;
 
 namespace WorkBalance
 {
@@ -20,13 +27,21 @@ namespace WorkBalance
     }
 
     [Export]
-    public class Timer : ViewModelBase
+    public class Timer : ViewModelBase, IPartImportsSatisfiedNotification
     {
+        [Import]
+        public IActivityRepository ActivityRepository { get; set; }
+
+        [Import]
+        public ISprintRepository SprintRepository { get; set; }
+
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
         TimeSpan m_BreakDuration;
         ITimerState m_InternalState;
         Dictionary<TimerState, ITimerState> m_InternalStates;
+
+        public ReactiveCommand ToggleTimerCommand { get; set; }
 
         public Timer()
         {
@@ -49,11 +64,27 @@ namespace WorkBalance
 
             _State = TimerState.Ready;
             m_InternalState = m_InternalStates[_State];
-            m_InternalState.Activate();
+            m_InternalState.OnEnter();
 
             m_Timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
-            m_Timer.Tick += HandleTick;
+            m_Timer.Tick += (s,e) => m_InternalState.HandleSecondElapsed();
             m_Timer.Start();
+        }
+
+        public void OnImportsSatisfied()
+        {
+            MessageBus.Listen<Activity>(Notifications.ActivitySelected)
+                .Where(a => this.State != TimerState.Sprint)
+                .ObserveOnDispatcher()
+                .Subscribe(a => CurrentActivity = a);
+
+            var canToggleTimerCommand = this.WhenAny(
+                x => x.State, 
+                x => x.CurrentActivity,
+                (state, activity) => !(state.Value == TimerState.Ready && activity.Value == null));
+
+            ToggleTimerCommand = new ReactiveCommand(canToggleTimerCommand, DispatcherScheduler.Instance);
+            ToggleTimerCommand.Subscribe(o => m_InternalState.ToggleTimer());
         }
 
         private TimeSpan _Time;
@@ -61,6 +92,18 @@ namespace WorkBalance
         {
             get { return _Time; }
             private set { this.RaiseAndSetIfChanged(x => x.Time, value); }
+        }
+
+        public string ToggleTimerActionName
+        {
+            get { return m_InternalState.ToggleTimerActionName; }
+        }
+
+        private Activity _CurrentActivity;
+        public Activity CurrentActivity
+        {
+            get { return _CurrentActivity; }
+            set { this.RaiseAndSetIfChanged(self => self.CurrentActivity, value); }
         }
 
         private TimerState _State;
@@ -71,33 +114,25 @@ namespace WorkBalance
             {
                 if (_State != value)
                 {
-                    var oldValue = _State;
+                    m_InternalState.OnLeave();
                     _State = value;
                     m_InternalState = m_InternalStates[_State];
-                    m_InternalState.Activate();
-                    this.RaisePropertyChanging(self => self.State);
-                    MessageBus.SendMessage<TimerState>(value);
+                    m_InternalState.OnEnter();
+                    this.RaisePropertyChanged(self => self.State);
+                    this.RaisePropertyChanged(self => self.ToggleTimerActionName);
                 }
             }
-        }
-
-        private void HandleTick(object sender, EventArgs e)
-        {
-            m_InternalState.HandleSecondElapsed();
-        }
-
-        public void ToggleTimer()
-        {
-            m_InternalState.ToggleTimer();
         }
 
         #region Internal Types
 
         internal interface ITimerState
         {
-            void Activate();
+            void OnEnter();
+            void OnLeave();
             void HandleSecondElapsed();
             void ToggleTimer();
+            string ToggleTimerActionName { get; }
         }
 
         internal abstract class TimerStateBase : ITimerState
@@ -109,7 +144,11 @@ namespace WorkBalance
                 m_Timer = timer;
             }
 
-            public virtual void Activate()
+            public virtual void OnEnter()
+            {
+            }
+
+            public virtual void OnLeave()
             {
             }
 
@@ -120,6 +159,12 @@ namespace WorkBalance
             public virtual void ToggleTimer()
             {
             }
+
+
+            public abstract string ToggleTimerActionName
+            {
+                get;
+            }
         }
 
         internal class ReadyTimerState : TimerStateBase
@@ -129,7 +174,7 @@ namespace WorkBalance
             {
             }
 
-            public override void Activate()
+            public override void OnEnter()
             {
                 m_Timer.Time = m_Timer.m_SprintDuration;
             }
@@ -137,6 +182,11 @@ namespace WorkBalance
             public override void ToggleTimer()
             {
                 m_Timer.State = TimerState.Sprint;
+            }
+
+            public override string ToggleTimerActionName
+            {
+                get { return "Start Sprint"; }
             }
         }
 
@@ -160,6 +210,26 @@ namespace WorkBalance
             {
                 m_Timer.State = TimerState.Ready;
             }
+
+            public override string ToggleTimerActionName
+            {
+                get { return "Abort Sprint"; }
+            }
+
+            public override void OnEnter()
+            {
+                var sprint = new Sprint(m_Timer.CurrentActivity);
+                m_Timer.CurrentActivity.Sprints.Add(sprint);
+                m_Timer.SprintRepository.Add(sprint);
+                m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
+            }
+
+            public override void OnLeave()
+            {
+                var sprint = m_Timer.CurrentActivity.Sprints.Last();
+                sprint.EndTime = DateTime.Now;
+                m_Timer.SprintRepository.Update(sprint);
+            }
         }
 
         internal class BreakTimerState : TimerStateBase
@@ -182,6 +252,11 @@ namespace WorkBalance
             {
                 m_Timer.State = TimerState.Ready;
             }
+
+            public override string ToggleTimerActionName
+            {
+                get { return "Abort Break"; }
+            }
         }
 
         internal class BreakOverrunTimerState : TimerStateBase
@@ -199,6 +274,11 @@ namespace WorkBalance
             public override void ToggleTimer()
             {
                 m_Timer.State = TimerState.Ready;
+            }
+
+            public override string ToggleTimerActionName
+            {
+                get { return "Stop Break"; }
             }
         }
 

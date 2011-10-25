@@ -15,6 +15,9 @@ namespace WorkBalance.Domain
         public Sprint(Activity activity)
         {
             Activity = activity;
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
+            Interruptions = new List<InterruptionRecord>();
         }
     }
 }

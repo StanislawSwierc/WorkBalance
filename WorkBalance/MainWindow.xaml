@@ -18,9 +18,9 @@
 			<EventTrigger.Actions>
 				<BeginStoryboard>
 					<Storyboard>
-						<DoubleAnimation From="0" To="1" Duration="0:0:0.25" Storyboard.TargetName="activityInventory" Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(ScaleTransform.ScaleY)">
+						<DoubleAnimation From="0" To="1" Duration="0:0:1" Storyboard.TargetName="activityInventory" Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(ScaleTransform.ScaleY)">
 							<DoubleAnimation.EasingFunction>
-								<BounceEase Bounces="2" Bounciness="4" />
+								<BounceEase Bounces="3" />
 							</DoubleAnimation.EasingFunction>
 						</DoubleAnimation>
 					</Storyboard>
@@ -74,7 +74,7 @@
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 			<StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5,5,5">
-				<Button Grid.Row="1" Grid.Column="1" Content="{Binding ToggleTimerActionName, Mode=OneWay}" Command="{Binding ToggleTimerCommand, Mode=OneTime}" Height="19" />
+				<Button Grid.Row="1" Grid.Column="1" Content="{Binding Timer.ToggleTimerActionName, Mode=OneWay}" Command="{Binding Timer.ToggleTimerCommand}" Height="19" />
 				<Button Grid.Row="1" Grid.Column="1" Content="Activity"  Height="19" Margin="0,2,0,0" Command="{Binding CreateActivityCommand, Mode=OneTime}"/>	
 				<Button Grid.Row="1" Grid.Column="1" Content="Interruption" Height="19" Margin="0,2,0,0" />	
 			</StackPanel>
@@ -92,7 +92,7 @@
 					</Button>
 				</StackPanel>
 			</Border>
-			<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding CurrentActivity.Name}" Foreground="{DynamicResource TextBrush}" Margin="10,0,10,0"/>
+			<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Timer.CurrentActivity.Name}" Foreground="{DynamicResource TextBrush}" Margin="10,0,10,0"/>
 			<Expander x:Name="expander" Grid.Row="3" Grid.ColumnSpan="2" Header="Activity Inventory">
 					<local:ActivityInventoryView x:Name="activityInventory" Height="200">
 						<local:ActivityInventoryView.LayoutTransform>
