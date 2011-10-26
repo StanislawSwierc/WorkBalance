@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WorkBalance.Aspects;
 
 namespace WorkBalance.Domain
 {
+    [NotifyPropertyChanged]
     public class Activity
     {
         /// <summary>

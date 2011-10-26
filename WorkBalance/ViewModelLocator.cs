@@ -50,6 +50,7 @@ namespace WorkBalance
             }
             else
             {
+                Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
                 m_Container.ComposeExportedValue<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
             }
             m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());

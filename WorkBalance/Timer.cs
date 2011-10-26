@@ -62,13 +62,12 @@ namespace WorkBalance
             m_InternalStates.Add(TimerState.Break, new BreakTimerState(this));
             m_InternalStates.Add(TimerState.BreakOverrun, new BreakOverrunTimerState(this));
 
+            m_Timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
+            m_Timer.Tick += (s, e) => m_InternalState.HandleSecondElapsed();
+
             _State = TimerState.Ready;
             m_InternalState = m_InternalStates[_State];
             m_InternalState.OnEnter();
-
-            m_Timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) };
-            m_Timer.Tick += (s,e) => m_InternalState.HandleSecondElapsed();
-            m_Timer.Start();
         }
 
         public void OnImportsSatisfied()
@@ -177,6 +176,7 @@ namespace WorkBalance
             public override void OnEnter()
             {
                 m_Timer.Time = m_Timer.m_SprintDuration;
+                m_Timer.m_Timer.Stop();
             }
 
             public override void ToggleTimer()
@@ -218,6 +218,7 @@ namespace WorkBalance
 
             public override void OnEnter()
             {
+                m_Timer.m_Timer.Start();
                 var sprint = new Sprint(m_Timer.CurrentActivity);
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
                 m_Timer.SprintRepository.Add(sprint);
@@ -228,6 +229,11 @@ namespace WorkBalance
             {
                 var sprint = m_Timer.CurrentActivity.Sprints.Last();
                 sprint.EndTime = DateTime.Now;
+                if ((sprint.EndTime - sprint.StartTime) >= m_Timer.m_SprintDuration)
+                {
+                    m_Timer.CurrentActivity.ActualEffort++;
+                    m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
+                }
                 m_Timer.SprintRepository.Update(sprint);
             }
         }
