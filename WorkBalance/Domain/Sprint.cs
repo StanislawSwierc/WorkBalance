@@ -12,6 +12,11 @@ namespace WorkBalance.Domain
         public DateTime EndTime { get; set; }
         public ICollection<InterruptionRecord> Interruptions { get; set; }
 
+        /// <summary>
+        /// Gets the duration of the sprint
+        /// </summary>
+        public TimeSpan Duration { get { return EndTime - StartTime; } }
+
         public Sprint(Activity activity)
         {
             Activity = activity;

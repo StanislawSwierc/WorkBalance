@@ -229,8 +229,10 @@ namespace WorkBalance
             {
                 var sprint = m_Timer.CurrentActivity.Sprints.Last();
                 sprint.EndTime = DateTime.Now;
-                if ((sprint.EndTime - sprint.StartTime) >= m_Timer.m_SprintDuration)
+                // If the sprint was full-length
+                if (sprint.Duration >= m_Timer.m_SprintDuration)
                 {
+                    // Record sprint as actual effort
                     m_Timer.CurrentActivity.ActualEffort++;
                     m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
                 }
