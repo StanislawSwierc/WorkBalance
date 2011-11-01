@@ -123,6 +123,7 @@ namespace WorkBalance
                     m_InternalState.OnEnter();
                     this.RaisePropertyChanged(self => self.State);
                     this.RaisePropertyChanged(self => self.ToggleTimerActionName);
+                    this.MessageBus.SendMessage<TimerState>(_State);
                 }
             }
         }

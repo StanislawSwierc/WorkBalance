@@ -3,7 +3,7 @@ using System;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
 using System.Windows.Input;
-
+using System.Linq;
 using System.Diagnostics.Contracts;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -15,6 +15,9 @@ using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using System.Reactive.Concurrency;
 using WorkBalance.Repositories;
+using WorkBalance.Contracts;
+using System.Collections.Generic;
+using System.Reactive.Disposables;
 
 namespace WorkBalance.ViewModel
 {
@@ -39,6 +42,10 @@ namespace WorkBalance.ViewModel
         [Import]
         public Timer Timer { get; set; }
 
+        [ImportMany]
+        public IEnumerable<IObserver<TimerState>> TimerStateObservers { get; set; }
+        private IDisposable _TimerStateObserversSubsription;
+
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -53,8 +60,8 @@ namespace WorkBalance.ViewModel
 
         public void OnImportsSatisfied()
         {
-
-
+            var source = MessageBus.Listen<TimerState>();
+            _TimerStateObserversSubsription = new CompositeDisposable(TimerStateObservers.Select(o => source.ObserveOnDispatcher().Subscribe(o)));
         }
 
         private bool _Enabled;
