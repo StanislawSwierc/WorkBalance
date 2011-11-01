@@ -71,7 +71,7 @@ namespace WorkBalance.ViewModel
         public void Save()
         {
             string[] tagNames = string.IsNullOrWhiteSpace(Tags) ? new string[0] :
-                Tags.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                Tags.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Convert tag names to real tags stored in the database
             var tags = tagNames.Select(name =>
