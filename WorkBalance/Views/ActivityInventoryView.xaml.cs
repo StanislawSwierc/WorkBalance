@@ -48,5 +48,26 @@ namespace WorkBalance
                 vm.SelectActivityCommand.Execute(activity);
             }
         }
+
+        private void DeleteActivity_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ActivityInventoryViewModel;
+            if (vm != null)
+            {
+                var activity = (Activity)activitiesListBox.SelectedItem;
+                vm.DeleteActivityCommand.Execute(activity);
+            }
+        }
+
+        private void ArchiveActivity_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ActivityInventoryViewModel;
+            if (vm != null)
+            {
+                var activity = (Activity)activitiesListBox.SelectedItem;
+                vm.ArchiveActivityCommand.Execute(activity);
+            }
+        }
+        
 	}
 }

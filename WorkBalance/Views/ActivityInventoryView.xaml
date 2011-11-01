@@ -33,9 +33,14 @@
     		<Border Width="25" BorderBrush="Black" BorderThickness="0,0,1,0" >
 				<TextBlock Text="A"  Style="{DynamicResource ColumnTextBlockStyle}" />
 			</Border>
-    		
 		</StackPanel>
-    	<ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" >
+        <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" >
+        	<ListBox.ContextMenu>
+        		<ContextMenu>
+                    <MenuItem Header="Delete" Click="DeleteActivity_Click" />
+                    <MenuItem Header="Archive" Click="ArchiveActivity_Click" />
+                </ContextMenu>
+        	</ListBox.ContextMenu>
     		<ListBox.ItemTemplate>
     			<DataTemplate>
                     <StackPanel Orientation="Horizontal">

@@ -27,10 +27,14 @@ namespace WorkBalance.ViewModel
         {
             Activities = new ObservableCollection<Activity>();
             SelectActivityCommand = new RelayCommand<Activity>(SelectActivity);
+            DeleteActivityCommand = new RelayCommand<Activity>(DeleteActivity);
+            ArchiveActivityCommand = new RelayCommand<Activity>(ArchiveActivity);
         }
 
         public ObservableCollection<Activity> Activities { get; private set; }
         public RelayCommand<Activity> SelectActivityCommand { get; private set; }
+        public RelayCommand<Activity> DeleteActivityCommand { get; private set; }
+        public RelayCommand<Activity> ArchiveActivityCommand { get; private set; }
 
         private void SelectActivity(Activity activity)
         {
@@ -39,6 +43,28 @@ namespace WorkBalance.ViewModel
                 MessageBus.SendMessage(activity, Notifications.ActivitySelected);
             }
         }
+
+        private void DeleteActivity(Activity activity)
+        {
+            // TODO: Remove this check
+            if (activity != null)
+            {
+                Activities.Remove(activity);
+                ActivityRepository.Delete(activity);
+            }
+        }
+
+        private void ArchiveActivity(Activity activity)
+        {
+            // TODO: Remove this check
+            if (activity != null)
+            {
+                Activities.Remove(activity);
+                activity.Archived = true;
+                ActivityRepository.Update(activity);
+            }
+        }
+
 
         public void OnImportsSatisfied()
         {
