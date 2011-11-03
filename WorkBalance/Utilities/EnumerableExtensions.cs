@@ -14,5 +14,15 @@ namespace WorkBalance.Utilities
                 action(item);
             }
         }
+
+        public static bool IsNullOrEmpty<T>(IEnumerable<T> enumerable)
+        {
+            return enumerable == null || enumerable.Count() == 0;
+        }
+
+        public static bool IsNullOrEmpty<T>(ICollection<T> enumerable)
+        {
+            return enumerable == null || enumerable.Count == 0;
+        }
     }
 }

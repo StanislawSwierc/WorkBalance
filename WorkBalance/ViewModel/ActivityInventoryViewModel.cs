@@ -29,9 +29,10 @@ namespace WorkBalance.ViewModel
         public ActivityInventoryViewModel()
         {
             Activities = new ObservableCollection<Activity>();
-            SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), SelectedActivitiesNotEmpty);
-            DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), SelectedActivitiesNotEmpty);
-            ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), SelectedActivitiesNotEmpty);
+            var selectedActivitiesNotEmpty = new Func<bool>(() => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities));
+            SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), selectedActivitiesNotEmpty);
+            DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), selectedActivitiesNotEmpty);
+            ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectedActivitiesNotEmpty);
         }
 
         public IList<Activity> SelectedActivities { get; set; }
@@ -39,11 +40,6 @@ namespace WorkBalance.ViewModel
         public RelayCommand SelectActivityCommand { get; private set; }
         public RelayCommand DeleteActivityCommand { get; private set; }
         public RelayCommand ArchiveActivityCommand { get; private set; }
-
-        private bool SelectedActivitiesNotEmpty()
-        {
-            return SelectedActivities != null && SelectedActivities.Count > 0;
-        }
 
         private void SelectActivity(Activity activity)
         {
@@ -87,7 +83,7 @@ namespace WorkBalance.ViewModel
 
             MessageBus.Listen<Unit>(Notifications.CopyActivitiesToClipboard)
                 .ObserveOnDispatcher()
-                .Where(u => SelectedActivitiesNotEmpty())
+                .Where(u => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities))
                 .Subscribe((u) => CopyActivitiesToClipboard(SelectedActivities));
 
             ActivityRepository.GetActive().ForEach(Activities.Add);
