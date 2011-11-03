@@ -4,19 +4,25 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WorkBalance" 
+	xmlns:my="clr-namespace:WorkBalance.Domain" xmlns:WorkBalance_Converters="clr-namespace:WorkBalance.Converters" 
 	mc:Ignorable="d"
 	x:Class="WorkBalance.ActivityInventoryView"
 	x:Name="UserControl"
-	d:DesignWidth="640" d:DesignHeight="200" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="UserControl_Loaded"
-	DataContext="{Binding Source={StaticResource Locator}, Path=ActivityInventory}" MouseDoubleClick="Button_MouseDoubleClick">
+	d:DesignWidth="640" d:DesignHeight="200" Loaded="UserControl_Loaded"
+	MouseDoubleClick="Button_MouseDoubleClick">
 	<UserControl.Resources>
+		<WorkBalance_Converters:TagsToTextConverter x:Key="TagsToTextConverter"/>
 		<Style x:Key="ColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
 			<Setter Property="Margin" Value="5,1,5,2"/>
 			<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="TextAlignment" Value="Center"/>
 		</Style>
-	</UserControl.Resources>
+    </UserControl.Resources>
+	
+	<UserControl.DataContext>
+		<Binding Path="ActivityInventory" Source="{StaticResource Locator}"/>
+	</UserControl.DataContext>
 	
     <Grid x:Name="LayoutRoot" >
     	<Grid.RowDefinitions>
@@ -36,18 +42,41 @@
 		</StackPanel>
         <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" >
         	<ListBox.ContextMenu>
-        		<ContextMenu>
+        		<ContextMenu Background="{DynamicResource NormalBrush}">
                     <MenuItem Header="Delete" Click="DeleteActivity_Click" />
                     <MenuItem Header="Archive" Click="ArchiveActivity_Click" />
                 </ContextMenu>
         	</ListBox.ContextMenu>
     		<ListBox.ItemTemplate>
     			<DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding Name}" TextAlignment="Left" Width="208" Margin="0,0,1,0" />
-						<TextBlock Text="{Binding ExpectedEffort}" Width="25" TextAlignment="Center" />
-						<TextBlock Text="{Binding ActualEffort}" Width="25" Margin="0,0,1,0" TextAlignment="Center" />
-					</StackPanel>
+    				<Grid Width="260" Background="#00000000" >
+    					<Grid.ColumnDefinitions>
+    						<ColumnDefinition Width="*"/>
+    						<ColumnDefinition Width="25" />
+    						<ColumnDefinition Width="25" />
+    					</Grid.ColumnDefinitions>
+    					<Grid.RowDefinitions>
+    						<RowDefinition/>
+    						<RowDefinition/>
+    					</Grid.RowDefinitions>
+    					<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name}" TextAlignment="Left" Margin="0,0,1,0" />
+    					<TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ExpectedEffort}" TextAlignment="Center" />
+    					<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding ActualEffort}" Margin="0,0,1,0" TextAlignment="Center" />
+						<ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Tags, Mode=OneWay}" >
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Border CornerRadius="2" Background="{DynamicResource DisabledBackgroundBrush}" Margin="0,0,4,0" Padding="2,0">
+										<TextBlock Text="{Binding Name}" />
+									</Border>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Horizontal"/>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+						</ItemsControl>
+    				</Grid>
                 </DataTemplate> 		
 			</ListBox.ItemTemplate>  	
 		</ListBox>
