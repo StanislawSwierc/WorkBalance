@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -67,6 +68,25 @@ namespace WorkBalance
                 var activity = (Activity)activitiesListBox.SelectedItem;
                 vm.ArchiveActivityCommand.Execute(activity);
             }
+        }
+
+        private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (activitiesListBox.SelectedItems.Count >= 0)
+            {
+                var text = activitiesListBox.SelectedItems.OfType<Activity>().Aggregate(
+                    new StringBuilder(),
+                    (sb, a) => 
+                    {
+                        sb.AppendLine(string.Format("{0}\t{1}\t{2}", a.Name, a.ExpectedEffort, a.ActualEffort));
+                        sb.AppendLine(string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()));
+                        return sb; 
+                    },
+                    sb => sb.ToString());
+                
+                System.Windows.Clipboard.SetText(text, TextDataFormat.Text);
+            }
+
         }
         
 	}

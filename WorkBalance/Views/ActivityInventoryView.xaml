@@ -4,14 +4,13 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WorkBalance" 
-	xmlns:my="clr-namespace:WorkBalance.Domain" xmlns:WorkBalance_Converters="clr-namespace:WorkBalance.Converters" 
+	xmlns:my="clr-namespace:WorkBalance.Domain"
 	mc:Ignorable="d"
 	x:Class="WorkBalance.ActivityInventoryView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="200" Loaded="UserControl_Loaded"
 	MouseDoubleClick="Button_MouseDoubleClick">
 	<UserControl.Resources>
-		<WorkBalance_Converters:TagsToTextConverter x:Key="TagsToTextConverter"/>
 		<Style x:Key="ColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
 			<Setter Property="Margin" Value="5,1,5,2"/>
 			<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
@@ -19,6 +18,9 @@
 			<Setter Property="TextAlignment" Value="Center"/>
 		</Style>
     </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="Copy" Executed="Copy_Executed"/>
+    </UserControl.CommandBindings>
 	
 	<UserControl.DataContext>
 		<Binding Path="ActivityInventory" Source="{StaticResource Locator}"/>
@@ -40,7 +42,7 @@
 				<TextBlock Text="A"  Style="{DynamicResource ColumnTextBlockStyle}" />
 			</Border>
 		</StackPanel>
-        <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" >
+        <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" SelectionMode="Extended">
         	<ListBox.ContextMenu>
         		<ContextMenu Background="{DynamicResource NormalBrush}">
                     <MenuItem Header="Delete" Click="DeleteActivity_Click" />
