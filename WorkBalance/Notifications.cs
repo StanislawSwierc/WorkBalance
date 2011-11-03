@@ -11,6 +11,7 @@ namespace WorkBalance
         public const string ActivitySelected = "ActivitySelected";
         public const string CreateActivityWindowClose = "CreateActivityWindowClose";
         public const string CreateActivityWindowOpen = "CreateActivityWindowOpen";
+        public const string CopyActivitiesToClipboard = "CopyActivitiesToClipboard";
         
     }
 }

@@ -18,9 +18,6 @@
 			<Setter Property="TextAlignment" Value="Center"/>
 		</Style>
     </UserControl.Resources>
-    <UserControl.CommandBindings>
-        <CommandBinding Command="Copy" Executed="Copy_Executed"/>
-    </UserControl.CommandBindings>
 	
 	<UserControl.DataContext>
 		<Binding Path="ActivityInventory" Source="{StaticResource Locator}"/>

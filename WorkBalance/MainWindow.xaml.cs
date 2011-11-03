@@ -94,5 +94,10 @@ namespace WorkBalance
                 vm.CreateActivityCommand.Execute(this);
             }
         }
+
+        private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CopyActivitiesToClipboard);
+        }
     }
 }

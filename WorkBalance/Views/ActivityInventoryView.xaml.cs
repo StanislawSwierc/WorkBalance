@@ -57,25 +57,6 @@ namespace WorkBalance
             _vm.ArchiveActivityCommand.Execute(null);
         }
 
-        private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (activitiesListBox.SelectedItems.Count >= 0)
-            {
-                var text = activitiesListBox.SelectedItems.OfType<Activity>().Aggregate(
-                    new StringBuilder(),
-                    (sb, a) =>
-                    {
-                        sb.AppendLine(string.Format("{0}\t{1}\t{2}", a.Name, a.ExpectedEffort, a.ActualEffort));
-                        sb.AppendLine(string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()));
-                        return sb;
-                    },
-                    sb => sb.ToString());
-
-                System.Windows.Clipboard.SetText(text, TextDataFormat.Text);
-            }
-
-        }
-
         private void activitiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // It would be better if two lists were compare against each other but that should also work.

@@ -16,11 +16,12 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Collections;
 using WorkBalance.Utilities;
+using System.Reactive;
 
 namespace WorkBalance.ViewModel
 {
     [Export]
-    public class ActivityInventoryViewModel: ViewModelBase, IPartImportsSatisfiedNotification
+    public class ActivityInventoryViewModel : ViewModelBase, IPartImportsSatisfiedNotification
     {
         [Import]
         public IActivityRepository ActivityRepository { get; private set; }
@@ -28,17 +29,21 @@ namespace WorkBalance.ViewModel
         public ActivityInventoryViewModel()
         {
             Activities = new ObservableCollection<Activity>();
-            var selectionNotEmpty = new Func<bool>(() => SelectedActivities != null && SelectedActivities.Count > 0);
-            SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), selectionNotEmpty);
-            DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), selectionNotEmpty);
-            ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectionNotEmpty);
+            SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), SelectedActivitiesNotEmpty);
+            DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), SelectedActivitiesNotEmpty);
+            ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), SelectedActivitiesNotEmpty);
         }
 
-        public IList<Activity> SelectedActivities { get; set; } 
+        public IList<Activity> SelectedActivities { get; set; }
         public ObservableCollection<Activity> Activities { get; private set; }
         public RelayCommand SelectActivityCommand { get; private set; }
         public RelayCommand DeleteActivityCommand { get; private set; }
         public RelayCommand ArchiveActivityCommand { get; private set; }
+
+        private bool SelectedActivitiesNotEmpty()
+        {
+            return SelectedActivities != null && SelectedActivities.Count > 0;
+        }
 
         private void SelectActivity(Activity activity)
         {
@@ -48,7 +53,7 @@ namespace WorkBalance.ViewModel
         private void DeleteActivity(Activity activity)
         {
             Activities.Remove(activity);
-            ActivityRepository.Delete(activity);    
+            ActivityRepository.Delete(activity);
         }
 
         private void ArchiveActivity(Activity activity)
@@ -58,12 +63,32 @@ namespace WorkBalance.ViewModel
             ActivityRepository.Update(activity);
         }
 
+        private void CopyActivitiesToClipboard(IEnumerable<Activity> activities)
+        {
+            var text = activities.Aggregate(
+                   new StringBuilder(),
+                   (sb, a) =>
+                   {
+                       sb.AppendLine(string.Format("{0}\t{1}\t{2}", a.Name, a.ExpectedEffort, a.ActualEffort));
+                       sb.AppendLine(string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()));
+                       return sb;
+                   },
+                   sb => sb.ToString());
+
+            System.Windows.Clipboard.SetText(text, System.Windows.TextDataFormat.Text);
+        }
+
 
         public void OnImportsSatisfied()
         {
             MessageBus.Listen<Activity>(Notifications.ActivityCreated)
                 .ObserveOnDispatcher()
                 .Subscribe(Activities.Add);
+
+            MessageBus.Listen<Unit>(Notifications.CopyActivitiesToClipboard)
+                .ObserveOnDispatcher()
+                .Where(u => SelectedActivitiesNotEmpty())
+                .Subscribe((u) => CopyActivitiesToClipboard(SelectedActivities));
 
             ActivityRepository.GetActive().ForEach(Activities.Add);
         }
