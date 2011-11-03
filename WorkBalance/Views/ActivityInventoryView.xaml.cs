@@ -17,20 +17,22 @@ using WorkBalance.Domain;
 
 namespace WorkBalance
 {
-	/// <summary>
-	/// Interaction logic for ActivityInventoryView.xaml
-	/// </summary>
-	public partial class ActivityInventoryView : UserControl
-	{
-		public ActivityInventoryView()
-		{
+    /// <summary>
+    /// Interaction logic for ActivityInventoryView.xaml
+    /// </summary>
+    public partial class ActivityInventoryView : UserControl
+    {
+        private ActivityInventoryViewModel _vm;
+
+        public ActivityInventoryView()
+        {
             App.LoadStaticResources(this);
-			this.InitializeComponent();
-		}
+            this.InitializeComponent();
+        }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
+            _vm = (ActivityInventoryViewModel)this.DataContext;
             // Do not load your data at design time.
             // if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             // {
@@ -42,32 +44,17 @@ namespace WorkBalance
 
         private void Button_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var vm = DataContext as ActivityInventoryViewModel;
-            if (vm != null)
-            {
-                var activity = (Activity)activitiesListBox.SelectedItem;
-                vm.SelectActivityCommand.Execute(activity);
-            }
+            _vm.SelectActivityCommand.Execute(null);
         }
 
         private void DeleteActivity_Click(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as ActivityInventoryViewModel;
-            if (vm != null)
-            {
-                var activity = (Activity)activitiesListBox.SelectedItem;
-                vm.DeleteActivityCommand.Execute(activity);
-            }
+            _vm.DeleteActivityCommand.Execute(null);
         }
 
         private void ArchiveActivity_Click(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as ActivityInventoryViewModel;
-            if (vm != null)
-            {
-                var activity = (Activity)activitiesListBox.SelectedItem;
-                vm.ArchiveActivityCommand.Execute(activity);
-            }
+            _vm.ArchiveActivityCommand.Execute(null);
         }
 
         private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -76,18 +63,24 @@ namespace WorkBalance
             {
                 var text = activitiesListBox.SelectedItems.OfType<Activity>().Aggregate(
                     new StringBuilder(),
-                    (sb, a) => 
+                    (sb, a) =>
                     {
                         sb.AppendLine(string.Format("{0}\t{1}\t{2}", a.Name, a.ExpectedEffort, a.ActualEffort));
                         sb.AppendLine(string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()));
-                        return sb; 
+                        return sb;
                     },
                     sb => sb.ToString());
-                
+
                 System.Windows.Clipboard.SetText(text, TextDataFormat.Text);
             }
 
         }
-        
-	}
+
+        private void activitiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // It would be better if two lists were compare against each other but that should also work.
+            _vm.SelectedActivities = activitiesListBox.SelectedItems.Cast<Activity>().ToList();
+        }
+
+    }
 }

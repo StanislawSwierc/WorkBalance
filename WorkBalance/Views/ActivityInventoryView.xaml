@@ -42,7 +42,7 @@
 				<TextBlock Text="A"  Style="{DynamicResource ColumnTextBlockStyle}" />
 			</Border>
 		</StackPanel>
-        <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" SelectionMode="Extended">
+        <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" SelectionMode="Extended" SelectionChanged="activitiesListBox_SelectionChanged">
         	<ListBox.ContextMenu>
         		<ContextMenu Background="{DynamicResource NormalBrush}">
                     <MenuItem Header="Delete" Click="DeleteActivity_Click" />

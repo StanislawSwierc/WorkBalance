@@ -14,6 +14,8 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight.Command;
 using ReactiveUI;
 using System.Reactive.Linq;
+using System.Collections;
+using WorkBalance.Utilities;
 
 namespace WorkBalance.ViewModel
 {
@@ -26,43 +28,34 @@ namespace WorkBalance.ViewModel
         public ActivityInventoryViewModel()
         {
             Activities = new ObservableCollection<Activity>();
-            SelectActivityCommand = new RelayCommand<Activity>(SelectActivity);
-            DeleteActivityCommand = new RelayCommand<Activity>(DeleteActivity);
-            ArchiveActivityCommand = new RelayCommand<Activity>(ArchiveActivity);
+            var selectionNotEmpty = new Func<bool>(() => SelectedActivities != null && SelectedActivities.Count > 0);
+            SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), selectionNotEmpty);
+            DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), selectionNotEmpty);
+            ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectionNotEmpty);
         }
 
+        public IList<Activity> SelectedActivities { get; set; } 
         public ObservableCollection<Activity> Activities { get; private set; }
-        public RelayCommand<Activity> SelectActivityCommand { get; private set; }
-        public RelayCommand<Activity> DeleteActivityCommand { get; private set; }
-        public RelayCommand<Activity> ArchiveActivityCommand { get; private set; }
+        public RelayCommand SelectActivityCommand { get; private set; }
+        public RelayCommand DeleteActivityCommand { get; private set; }
+        public RelayCommand ArchiveActivityCommand { get; private set; }
 
         private void SelectActivity(Activity activity)
         {
-            if (activity != null)
-            {
-                MessageBus.SendMessage(activity, Notifications.ActivitySelected);
-            }
+            MessageBus.SendMessage(activity, Notifications.ActivitySelected);
         }
 
         private void DeleteActivity(Activity activity)
         {
-            // TODO: Remove this check
-            if (activity != null)
-            {
-                Activities.Remove(activity);
-                ActivityRepository.Delete(activity);
-            }
+            Activities.Remove(activity);
+            ActivityRepository.Delete(activity);    
         }
 
         private void ArchiveActivity(Activity activity)
         {
-            // TODO: Remove this check
-            if (activity != null)
-            {
-                Activities.Remove(activity);
-                activity.Archived = true;
-                ActivityRepository.Update(activity);
-            }
+            Activities.Remove(activity);
+            activity.Archived = true;
+            ActivityRepository.Update(activity);
         }
 
 
@@ -72,10 +65,7 @@ namespace WorkBalance.ViewModel
                 .ObserveOnDispatcher()
                 .Subscribe(Activities.Add);
 
-            foreach (var activity in ActivityRepository.GetActive())
-            {
-                Activities.Add(activity);
-            }
+            ActivityRepository.GetActive().ForEach(Activities.Add);
         }
     }
 }
