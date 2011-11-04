@@ -42,6 +42,7 @@ namespace WorkBalance
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
         TimeSpan m_BreakDuration;
+        TimeSpan m_MaxBreakDuration;
         ITimerState m_InternalState;
         Dictionary<TimerState, ITimerState> m_InternalStates;
 
@@ -53,11 +54,13 @@ namespace WorkBalance
             {
                 m_SprintDuration = TimeSpan.FromSeconds(10);
                 m_BreakDuration = TimeSpan.FromSeconds(5);
+                m_MaxBreakDuration = TimeSpan.FromSeconds(10);
             }
             else
             {
                 m_SprintDuration = TimeSpan.FromMinutes(25);
                 m_BreakDuration = TimeSpan.FromMinutes(5);
+                m_MaxBreakDuration = TimeSpan.FromMinutes(60);
             }
 
             m_InternalStates = new Dictionary<TimerState, ITimerState>();
@@ -290,6 +293,10 @@ namespace WorkBalance
             public override void HandleSecondElapsed()
             {
                 m_Timer.Time = m_Timer.Time.Add(TimeSpan.FromSeconds(1));
+                if (m_Timer.Time > m_Timer.m_MaxBreakDuration)
+                {
+                    m_Timer.State = TimerState.Ready;
+                }
             }
 
             public override void ToggleTimer()
