@@ -42,8 +42,8 @@
         <ListBox x:Name="activitiesListBox" ItemsSource="{Binding Activities}" Grid.Row="1" SelectionMode="Extended" SelectionChanged="activitiesListBox_SelectionChanged">
         	<ListBox.ContextMenu>
         		<ContextMenu Background="{DynamicResource NormalBrush}">
-                    <MenuItem Header="Delete" Click="DeleteActivity_Click" />
-                    <MenuItem Header="Archive" Click="ArchiveActivity_Click" />
+                    <MenuItem Header="Delete" Command="{Binding DeleteActivityCommand}"/>
+                    <MenuItem Header="Archive" Command="{Binding ArchiveActivityCommand}" />
                     <MenuItem Header="Increase Effort" Command="{Binding IncreaseActualEffortCommand}" />
                     <MenuItem Header="Decrease Effort" Command="{Binding DecreaseActualEffortCommand}" />
                 </ContextMenu>

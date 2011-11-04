@@ -47,16 +47,6 @@ namespace WorkBalance
             _vm.SelectActivityCommand.Execute(null);
         }
 
-        private void DeleteActivity_Click(object sender, RoutedEventArgs e)
-        {
-            _vm.DeleteActivityCommand.Execute(null);
-        }
-
-        private void ArchiveActivity_Click(object sender, RoutedEventArgs e)
-        {
-            _vm.ArchiveActivityCommand.Execute(null);
-        }
-
         private void activitiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // It would be better if two lists were compare against each other but that should also work.
