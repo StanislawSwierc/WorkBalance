@@ -33,6 +33,9 @@ namespace WorkBalance.ViewModel
             SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), selectedActivitiesNotEmpty);
             DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), selectedActivitiesNotEmpty);
             ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectedActivitiesNotEmpty);
+            IncreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(IncreaseActualEffort), selectedActivitiesNotEmpty);
+            DecreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(DecreaseActualEffort), selectedActivitiesNotEmpty);
+
         }
 
         public IList<Activity> SelectedActivities { get; set; }
@@ -40,10 +43,24 @@ namespace WorkBalance.ViewModel
         public RelayCommand SelectActivityCommand { get; private set; }
         public RelayCommand DeleteActivityCommand { get; private set; }
         public RelayCommand ArchiveActivityCommand { get; private set; }
+        public RelayCommand IncreaseActualEffortCommand { get; private set; }
+        public RelayCommand DecreaseActualEffortCommand { get; private set; }
 
         private void SelectActivity(Activity activity)
         {
             MessageBus.SendMessage(activity, Notifications.ActivitySelected);
+        }
+
+        private void IncreaseActualEffort(Activity activity)
+        {
+            activity.ActualEffort += 1;
+            ActivityRepository.Update(activity);
+        }
+
+        private void DecreaseActualEffort(Activity activity)
+        {
+            activity.ActualEffort -= 1;
+            ActivityRepository.Update(activity);
         }
 
         private void DeleteActivity(Activity activity)
@@ -68,7 +85,7 @@ namespace WorkBalance.ViewModel
                        sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}",
                        a.Name,
                           string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()),
-                          a.ExpectedEffort, 
+                          a.ExpectedEffort,
                           a.ActualEffort));
                        return sb;
                    },

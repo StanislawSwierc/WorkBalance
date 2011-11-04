@@ -44,6 +44,8 @@
         		<ContextMenu Background="{DynamicResource NormalBrush}">
                     <MenuItem Header="Delete" Click="DeleteActivity_Click" />
                     <MenuItem Header="Archive" Click="ArchiveActivity_Click" />
+                    <MenuItem Header="Increase Effort" Command="{Binding IncreaseActualEffortCommand}" />
+                    <MenuItem Header="Decrease Effort" Command="{Binding DecreaseActualEffortCommand}" />
                 </ContextMenu>
         	</ListBox.ContextMenu>
     		<ListBox.ItemTemplate>
