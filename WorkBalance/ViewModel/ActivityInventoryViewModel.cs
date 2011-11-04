@@ -65,8 +65,11 @@ namespace WorkBalance.ViewModel
                    new StringBuilder(),
                    (sb, a) =>
                    {
-                       sb.AppendLine(string.Format("{0}\t{1}\t{2}", a.Name, a.ExpectedEffort, a.ActualEffort));
-                       sb.AppendLine(string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()));
+                       sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}",
+                       a.Name,
+                          string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()),
+                          a.ExpectedEffort, 
+                          a.ActualEffort));
                        return sb;
                    },
                    sb => sb.ToString());
