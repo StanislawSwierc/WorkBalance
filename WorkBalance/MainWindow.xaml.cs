@@ -19,6 +19,7 @@ using System.ComponentModel.Composition;
 using ReactiveUI;
 using System.Reactive.Linq;
 using System.Reactive;
+using WorkBalance.Domain;
 
 namespace WorkBalance
 {
@@ -53,6 +54,10 @@ namespace WorkBalance
             CreateActivityWindowOpenSubscription = MessageBus.Listen<Action>(Notifications.CreateActivityWindowOpen)
                 .ObserveOnDispatcher()
                 .Subscribe(OpenCreateActivityWindow);
+
+            MessageBus.Listen<Activity>(Notifications.Edit)
+                    .ObserveOnDispatcher()
+                    .Subscribe(EditActivity);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -79,6 +84,22 @@ namespace WorkBalance
                 window.ShowDialog();
             }
             callback();
+        }
+
+        private void EditActivity(Activity activity)
+        {
+            var window = new WorkBalance.Windows.EditActivityWindow()
+            {
+                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner,
+                Owner = this,
+                Activity = activity
+            };
+            using (MessageBus.Listen<Unit>(Notifications.EditActivityWindowClose)
+                .ObserveOnDispatcher()
+                .Subscribe(o => window.Close()))
+            {
+                window.ShowDialog();
+            }
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -74,6 +74,8 @@ namespace WorkBalance
 
         public CreateActivityViewModel CreateActivity { get { return m_Container.GetExportedValue<CreateActivityViewModel>(); } }
 
+        public EditActivityViewModel EditActivity { get { return m_Container.GetExportedValue<EditActivityViewModel>(); } }
+
         public MainWindow MainWindow { get { return m_Container.GetExportedValue<MainWindow>(); } }
     }
 }

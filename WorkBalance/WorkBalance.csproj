@@ -132,12 +132,16 @@
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
+    <Compile Include="ViewModel\EditActivityViewModel.cs" />
     <Compile Include="ViewModel\CreateActivityViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Views\ActivityInventoryView.xaml.cs">
       <DependentUpon>ActivityInventoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditActivityWindow.xaml.cs">
+      <DependentUpon>EditActivityWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\CreateActivityWindow.xaml.cs">
       <DependentUpon>CreateActivityWindow.xaml</DependentUpon>
@@ -163,6 +167,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ActivityInventoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\EditActivityWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

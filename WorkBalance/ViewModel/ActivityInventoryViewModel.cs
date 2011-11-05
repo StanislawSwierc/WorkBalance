@@ -35,7 +35,7 @@ namespace WorkBalance.ViewModel
             ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectedActivitiesNotEmpty);
             IncreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(IncreaseActualEffort), selectedActivitiesNotEmpty);
             DecreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(DecreaseActualEffort), selectedActivitiesNotEmpty);
-
+            EditActivityCommand = new RelayCommand(() => MessageBus.SendMessage(SelectedActivities[0], Notifications.Edit), selectedActivitiesNotEmpty);
         }
 
         public IList<Activity> SelectedActivities { get; set; }
@@ -43,6 +43,7 @@ namespace WorkBalance.ViewModel
         public RelayCommand SelectActivityCommand { get; private set; }
         public RelayCommand DeleteActivityCommand { get; private set; }
         public RelayCommand ArchiveActivityCommand { get; private set; }
+        public RelayCommand EditActivityCommand { get; private set; }
         public RelayCommand IncreaseActualEffortCommand { get; private set; }
         public RelayCommand DecreaseActualEffortCommand { get; private set; }
 
