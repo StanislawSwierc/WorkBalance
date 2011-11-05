@@ -72,28 +72,23 @@ namespace WorkBalance
         private void OpenCreateActivityWindow()
         {
             var window = new WorkBalance.Windows.CreateActivityWindow();
-            ShowCustomDialog(window, Notifications.CreateActivityWindowClose);
+            ShowCustomDialog(window);
         }
 
         private void EditActivity(Activity activity)
         {
             var window = new WorkBalance.Windows.EditActivityWindow();
             window.Activity = activity;
-            ShowCustomDialog(window, Notifications.EditActivityWindowClose);
+            ShowCustomDialog(window);
         }
 
-        private void ShowCustomDialog(Window window, string closeNotificationName)
+        private void ShowCustomDialog(Window window)
         {
             window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
             window.Owner = this;
-            using (MessageBus.Listen<Unit>(closeNotificationName)
-                .ObserveOnDispatcher()
-                .Subscribe(o => window.Close()))
-            {
-                VisualStateManager.GoToElementState(LayoutRoot, "Disabled", true);
-                window.ShowDialog();
-                VisualStateManager.GoToElementState(LayoutRoot, "Enabled", true);
-            }
+            VisualStateManager.GoToElementState(LayoutRoot, "Disabled", true);
+            window.ShowDialog();
+            VisualStateManager.GoToElementState(LayoutRoot, "Enabled", true);
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

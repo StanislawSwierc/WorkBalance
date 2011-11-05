@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WorkBalance.Domain;
 using WorkBalance.ViewModel;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace WorkBalance.Windows
 {
@@ -21,6 +23,7 @@ namespace WorkBalance.Windows
     public partial class EditActivityWindow : Window
     {
         private EditActivityViewModel _ViewModel;
+        private IDisposable _CloseSubscription;
 
         public EditActivityWindow()
         {
@@ -56,10 +59,23 @@ namespace WorkBalance.Windows
             {
                 _ViewModel = (EditActivityViewModel)this.DataContext;
                 _ViewModel.Activity = Activity;
+                _CloseSubscription = _ViewModel.MessageBus
+                    .Listen<Unit>(Notifications.EditActivityWindowClose)
+                    .ObserveOnDispatcher()
+                    .Subscribe(o => this.Close());
             }
             nameTextBox.Focus();
         }
 
         public Activity Activity { get; set; }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (_CloseSubscription != null)
+            {
+                _CloseSubscription.Dispose();
+                _CloseSubscription = null;
+            }
+        }
     }
 }

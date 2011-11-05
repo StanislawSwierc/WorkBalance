@@ -10,6 +10,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WorkBalance.ViewModel;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace WorkBalance.Windows
 {
@@ -18,6 +21,9 @@ namespace WorkBalance.Windows
     /// </summary>
     public partial class CreateActivityWindow : Window
     {
+        private CreateActivityViewModel _ViewModel;
+        private IDisposable _CloseSubscription;
+
         public CreateActivityWindow()
         {
             App.LoadStaticResources(this);
@@ -48,7 +54,24 @@ namespace WorkBalance.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) && _ViewModel == null)
+            {
+                _ViewModel = (CreateActivityViewModel)this.DataContext;
+                _CloseSubscription = _ViewModel.MessageBus
+                    .Listen<Unit>(Notifications.CreateActivityWindowClose)
+                    .ObserveOnDispatcher()
+                    .Subscribe(o => this.Close());
+            }
             nameTextBox.Focus();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (_CloseSubscription != null)
+            {
+                _CloseSubscription.Dispose();
+                _CloseSubscription = null;
+            }
         }  
     }
 }

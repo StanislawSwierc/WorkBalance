@@ -10,7 +10,7 @@
         ShowInTaskbar="False" 
         SizeToContent="Height" 
         Background="{DynamicResource WindowBackgroundBrush}"
-        DataContext="{Binding EditActivity, Mode=OneWay, Source={StaticResource Locator}}" Loaded="Window_Loaded">
+        DataContext="{Binding EditActivity, Mode=OneWay, Source={StaticResource Locator}}" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.InputBindings>
         <KeyBinding Key="Escape" Command="{Binding CancelCommand}"/>
         <KeyBinding Key="Enter" Command="{Binding SaveCommand}"/>        
