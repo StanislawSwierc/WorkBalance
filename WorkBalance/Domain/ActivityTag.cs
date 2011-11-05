@@ -8,6 +8,7 @@ namespace WorkBalance.Domain
 {
     public class ActivityTag
     {
+        private const char c_Separator = '\\';
         private static readonly Regex c_NameValidator = new Regex(@"^[^\s]+");
 
         private string m_Name;
@@ -16,7 +17,7 @@ namespace WorkBalance.Domain
             get { return m_Name; }
             set
             {
-                if(m_Name != value)
+                if (m_Name != value)
                 {
                     if (!c_NameValidator.IsMatch(value))
                     {
@@ -31,5 +32,12 @@ namespace WorkBalance.Domain
         /// Gets or sets the value indicating wheather the ActivityTag is archived
         /// </summary>
         public bool Archived { get; set; }
+
+        public ActivityTag Parent { get; set; }
+
+        public override string ToString()
+        {
+            return (Parent == null) ? Name : string.Format("{0}{1}{2}", Parent, c_Separator, Name);
+        }
     }
 }
