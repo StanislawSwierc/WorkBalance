@@ -67,35 +67,26 @@ namespace WorkBalance
                 CreateActivityWindowOpenSubscription.Dispose();
                 CreateActivityWindowOpenSubscription = null;
             }
-
         }
 
         private void OpenCreateActivityWindow()
         {
-            var window = new WorkBalance.Windows.CreateActivityWindow()
-            {
-                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner,
-                Owner = this
-            };
-            using (MessageBus.Listen<Unit>(Notifications.CreateActivityWindowClose)
-                .ObserveOnDispatcher()
-                .Subscribe(u => window.Close()))
-            {
-                VisualStateManager.GoToElementState(LayoutRoot, "Disabled", true);
-                window.ShowDialog();
-                VisualStateManager.GoToElementState(LayoutRoot, "Enabled", true);
-            }
+            var window = new WorkBalance.Windows.CreateActivityWindow();
+            ShowCustomDialog(window, Notifications.CreateActivityWindowClose);
         }
 
         private void EditActivity(Activity activity)
         {
-            var window = new WorkBalance.Windows.EditActivityWindow()
-            {
-                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner,
-                Owner = this,
-                Activity = activity
-            };
-            using (MessageBus.Listen<Unit>(Notifications.EditActivityWindowClose)
+            var window = new WorkBalance.Windows.EditActivityWindow();
+            window.Activity = activity;
+            ShowCustomDialog(window, Notifications.EditActivityWindowClose);
+        }
+
+        private void ShowCustomDialog(Window window, string closeNotificationName)
+        {
+            window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            window.Owner = this;
+            using (MessageBus.Listen<Unit>(closeNotificationName)
                 .ObserveOnDispatcher()
                 .Subscribe(o => window.Close()))
             {
