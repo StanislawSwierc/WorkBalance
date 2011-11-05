@@ -55,7 +55,6 @@ namespace WorkBalance.ViewModel
             // Translate state change notification and propagate it to the user interface
 
             CreateActivityCommand = new RelayCommand(CreateActivity);
-            _Enabled = true;
         }
 
         public void OnImportsSatisfied()
@@ -64,17 +63,9 @@ namespace WorkBalance.ViewModel
             _TimerStateObserversSubsription = new CompositeDisposable(TimerStateObservers.Select(o => source.ObserveOnDispatcher().Subscribe(o)));
         }
 
-        private bool _Enabled;
-        public bool Enabled
-        {
-            get { return _Enabled; }
-            set { this.RaiseAndSetIfChanged(self => self.Enabled, value); }
-        }
-
         private void CreateActivity()
         {
-            Enabled = false;
-            MessageBus.SendMessage<Action>(() => Enabled = true, Notifications.CreateActivityWindowOpen);
+            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CreateActivityWindowOpen);
         }
 
 

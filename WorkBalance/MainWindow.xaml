@@ -29,7 +29,7 @@
 			</EventTrigger.Actions>
 		</EventTrigger>
 	</Window.Triggers>
-    <Border BorderThickness="2" BorderBrush="Black">
+    <Border x:Name="LayoutRoot" BorderThickness="2" BorderBrush="Black">
     	<VisualStateManager.VisualStateGroups>
     		<VisualStateGroup x:Name="EnabledStateGroup">
     			<VisualStateGroup.Transitions>
@@ -55,15 +55,7 @@
     			</VisualState>
     		</VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
-    	<i:Interaction.Triggers>
-    		<ei:DataTrigger Binding="{Binding Enabled}" Value="True">
-    			<ei:GoToStateAction StateName="Enabled"/>
-    		</ei:DataTrigger>
-    		<ei:DataTrigger Binding="{Binding Enabled}" Value="False">
-    			<ei:GoToStateAction StateName="Disabled"/>
-    		</ei:DataTrigger>
-    	</i:Interaction.Triggers>
-		<Grid >
+		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition />

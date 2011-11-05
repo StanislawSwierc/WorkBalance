@@ -51,9 +51,9 @@ namespace WorkBalance
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            CreateActivityWindowOpenSubscription = MessageBus.Listen<Action>(Notifications.CreateActivityWindowOpen)
+            CreateActivityWindowOpenSubscription = MessageBus.Listen<Unit>(Notifications.CreateActivityWindowOpen)
                 .ObserveOnDispatcher()
-                .Subscribe(OpenCreateActivityWindow);
+                .Subscribe(o => OpenCreateActivityWindow());
 
             MessageBus.Listen<Activity>(Notifications.Edit)
                     .ObserveOnDispatcher()
@@ -70,7 +70,7 @@ namespace WorkBalance
 
         }
 
-        private void OpenCreateActivityWindow(Action callback)
+        private void OpenCreateActivityWindow()
         {
             var window = new WorkBalance.Windows.CreateActivityWindow()
             {
@@ -81,9 +81,10 @@ namespace WorkBalance
                 .ObserveOnDispatcher()
                 .Subscribe(u => window.Close()))
             {
+                VisualStateManager.GoToElementState(LayoutRoot, "Disabled", true);
                 window.ShowDialog();
+                VisualStateManager.GoToElementState(LayoutRoot, "Enabled", true);
             }
-            callback();
         }
 
         private void EditActivity(Activity activity)
@@ -98,7 +99,9 @@ namespace WorkBalance
                 .ObserveOnDispatcher()
                 .Subscribe(o => window.Close()))
             {
+                VisualStateManager.GoToElementState(LayoutRoot, "Disabled", true);
                 window.ShowDialog();
+                VisualStateManager.GoToElementState(LayoutRoot, "Enabled", true);
             }
         }
 
