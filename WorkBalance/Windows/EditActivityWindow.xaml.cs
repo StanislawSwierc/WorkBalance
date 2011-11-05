@@ -31,6 +31,8 @@ namespace WorkBalance.Windows
             InitializeComponent();
         }
 
+        public Activity Activity { get; set; }
+
         private void expectedEffortTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textBox = (TextBox)sender;
@@ -66,8 +68,6 @@ namespace WorkBalance.Windows
             }
             nameTextBox.Focus();
         }
-
-        public Activity Activity { get; set; }
 
         private void Window_Closed(object sender, EventArgs e)
         {
