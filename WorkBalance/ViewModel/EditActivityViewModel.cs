@@ -107,12 +107,11 @@ namespace WorkBalance.ViewModel
                 return tag;
             }).ToList();
 
-            var activity = new Activity();
-            activity.Name = Name;
-            activity.ExpectedEffort = int.Parse(ExpectedEffort);
-            activity.Tags = tags;
+            Activity.Name = Name;
+            Activity.ExpectedEffort = int.Parse(ExpectedEffort);
+            Activity.Tags = tags;
 
-            ActivityRepository.Add(activity);
+            ActivityRepository.Update(Activity);
             
             Close();
         }
