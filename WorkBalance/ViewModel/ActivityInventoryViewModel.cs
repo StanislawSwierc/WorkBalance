@@ -17,6 +17,7 @@ using System.Reactive.Linq;
 using System.Collections;
 using WorkBalance.Utilities;
 using System.Reactive;
+using WorkBalance.Contracts;
 
 namespace WorkBalance.ViewModel
 {
@@ -25,6 +26,9 @@ namespace WorkBalance.ViewModel
     {
         [Import]
         public IActivityRepository ActivityRepository { get; private set; }
+
+        [ImportMany]
+        public Lazy<IActivityFormatter, IActivityFormatterMetadata>[] ActivityFormatters{ get; set; }
 
         public ActivityInventoryViewModel()
         {
@@ -79,20 +83,9 @@ namespace WorkBalance.ViewModel
 
         private void CopyActivitiesToClipboard(IEnumerable<Activity> activities)
         {
-            var text = activities.Aggregate(
-                   new StringBuilder(),
-                   (sb, a) =>
-                   {
-                       sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}",
-                       a.Name,
-                          string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()),
-                          a.ExpectedEffort,
-                          a.ActualEffort));
-                       return sb;
-                   },
-                   sb => sb.ToString());
-
-            System.Windows.Clipboard.SetText(text, System.Windows.TextDataFormat.Text);
+            System.Windows.Clipboard.SetText(
+                ActivityFormatters[1].Value.FormatActivities(activities), 
+                ActivityFormatters[1].Metadata.Format);
         }
 
 

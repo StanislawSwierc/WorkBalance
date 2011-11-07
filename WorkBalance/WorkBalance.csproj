@@ -107,7 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ActivityFormatters\HeaderTextAtivityFormatter.cs" />
+    <Compile Include="ActivityFormatters\TextActivityFormatter.cs" />
     <Compile Include="Aspects\NotifyPropertyChangedAttribute.cs" />
+    <Compile Include="Contracts\IActivityFormatter.cs" />
     <Compile Include="Contracts\ISprintListener.cs" />
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
