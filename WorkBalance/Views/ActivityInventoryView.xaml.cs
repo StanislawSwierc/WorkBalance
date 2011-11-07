@@ -52,5 +52,10 @@ namespace WorkBalance
             // It would be better if two lists were compare against each other but that should also work.
             _ViewModel.SelectedActivities = activitiesListBox.SelectedItems.Cast<Activity>().ToList();
         }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            _ViewModel.DeleteActivityCommand.Execute(null);
+        }
     }
 }

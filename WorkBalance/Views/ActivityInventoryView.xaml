@@ -19,6 +19,9 @@
 		</Style>
     </UserControl.Resources>
 	
+    <UserControl.CommandBindings>
+        <CommandBinding Command="Delete" Executed="CommandBinding_Executed" />
+    </UserControl.CommandBindings>
 	<UserControl.DataContext>
 		<Binding Path="ActivityInventory" Source="{StaticResource Locator}"/>
 	</UserControl.DataContext>
