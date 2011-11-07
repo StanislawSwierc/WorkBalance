@@ -13,25 +13,17 @@ namespace WorkBalance.ActivityFormatters
     {
         public virtual string FormatActivity(Domain.Activity activity)
         {
-            throw new NotImplementedException();
+            return string.Format("{0}\t{1}\t{2}\t{3}",
+                activity.Name,
+                string.Join(" ", (activity.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()),
+                activity.ExpectedEffort,
+                activity.ActualEffort);
         }
 
         public virtual string FormatActivities(IEnumerable<Activity> activities)
         {
-            return activities
-                .OrderBy(a => a.CreationTime)
-                .Aggregate(
-                    new StringBuilder(),
-                    (sb, a) =>
-                    {
-                        sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}",
-                        a.Name,
-                            string.Join(" ", (a.Tags ?? Enumerable.Empty<ActivityTag>()).Select(t => t.Name).ToArray()),
-                            a.ExpectedEffort,
-                            a.ActualEffort));
-                        return sb;
-                    },
-                    sb => sb.ToString());
+            return string.Join(Environment.NewLine,
+                activities.OrderBy(a => a.CreationTime).Select(FormatActivity));
         }
     }
 }
