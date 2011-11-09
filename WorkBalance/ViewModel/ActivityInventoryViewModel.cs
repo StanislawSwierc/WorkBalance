@@ -127,8 +127,8 @@ namespace WorkBalance.ViewModel
         private void CopyActivitiesToClipboard(IEnumerable<Activity> activities)
         {
             System.Windows.Clipboard.SetText(
-                ActivityFormatters[1].Value.FormatActivities(activities),
-                ActivityFormatters[1].Metadata.Format);
+                ActivityFormatters[0].Value.FormatActivities(activities),
+                ActivityFormatters[0].Metadata.Format);
         }
 
         public void OnImportsSatisfied()
