@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WorkBalance.Aspects;
+using System.ComponentModel;
 
 namespace WorkBalance.Domain
 {
     [NotifyPropertyChanged]
-    public class Activity
+    public class Activity : INotifyPropertyChanged
     {
         /// <summary>
         /// The name of the Activity
@@ -53,6 +54,9 @@ namespace WorkBalance.Domain
         {
             Tags = new List<ActivityTag>();
             Sprints = new List<Sprint>();
+            CreationTime = DateTime.Now;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

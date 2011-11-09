@@ -25,7 +25,7 @@ namespace WorkBalance.Aspects
             }
         }
 
-        [IntroduceMember( OverrideAction = MemberOverrideAction.Ignore )]
+        [IntroduceMember( OverrideAction = MemberOverrideAction.OverrideOrFail)]
         public event PropertyChangedEventHandler PropertyChanged;
 
         [OnLocationSetValueAdvice, MulticastPointcut( Targets = MulticastTargets.Property, Attributes = MulticastAttributes.Instance | MulticastAttributes.NonAbstract)]

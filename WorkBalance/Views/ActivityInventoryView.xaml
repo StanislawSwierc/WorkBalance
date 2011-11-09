@@ -17,6 +17,11 @@
 			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="TextAlignment" Value="Center"/>
 		</Style>
+		<Style x:Key="SummaryColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
+			<Setter Property="Margin" Value="5,1,5,2"/>
+			<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+			<Setter Property="TextAlignment" Value="Center"/>
+		</Style>
     </UserControl.Resources>
 	
     <UserControl.CommandBindings>
@@ -30,6 +35,7 @@
     	<Grid.RowDefinitions>
     		<RowDefinition Height="Auto"/>
     		<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
     	</Grid.RowDefinitions>
     	<StackPanel Orientation="Horizontal" Grid.Row="0" Background="{DynamicResource HoverShineBrush}">
 			<Border Width="219" BorderBrush="Black" BorderThickness="0,0,1,0" >
@@ -85,5 +91,16 @@
                 </DataTemplate> 		
 			</ListBox.ItemTemplate>  	
 		</ListBox>
+		<StackPanel Orientation="Horizontal" Grid.Row="2" Background="{DynamicResource HoverShineBrush}">
+			<Border Width="219" BorderBrush="Black" BorderThickness="0,0,1,0" >
+    			<TextBlock Text="Sum" Style="{DynamicResource SummaryColumnTextBlockStyle}"   />
+    		</Border>
+			<Border Width="25" BorderBrush="Black" BorderThickness="0,0,1,0" >
+				<TextBlock Style="{DynamicResource SummaryColumnTextBlockStyle}" Text="{Binding ExpectedEffortSum}"  />	
+			</Border>
+    		<Border Width="25" BorderBrush="Black" BorderThickness="0,0,1,0" >
+				<TextBlock   Style="{DynamicResource SummaryColumnTextBlockStyle}" Text="{Binding ActualEffortSum}" />
+			</Border>
+		</StackPanel>
     </Grid>
 </UserControl>

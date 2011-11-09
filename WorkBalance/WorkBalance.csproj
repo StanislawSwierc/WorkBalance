@@ -134,6 +134,7 @@
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
+    <Compile Include="Utilities\ObservableEventHandler.cs" />
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
     <Compile Include="ViewModel\EditActivityViewModel.cs" />
     <Compile Include="ViewModel\CreateActivityViewModel.cs" />
