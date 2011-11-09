@@ -93,7 +93,7 @@
 		</ListBox>
 		<StackPanel Orientation="Horizontal" Grid.Row="2" Background="{DynamicResource HoverShineBrush}">
 			<Border Width="219" BorderBrush="Black" BorderThickness="0,0,1,0" >
-    			<TextBlock Text="Sum" Style="{DynamicResource SummaryColumnTextBlockStyle}"   />
+    			<TextBlock Text="Summary" Style="{DynamicResource SummaryColumnTextBlockStyle}"   />
     		</Border>
 			<Border Width="25" BorderBrush="Black" BorderThickness="0,0,1,0" >
 				<TextBlock Style="{DynamicResource SummaryColumnTextBlockStyle}" Text="{Binding ExpectedEffortSum}"  />	
