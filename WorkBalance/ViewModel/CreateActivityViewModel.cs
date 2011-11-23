@@ -12,6 +12,7 @@ using GalaSoft.MvvmLight.Command;
 using WorkBalance.Utilities;
 using ReactiveUI;
 using System.Reactive;
+using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using System.Reactive.Concurrency;
 
@@ -42,6 +43,27 @@ namespace WorkBalance.ViewModel
             SaveCommand = new ReactiveCommand(canSave, DispatcherScheduler.Instance);
             SaveCommand.Subscribe(o => Save());
 
+            var prototypeActivity = this.Changed
+                .Where(c => c.PropertyName == "Name")
+                .Throttle(TimeSpan.FromMilliseconds(500))
+                .Select(c => Name)
+                .ObserveOnDispatcher()
+                // Access to the ActivityRepository synchronized on the main thread... maybe not the best idea
+                .Select(n => ActivityRepository.Get(a => a.Name == n).OrderByDescending(a => a.CreationTime).FirstOrDefault())
+                .Where(a => a != null);
+
+            prototypeActivity
+                .Where(a => string.IsNullOrWhiteSpace(Tags) && a.Tags != null)
+                .Select(a => string.Join(" ", a.Tags.Select(t => t.ToString())))
+                .ObserveOnDispatcher()
+                .Subscribe(t => Tags = t);
+
+            prototypeActivity
+                .Where(a => string.IsNullOrWhiteSpace(ExpectedEffort))
+                .Select(a => a.ExpectedEffort.ToString())
+                .ObserveOnDispatcher()
+                .Subscribe(ee => ExpectedEffort = ee);
+
             CancelCommand = new RelayCommand(Cancel);
         }
 
@@ -58,7 +80,13 @@ namespace WorkBalance.ViewModel
             set { this.RaiseAndSetIfChanged(x => x.ExpectedEffort, value); }
         }
 
-        public string Tags { get; set; }
+        private string _Tags;
+        public string Tags 
+        {
+            get { return _Tags; }
+            set { this.RaiseAndSetIfChanged(x => x.Tags, value); }
+        }
+
         public ReactiveCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
