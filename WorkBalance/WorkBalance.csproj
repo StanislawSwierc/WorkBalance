@@ -137,11 +137,15 @@
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
     <Compile Include="ViewModel\EditActivityViewModel.cs" />
     <Compile Include="ViewModel\CreateActivityViewModel.cs" />
+    <Compile Include="ViewModel\HistoryViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Views\ActivityInventoryView.xaml.cs">
       <DependentUpon>ActivityInventoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryWindow.xaml.cs">
+      <DependentUpon>HistoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EditActivityWindow.xaml.cs">
       <DependentUpon>EditActivityWindow.xaml</DependentUpon>

@@ -77,5 +77,7 @@ namespace WorkBalance
         public EditActivityViewModel EditActivity { get { return m_Container.GetExportedValue<EditActivityViewModel>(); } }
 
         public MainWindow MainWindow { get { return m_Container.GetExportedValue<MainWindow>(); } }
+
+        public HistoryViewModel History { get { return m_Container.GetExportedValue<HistoryViewModel>(); } }
     }
 }
