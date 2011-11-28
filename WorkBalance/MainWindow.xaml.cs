@@ -20,6 +20,7 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Reactive;
 using WorkBalance.Domain;
+using WorkBalance.Views;
 
 namespace WorkBalance
 {
@@ -33,6 +34,7 @@ namespace WorkBalance
         public IMessageBus MessageBus { get; set; }
 
         private IDisposable CreateActivityWindowOpenSubscription;
+        private HistoryWindow HistoryWindow;
 
         public MainWindow()
         {
@@ -108,6 +110,21 @@ namespace WorkBalance
         private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CopyActivitiesToClipboard);
+        }
+
+        private void OpenHistoryWindow_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (HistoryWindow == null)
+            {
+                HistoryWindow = new HistoryWindow();
+                HistoryWindow.Closed += (s, a) => HistoryWindow = null;
+                HistoryWindow.Show();
+            }
+            else
+            {
+                HistoryWindow.Activate();
+            }
+            
         }
     }
 }

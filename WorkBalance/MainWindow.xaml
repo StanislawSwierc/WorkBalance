@@ -13,6 +13,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="CreateActivity_Executed"/>
         <CommandBinding Command="Copy" Executed="Copy_Executed"/>
+        <CommandBinding Command="Replace" Executed="OpenHistoryWindow_Executed" />
     </Window.CommandBindings>
 	<Window.Triggers>
 		<EventTrigger RoutedEvent="Expander.Expanded" SourceName="expander">
