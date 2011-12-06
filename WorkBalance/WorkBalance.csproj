@@ -114,6 +114,7 @@
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\TimerStateToBrushConverter.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\Interruption.cs" />
@@ -221,9 +222,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Sounds\alarm-2.0.wma">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
