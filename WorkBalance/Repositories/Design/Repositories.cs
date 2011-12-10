@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using WorkBalance.Domain;
 using WorkBalance.Utilities;
+using System.ComponentModel.Composition;
 
 namespace WorkBalance.Repositories.Design
 {
     [DesignTimeExport(typeof(IActivityRepository), DesignTime = true)]
     public class ActivityRepository : DesignRepository<Activity>, IActivityRepository
     {
+        [Import(typeof(ISprintRepository))]
+        ISprintRepository SprintRepository { get; set; }
+
         public IEnumerable<Activity> GetActive()
         {
             return CreateInstances();
@@ -17,7 +21,7 @@ namespace WorkBalance.Repositories.Design
 
         protected override Activity CreateInstance()
         {
-            return new Activity()
+            var result = new Activity()
             {
                 Archived = true,
                 ActualEffort = 3,
@@ -26,6 +30,8 @@ namespace WorkBalance.Repositories.Design
                 ExpectedEffort = 5,
                 Name = "Sample Activity",
             };
+            result.Sprints = SprintRepository.GetAll().Select(s => { s.Activity = result; return s; }).ToList();
+            return result;
         }
     }
 
@@ -70,7 +76,7 @@ namespace WorkBalance.Repositories.Design
     {
         protected override Sprint CreateInstance()
         {
-            throw new NotImplementedException();
+            return new Sprint();
         }
     }
 }
