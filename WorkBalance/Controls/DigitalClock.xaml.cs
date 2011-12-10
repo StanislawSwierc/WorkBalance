@@ -67,17 +67,6 @@ namespace WorkBalance
         public static readonly DependencyProperty GlowRadiusProperty =
             DependencyProperty.Register("GlowRadius", typeof(double), typeof(DigitalClock), new UIPropertyMetadata(10.0));
 
-
-        public Color GlowColor
-        {
-            get { return (Color)GetValue(GlowColorProperty); }
-            set { SetValue(GlowColorProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for GlowColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty GlowColorProperty =
-            DependencyProperty.Register("GlowColor", typeof(Color), typeof(DigitalClock), new UIPropertyMetadata(Color.FromRgb(255, 255, 255)));
-
         #endregion
 
         public DigitalClock()

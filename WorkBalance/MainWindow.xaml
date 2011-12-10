@@ -23,8 +23,7 @@
     SizeToContent="Height">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter1" />
-        <converters:TimerStateToBrushConverter x:Key="TimerStateToBrushConverter" ReadyBrush="Yellow" SprintBrush="Yellow" SprintFinishBrush="Red" BreakBrush="DarkGreen" BreanOverrunBrush="Green">
-        </converters:TimerStateToBrushConverter>
+        <converters:TimerStateToBrushConverter x:Key="TimerStateToBrushConverter" ReadyBrush="Yellow" SprintBrush="Yellow" SprintFinishBrush="Red" BreakBrush="Green" BreanOverrunBrush="#FF00C400" />
     </Window.Resources>
     <Window.DataContext>
         <Binding Path="Main" Source="{StaticResource Locator}"/>
@@ -94,7 +93,7 @@
 
 
 
-            <local:DigitalClock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Time="{Binding Timer.Time, Mode=OneWay}" InactiveSegmentsBrush="#26000000" GlowColor="#FFFEFE00" Height="60" Width="Auto" Margin="10,5,10,5" Foreground="{Binding Path=Timer.State, Mode=OneWay, Converter={StaticResource ResourceKey=TimerStateToBrushConverter}}"/>
+            <local:DigitalClock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Time="{Binding Timer.Time, Mode=OneWay}" InactiveSegmentsBrush="#26000000" Height="60" Width="Auto" Margin="10,5,10,5" Foreground="{Binding Path=Timer.State, Mode=OneWay, Converter={StaticResource ResourceKey=TimerStateToBrushConverter}}"/>
             <Border  HorizontalAlignment="Stretch" Grid.Row="0" Padding="1" BorderThickness="0,0,0,1" BorderBrush="Black" Background="{DynamicResource ShineBrush}" Grid.ColumnSpan="2" Grid.Column="0"  d:LayoutOverrides="GridBox" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >
                     <Button  Height="14" Width="24" Click="Button_Click">

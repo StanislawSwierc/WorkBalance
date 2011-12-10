@@ -3,12 +3,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="clr-namespace:WorkBalance.Converters"
 	mc:Ignorable="d"
 	x:Class="WorkBalance.DigitalClock"
 	x:Name="UserControl"
 	Width="236" Height="96">
-
-	<Viewbox Stretch="Fill">
+    <UserControl.Resources>
+        <converters:BrushToColorConverter x:Key="BrushToColorConverter" />
+    </UserControl.Resources>
+        <Viewbox Stretch="Fill">
 
 		<Canvas x:Name="LayoutRoot" Height="96" Width="236">
 			<Canvas x:Name="Inactive">
@@ -43,7 +46,7 @@
 			</Canvas>
 			<Canvas x:Name="Active">
 				<Canvas.Effect>
-					<DropShadowEffect ShadowDepth="0" BlurRadius="{Binding GlowRadius, ElementName=UserControl}" Color="{Binding GlowColor, ElementName=UserControl}"/>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="{Binding GlowRadius, ElementName=UserControl}" Color="{Binding Path=Foreground, ElementName=UserControl, Mode=OneWay, Converter={StaticResource ResourceKey=BrushToColorConverter}}"/>
 				</Canvas.Effect>
 				<Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="m10a" Fill="{Binding Foreground, ElementName=UserControl}" Stroke="{Binding BorderBrush, ElementName=UserControl}" StrokeThickness="1" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M 10 8 L 14 4 L 42 4 L 46 8 L 42 12 L 14 12 L 10 8 z"/>
 				<Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="m10b" Fill="{Binding Foreground, ElementName=UserControl}" Stroke="{Binding BorderBrush, ElementName=UserControl}" StrokeThickness="1" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M 48 10 L 52 14 L 52 42 L 48 46 L 44 42 L 44 14 L 48 10 z"/>

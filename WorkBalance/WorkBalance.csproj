@@ -114,6 +114,7 @@
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\TimerStateToBrushConverter.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
