@@ -75,7 +75,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid  Grid.Row="1" Name="grid1" DataContext="{Binding SelectedItem, ElementName=activityListView}" HorizontalAlignment="Stretch">
+        <Grid  Grid.Row="1" Name="grid1" DataContext="{Binding SelectedItem, ElementName=activityListView}" d:DataContext="{Binding Items[0], ElementName=activityListView}" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
