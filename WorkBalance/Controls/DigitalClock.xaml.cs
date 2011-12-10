@@ -128,10 +128,10 @@ namespace WorkBalance
             var clock = (DigitalClock)sender;
             var time = (TimeSpan)e.NewValue;
 
-            UpdateDisplay(time.Minutes / 10, clock.m10);
-            UpdateDisplay(time.Minutes % 10, clock.m1);
-            UpdateDisplay(time.Seconds / 10, clock.s10);
-            UpdateDisplay(time.Seconds % 10, clock.s1);
+            UpdateDisplay(Math.Abs(time.Minutes) / 10, clock.m10);
+            UpdateDisplay(Math.Abs(time.Minutes) % 10, clock.m1);
+            UpdateDisplay(Math.Abs(time.Seconds) / 10, clock.s10);
+            UpdateDisplay(Math.Abs(time.Seconds) % 10, clock.s1);
         }
 
         private static void UpdateDisplay(int number, Path[] display)
