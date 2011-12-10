@@ -16,7 +16,7 @@ namespace WorkBalance.Contracts
 
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    sealed class ActivityFormatterExportAttribute : ExportAttribute
+    sealed class ActivityFormatterExportAttribute : ExportAttribute, IActivityFormatterMetadata
     {
         public ActivityFormatterExportAttribute()
             :base(typeof(IActivityFormatter))
