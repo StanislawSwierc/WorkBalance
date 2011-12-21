@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reactive.Disposables;
 using System.Reactive;
+using System.Reactive.Subjects;
 
 namespace WorkBalance.Utilities
 {
@@ -38,6 +39,52 @@ namespace WorkBalance.Utilities
         {
             m_Subscriptions += observer.OnNext;
             return Disposable.Create(() => m_Subscriptions -= observer.OnNext);
+        }
+    }
+
+    public class EventHandlerSubject<TEventArgs> : 
+        ISubject<EventPattern<TEventArgs>>,
+        ISubject<EventPattern<TEventArgs>, EventPattern<TEventArgs>>, 
+        IObserver<EventPattern<TEventArgs>>, 
+        IObservable<EventPattern<TEventArgs>>, 
+        IDisposable
+        where TEventArgs : System.EventArgs
+    {
+        private Subject<EventPattern<TEventArgs>> _inner;
+
+        public EventHandlerSubject()
+        {
+            _inner = new Subject<EventPattern<TEventArgs>>();
+        }
+
+        public void Handler(object sender, TEventArgs e)
+        {
+            _inner.OnNext(new EventPattern<TEventArgs>(sender, e));
+        } 
+
+        public void OnCompleted()
+        {
+            _inner.OnCompleted();
+        }
+
+        public void OnError(Exception error)
+        {
+            _inner.OnError(error);
+        }
+
+        public void OnNext(EventPattern<TEventArgs> value)
+        {
+            _inner.OnNext(value);
+        }
+
+        public IDisposable Subscribe(IObserver<EventPattern<TEventArgs>> observer)
+        {
+            return _inner.Subscribe(observer);
+        }
+
+        public void Dispose()
+        {
+            _inner.Dispose();
         }
     }
 
