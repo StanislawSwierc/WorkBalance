@@ -1,13 +1,12 @@
-﻿<Window x:Class="WorkBalance.Views.HistoryWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="HistoryWindow" 
-        DataContext="{Binding History, Mode=OneWay, Source={StaticResource Locator}}"
-        Height="300" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:WorkBalance.Domain" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="WorkBalance.Views.HistoryWindow"
+        Title="HistoryWindow"
+        Height="384" 
         Width="560" 
-		WindowStyle="ToolWindow" ResizeMode="CanResizeWithGrip" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:WorkBalance.Domain" Loaded="Window_Loaded" Background="{DynamicResource WindowBackgroundBrush}">
+		WindowStyle="ToolWindow" ResizeMode="CanResizeWithGrip" mc:Ignorable="d" Loaded="Window_Loaded" Background="{DynamicResource WindowBackgroundBrush}">
     <Window.Resources>
-        <CollectionViewSource x:Key="activityViewSource" d:DesignSource="{d:DesignInstance my:Activity, CreateList=True}" />
         <DataTemplate x:Key="SprintTemplate">
         	<StackPanel Orientation="Horizontal">
         		<TextBlock Text="{Binding EndTime}"/>
@@ -15,108 +14,83 @@
         	</StackPanel>
         </DataTemplate>
     </Window.Resources>
+	<Window.DataContext>
+		<Binding Mode="OneWay" Path="History" Source="{StaticResource Locator}"/>
+	</Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="160"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Activities}" Name="activityListView" SelectionMode="Single" Foreground="White">
-            <ListView.ItemContainerStyle>
-                <Style>
-                    <Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn x:Name="creationTimeColumn" Header="Creation Time" Width="140">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="-6,-1" Text="{Binding Path=CreationTime}" HorizontalAlignment="Stretch" TextAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn x:Name="nameColumn" Header="Name" Width="200">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="0,-1" Text="{Binding Path=Name}" HorizontalAlignment="Stretch" TextAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn x:Name="actualEffortColumn" Header="A" Width="20">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="0,-1" Text="{Binding Path=ActualEffort}"  TextAlignment="Center" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn x:Name="expectedEffortColumn" Header="E" Width="20">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="-6,-1" Text="{Binding Path=ExpectedEffort}" TextAlignment="Center"  />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn x:Name="archivedColumn" Header="Archived" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=Archived, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="-6,-1" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn x:Name="completedColumn" Header="Completed" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=Completed, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="-6,-1" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Grid  Grid.Row="1" Name="grid1" DataContext="{Binding SelectedItem, ElementName=activityListView}" d:DataContext="{Binding Items[0], ElementName=activityListView}" HorizontalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0" Name="nameTextBlock" Text="{Binding Path=Name}" VerticalAlignment="Center" />
-            <Grid Grid.Row="1" Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="60" />
-                </Grid.ColumnDefinitions>
-                <Label Content="Actual Effort:" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
-                <TextBox  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="5" Name="actualEffortTextBlock" Text="{Binding Path=ActualEffort}" VerticalAlignment="Center" Margin="0" />
-                <Label Content="Archived:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
-                <CheckBox Content="" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" IsChecked="{Binding Path=Archived, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="0" Name="archivedCheckBox" VerticalAlignment="Center" />
-                <Label Content="Completed:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
-                <CheckBox Content="" Grid.Column="1" Grid.Row="2" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=Completed, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="0" Name="completedCheckBox" VerticalAlignment="Center" />
-                <Label Content="Creation Time:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
-                <TextBox Grid.Column="1" Grid.Row="3" Height="23" HorizontalAlignment="Stretch" Margin="0" Name="creationTimeTextBlock" Text="{Binding Path=CreationTime}" VerticalAlignment="Center" />
-                <Label Content="Expected Effort:" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
-                <TextBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Stretch" Margin="0" Name="expectedEffortTextBlock" Text="{Binding Path=ExpectedEffort}" VerticalAlignment="Center" />
-            </Grid>
-            <Grid Grid.Row="1" Grid.Column="1" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-				<Label Content="Expected Effort:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
-            	<ListBox Grid.Column="1" HorizontalAlignment="Stretch" ItemTemplate="{DynamicResource SprintTemplate}" ItemsSource="{Binding Sprints}" />
-            </Grid>
-        </Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+    	<ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+    		<StackPanel Orientation="Vertical">
+    			<Calendar x:Name="callendar" SelectionMode="MultipleRange" />
+    			<Expander Header="Filters" VerticalAlignment="Bottom" >
+    				<StackPanel Orientation="Vertical">
+					<CheckBox Content="Dynamic Filter" />
+					<TextBlock Text="Name"/>
+					<TextBox />
+					<Button Content="Apply"/>
+					</StackPanel>
+    			</Expander>
+    		</StackPanel>
+    	</ScrollViewer>
+    	<DataGrid x:Name="activitiesDataGrid" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Activities}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    		<DataGrid.Columns>
+    			<DataGridTextColumn Binding="{Binding CreationTime}" Header="Creation Time" IsReadOnly="True"/>
+    			<DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True"/>
+    			<DataGridTextColumn Binding="{Binding ExpectedEffort}" Header="Expected" IsReadOnly="True"/>
+    			<DataGridTextColumn Binding="{Binding ActualEffort}" Header="Actual" IsReadOnly="True"/>
+    			<DataGridTextColumn Binding="{Binding Archived}" Header="Archived" IsReadOnly="True" />
+    			<DataGridTextColumn Binding="{Binding Completed}" Header="Completed" IsReadOnly="True" />
+    		</DataGrid.Columns>
+    	</DataGrid>
+    	<Grid  Grid.Row="1" x:Name="grid1" Grid.ColumnSpan="2" DataContext="{Binding SelectedItem, ElementName=activitiesDataGrid}" d:DataContext="{Binding Items[0], ElementName=activitiesDataGrid}" HorizontalAlignment="Stretch">
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition Width="Auto" />
+    			<ColumnDefinition Width="*" />
+    		</Grid.ColumnDefinitions>
+    		<Grid.RowDefinitions>
+    			<RowDefinition Height="Auto" />
+    			<RowDefinition Height="*" />
+    		</Grid.RowDefinitions>
+    		<TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0" x:Name="nameTextBlock" Text="{Binding Name}" VerticalAlignment="Center" />
+    		<Grid Grid.Row="1" Grid.Column="0">
+    			<Grid.RowDefinitions>
+    				<RowDefinition Height="Auto" />
+    				<RowDefinition Height="Auto" />
+    				<RowDefinition Height="Auto" />
+    				<RowDefinition Height="Auto" />
+    				<RowDefinition Height="Auto" />
+    				<RowDefinition Height="Auto" />
+    			</Grid.RowDefinitions>
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition Width="Auto" />
+    				<ColumnDefinition Width="60" />
+    			</Grid.ColumnDefinitions>
+    			<Label Content="Actual Effort:" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
+    			<TextBox  HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="5" x:Name="actualEffortTextBlock" Text="{Binding ActualEffort}" VerticalAlignment="Center" Margin="0" />
+    			<Label Content="Archived:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
+    			<CheckBox Content="" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" IsChecked="{Binding Archived, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="0" x:Name="archivedCheckBox" VerticalAlignment="Center" />
+    			<Label Content="Completed:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
+    			<CheckBox Content="" Grid.Column="1" Grid.Row="2" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Completed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="0" x:Name="completedCheckBox" VerticalAlignment="Center" />
+    			<Label Content="Creation Time:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
+    			<TextBox Grid.Column="1" Grid.Row="3" Height="23" HorizontalAlignment="Stretch" Margin="0" x:Name="creationTimeTextBlock" Text="{Binding CreationTime}" VerticalAlignment="Center" />
+    			<Label Content="Expected Effort:" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" />
+    			<TextBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Stretch" Margin="0" x:Name="expectedEffortTextBlock" Text="{Binding ExpectedEffort}" VerticalAlignment="Center" />
+    		</Grid>
+    		<Grid Grid.Row="1" Grid.Column="1" >
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition Width="Auto" />
+    				<ColumnDefinition Width="*" />
+    			</Grid.ColumnDefinitions>
+    			<Label Content="Expected Effort:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
+    			<ListBox Grid.Column="1" HorizontalAlignment="Stretch" ItemTemplate="{DynamicResource SprintTemplate}" ItemsSource="{Binding Sprints}" />
+    		</Grid>
+    	</Grid>
     </Grid>
 </Window>

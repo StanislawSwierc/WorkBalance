@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using WorkBalance.ViewModel;
 
 namespace WorkBalance.Views
 {
@@ -32,6 +33,8 @@ namespace WorkBalance.Views
             // activityViewSource.Source = [generic data source]
             // Load data by setting the CollectionViewSource.Source property:
             // activityViewSource.Source = [generic data source]
+            var vm = (HistoryViewModel)this.DataContext;
+            vm.DatesFilter = this.callendar.SelectedDates;
         }
     }
 }
