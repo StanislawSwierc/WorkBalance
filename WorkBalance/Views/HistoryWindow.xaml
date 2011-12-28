@@ -7,12 +7,6 @@
         Width="560" 
 		WindowStyle="ToolWindow" ResizeMode="CanResizeWithGrip" mc:Ignorable="d" Loaded="Window_Loaded" Background="{DynamicResource WindowBackgroundBrush}">
     <Window.Resources>
-        <DataTemplate x:Key="SprintTemplate">
-        	<StackPanel Orientation="Horizontal">
-        		<TextBlock Text="{Binding EndTime}"/>
-        		<TextBlock Text="{Binding StartTime}" Margin="10, -1, 0, -1"/>
-        	</StackPanel>
-        </DataTemplate>
     </Window.Resources>
 	<Window.DataContext>
 		<Binding Mode="OneWay" Path="History" Source="{StaticResource Locator}"/>
@@ -89,7 +83,12 @@
     				<ColumnDefinition Width="*" />
     			</Grid.ColumnDefinitions>
     			<Label Content="Expected Effort:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" />
-    			<ListBox Grid.Column="1" HorizontalAlignment="Stretch" ItemTemplate="{DynamicResource SprintTemplate}" ItemsSource="{Binding Sprints}" />
+                <DataGrid Grid.Column="1" ItemsSource="{Binding Sprints}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding StartTime}" Header="StartTime" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding EndTime}" Header="EndTime" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
     		</Grid>
     	</Grid>
     </Grid>
