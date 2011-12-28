@@ -7,7 +7,7 @@ namespace WorkBalance.Domain
 {
     public class Sprint
     {
-        public Activity Activity { get; private set; }
+        public Activity Activity { get; set; }
         public DateTime StartTime {get; set;}
         public DateTime EndTime { get; set; }
         public ICollection<InterruptionRecord> Interruptions { get; set; }
@@ -17,9 +17,8 @@ namespace WorkBalance.Domain
         /// </summary>
         public TimeSpan Duration { get { return EndTime - StartTime; } }
 
-        public Sprint(Activity activity)
+        public Sprint()
         {
-            Activity = activity;
             StartTime = DateTime.Now;
             EndTime = DateTime.Now;
             Interruptions = new List<InterruptionRecord>();

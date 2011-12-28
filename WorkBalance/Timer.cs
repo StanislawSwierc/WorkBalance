@@ -238,7 +238,10 @@ namespace WorkBalance
             public override void OnEnter()
             {
                 m_Timer.m_Timer.Start();
-                var sprint = new Sprint(m_Timer.CurrentActivity);
+
+                var sprint = new Sprint() { Activity = m_Timer.CurrentActivity };
+                m_Timer.CurrentActivity.Sprints.Add(sprint);
+
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
                 m_Timer.SprintRepository.Add(sprint);
                 m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
