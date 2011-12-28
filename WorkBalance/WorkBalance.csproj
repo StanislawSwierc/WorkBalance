@@ -68,6 +68,7 @@
     <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <HintPath>..\packages\PostSharp.2.1.4.1\lib\net20\PostSharp.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.2.5.0.0\lib\Net4\ReactiveUI.dll</HintPath>
     </Reference>
@@ -119,6 +120,7 @@
     </Compile>
     <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\TimerStateToBrushConverter.cs" />
+    <Compile Include="Debug\TraceSprintListener.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\Interruption.cs" />
