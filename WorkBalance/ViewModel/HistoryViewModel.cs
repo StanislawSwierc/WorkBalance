@@ -46,9 +46,14 @@ namespace WorkBalance.ViewModel
                 .Select(e => Unit.Default)
                 .Throttle(TimeSpan.FromMilliseconds(200));
 
+            var dynamicFilterEnabled = this.ObservableForProperty(self => self.DynamicFilterEnabled)
+                .Where(e => e.Value == true)
+                .Select(e => Unit.Default);
+
             var filtersChanged = Observable.Merge(
                 DatesFilterChanged,
-                NameFilterChanged);
+                NameFilterChanged,
+                dynamicFilterEnabled);
 
             filtersChanged
                 .Where(a => this.DynamicFilterEnabled)
