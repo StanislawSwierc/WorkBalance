@@ -58,17 +58,31 @@ namespace WorkBalance.ViewModel
                 .Subscribe(u => ActualEffortSum = Activities.Select(a => a.ActualEffort).Sum());
 
             var selectedActivitiesNotEmpty = new Func<bool>(() => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities));
-            SelectActivityCommand = new RelayCommand(() => SelectActivity(SelectedActivities[0]), selectedActivitiesNotEmpty);
             DeleteActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(DeleteActivity), selectedActivitiesNotEmpty);
             ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectedActivitiesNotEmpty);
             IncreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(IncreaseActualEffort), selectedActivitiesNotEmpty);
             DecreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(DecreaseActualEffort), selectedActivitiesNotEmpty);
             EditActivityCommand = new RelayCommand(() => MessageBus.SendMessage(SelectedActivities[0], Notifications.Edit), selectedActivitiesNotEmpty);
+
+            this.ObservableForProperty(self => self.SelectedActivity)
+                .Subscribe(e => MessageBus.SendMessage(e.Value, Notifications.ActivitySelected));
         }
 
-        public IList<Activity> SelectedActivities { get; set; }
+        private IList<Activity> _SelectedActivities;
+        public IList<Activity> SelectedActivities {
+            get { return _SelectedActivities; }
+            set { this.RaiseAndSetIfChanged(self => self.SelectedActivities, value); }
+        }
+
+        private Activity _SelectedActivity;
+        public Activity SelectedActivity
+        {
+            get { return _SelectedActivity; }
+            set { this.RaiseAndSetIfChanged(self => self.SelectedActivity, value); }
+        }
+
+
         public ObservableCollection<Activity> Activities { get; private set; }
-        public RelayCommand SelectActivityCommand { get; private set; }
         public RelayCommand DeleteActivityCommand { get; private set; }
         public RelayCommand ArchiveActivityCommand { get; private set; }
         public RelayCommand EditActivityCommand { get; private set; }
@@ -89,11 +103,6 @@ namespace WorkBalance.ViewModel
             set { this.RaiseAndSetIfChanged(self => self.ActualEffortSum, value); }
         }
 
-        private void SelectActivity(Activity activity)
-        {
-            MessageBus.SendMessage(activity, Notifications.ActivitySelected);
-        }
-
         private void IncreaseActualEffort(Activity activity)
         {
             activity.ActualEffort += 1;
@@ -109,6 +118,7 @@ namespace WorkBalance.ViewModel
         private void AddActivity(Activity activity)
         {
             Activities.Add(activity);
+            SelectedActivity = activity;
         }
 
         private void DeleteActivity(Activity activity)

@@ -85,9 +85,8 @@ namespace WorkBalance
         public void OnImportsSatisfied()
         {
             MessageBus.Listen<Activity>(Notifications.ActivitySelected)
-                .Where(a => this.State != TimerState.Sprint)
                 .ObserveOnDispatcher()
-                .Subscribe(a => CurrentActivity = a);
+                .Subscribe(a => PendingActivity = a);
 
             MessageBus.Listen<Unit>(Notifications.ToggleTimer)
                 // TODO this code is currently in two places that's wrong
@@ -114,6 +113,22 @@ namespace WorkBalance
         public string ToggleTimerActionName
         {
             get { return m_InternalState.ToggleTimerActionName; }
+        }
+
+        private Activity _PendingActivity;
+        public Activity PendingActivity
+        {
+            get { return _PendingActivity; }
+            set {
+                if (_PendingActivity != value)
+                {
+                    _PendingActivity = value;
+                    if (State != TimerState.Sprint && State != TimerState.SprintFinish)
+                    {
+                        CurrentActivity = _PendingActivity;
+                    }
+                }
+            }
         }
 
         private Activity _CurrentActivity;
@@ -196,6 +211,7 @@ namespace WorkBalance
             {
                 m_Timer.Time = m_Timer.m_SprintDuration;
                 m_Timer.m_Timer.Stop();
+                m_Timer.CurrentActivity = m_Timer.PendingActivity;
             }
 
             public override void ToggleTimer()
@@ -321,6 +337,11 @@ namespace WorkBalance
             public override string ToggleTimerActionName
             {
                 get { return "Abort Break"; }
+            }
+
+            public override void OnEnter()
+            {
+                m_Timer.CurrentActivity = m_Timer.PendingActivity;
             }
         }
 

@@ -120,7 +120,6 @@ namespace WorkBalance.ViewModel
 
             ActivityRepository.Add(activity);
             MessageBus.SendMessage(activity, Notifications.ActivityCreated);
-            MessageBus.SendMessage(activity, Notifications.ActivitySelected);
             Close();
         }
 

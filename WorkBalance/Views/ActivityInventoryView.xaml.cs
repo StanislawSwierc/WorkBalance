@@ -39,12 +39,8 @@ namespace WorkBalance
             if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) && _ViewModel == null)
             {
                 _ViewModel = (ActivityInventoryViewModel)this.DataContext;
+                activitiesListBox.SelectionChanged += activitiesListBox_SelectionChanged;
             }
-        }
-
-        private void Button_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            _ViewModel.SelectActivityCommand.Execute(null);
         }
 
         private void activitiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
