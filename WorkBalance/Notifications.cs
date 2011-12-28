@@ -13,6 +13,7 @@ namespace WorkBalance
         public const string CreateActivityWindowOpen = "CreateActivityWindowOpen";
         public const string CopyActivitiesToClipboard = "CopyActivitiesToClipboard";
         public const string Edit = "Edit";
+        public const string ToggleTimer = "ToggleTimer";
         public const string EditActivityWindowClose = "EditActivityWindowClose";
         
     }

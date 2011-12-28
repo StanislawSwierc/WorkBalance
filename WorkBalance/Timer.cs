@@ -89,6 +89,12 @@ namespace WorkBalance
                 .ObserveOnDispatcher()
                 .Subscribe(a => CurrentActivity = a);
 
+            MessageBus.Listen<Unit>(Notifications.ToggleTimer)
+                // TODO this code is currently in two places that's wrong
+                // Need to find a way to use RoutedUICommands with MessageBus
+                .Where(u => !(State == TimerState.Ready && CurrentActivity == null))
+                .Subscribe(u => m_InternalState.ToggleTimer());
+
             var canToggleTimerCommand = this.WhenAny(
                 x => x.State, 
                 x => x.CurrentActivity,

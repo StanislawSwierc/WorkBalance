@@ -126,5 +126,10 @@ namespace WorkBalance
             }
             
         }
+
+        private void ToggleTimer_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.ToggleTimer);
+        }
     }
 }
