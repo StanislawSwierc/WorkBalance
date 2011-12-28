@@ -29,12 +29,12 @@
     	<ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
     		<StackPanel Orientation="Vertical">
     			<Calendar x:Name="callendar" SelectionMode="MultipleRange" />
-    			<Expander Header="Filters" VerticalAlignment="Bottom" >
+    			<Expander Header="Advanced" VerticalAlignment="Bottom" >
     				<StackPanel Orientation="Vertical">
-					<CheckBox Content="Dynamic Filter" />
+					<CheckBox x:Name="dynamicFilterCheckBox" Content="Dynamic Filter" IsChecked="{Binding Path=DynamicFilterEnabled, Mode=OneWayToSource}"/>
 					<TextBlock Text="Name"/>
-					<TextBox />
-					<Button Content="Apply"/>
+					<TextBox Text="{Binding NameFilter, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Filter" Command="{Binding Path=FilterCommand, Mode=OneTime}"/>
 					</StackPanel>
     			</Expander>
     		</StackPanel>

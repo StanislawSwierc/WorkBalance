@@ -28,11 +28,13 @@ namespace WorkBalance.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
-            // Load data by setting the CollectionViewSource.Source property:
-            // activityViewSource.Source = [generic data source]
-            // Load data by setting the CollectionViewSource.Source property:
-            // activityViewSource.Source = [generic data source]
+            // Select current date
+            this.callendar.SelectedDate = DateTime.Now.Date;
+
+            //TODO: Move this to user settings
+            dynamicFilterCheckBox.IsChecked = true;
+
+            // Bind callendar to the ViewModel
             var vm = (HistoryViewModel)this.DataContext;
             vm.DatesFilter = this.callendar.SelectedDates;
         }

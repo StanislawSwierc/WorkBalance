@@ -11,6 +11,8 @@ using System.Reactive.Subjects;
 using System.Reactive.Linq;
 using System.Collections.Specialized;
 using System.Reactive;
+using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace WorkBalance.ViewModel
 {
@@ -34,24 +36,54 @@ namespace WorkBalance.ViewModel
         {
             Activities = new ObservableCollection<Activity>();
             _DatesFilterCollectionChanged = new EventHandlerSubject<NotifyCollectionChangedEventArgs>();
-            _DatesFilterChanged = _DatesFilterCollectionChanged.Select(e => (Collection<DateTime>)e.Sender);
-            _DatesFilterChanged
+            
+            var DatesFilterChanged = _DatesFilterCollectionChanged
+                .Select(e => Unit.Default)
                 // Throttle for a moment to wait for the collection to become stable
-                .Throttle(TimeSpan.FromMilliseconds(10))
+                .Throttle(TimeSpan.FromMilliseconds(10));
+
+            var NameFilterChanged = this.ObservableForProperty(self => self.NameFilter)
+                .Select(e => Unit.Default)
+                .Throttle(TimeSpan.FromMilliseconds(200));
+
+            var filtersChanged = Observable.Merge(
+                DatesFilterChanged,
+                NameFilterChanged);
+
+            filtersChanged
+                .Where(a => this.DynamicFilterEnabled)
                 .ObserveOnDispatcher()
-                .Subscribe(c => 
-                {
-                    Activities.Clear();
-                    if (c.Count > 0) ActivityRepository.Get(a => c.Contains(a.CreationTime.Date)).ForEach(Activities.Add); 
-                });
+                .Subscribe(unit => Filter());
+
+            FilterCommand = new ReactiveCommand(
+                this.ObservableForProperty(self => self.DynamicFilterEnabled)
+                .Select(e => !e.Value), System.Reactive.Concurrency.DispatcherScheduler.Instance);
+                
+            FilterCommand
+                .ObserveOnDispatcher()
+                .Subscribe(unit => Filter());
         }
 
         #endregion
 
+        #region Members
+        
         EventHandlerSubject<NotifyCollectionChangedEventArgs> _DatesFilterCollectionChanged;
-        private IObservable<Collection<DateTime>> _DatesFilterChanged;
+
+        #endregion
+
+        #region Properties
+
+        public ReactiveCommand FilterCommand { get; private set; }
 
         public ObservableCollection<Activity> Activities { get; private set; }
+
+        private bool _DynamicFilterEnabled;
+        public bool DynamicFilterEnabled
+        {
+            get { return _DynamicFilterEnabled; }
+            set { this.RaiseAndSetIfChanged(self => self.DynamicFilterEnabled, value); }
+        }
 
         private ObservableCollection<DateTime> _DatesFilter;
         public ObservableCollection<DateTime> DatesFilter {
@@ -69,5 +101,30 @@ namespace WorkBalance.ViewModel
                 }
             }
         }
+
+        private string _NameFilter;
+        public string NameFilter
+        {
+            get { return _NameFilter; }
+            set { this.RaiseAndSetIfChanged(self => self.NameFilter, value); }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Filter()
+        {
+            Activities.Clear();
+            if (DatesFilter.Count > 0)
+            {
+                ActivityRepository.Get(
+                    a => DatesFilter.Contains(a.CreationTime.Date) &&
+                        (string.IsNullOrWhiteSpace(NameFilter) || a.Name.Contains(NameFilter))
+                    ).ForEach(Activities.Add);
+            }
+        }
+
+        #endregion
     }
 }
