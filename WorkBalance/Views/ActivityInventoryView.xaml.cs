@@ -40,6 +40,8 @@ namespace WorkBalance
             {
                 _ViewModel = (ActivityInventoryViewModel)this.DataContext;
                 activitiesListBox.SelectionChanged += activitiesListBox_SelectionChanged;
+                // Invoke once to initialize ViewModel
+                activitiesListBox_SelectionChanged(null, null);
             }
         }
 
