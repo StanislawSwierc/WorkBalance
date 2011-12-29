@@ -29,10 +29,8 @@
         <Binding Path="Main" Source="{StaticResource Locator}"/>
     </Window.DataContext>
     <Window.CommandBindings>
-        <CommandBinding Command="New" Executed="CreateActivity_Executed"/>
         <CommandBinding Command="Copy" Executed="Copy_Executed"/>
         <CommandBinding Command="Replace" Executed="OpenHistoryWindow_Executed" />
-        <CommandBinding Command="Find" Executed="ToggleTimer_Executed" />
     </Window.CommandBindings>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Expander.Expanded" SourceName="expander">

@@ -28,10 +28,13 @@ namespace WorkBalance
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Export]
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IPartImportsSatisfiedNotification
     {
         [Import]
         public IMessageBus MessageBus { get; set; }
+
+        [ImportMany]
+        Lazy<ICommand, IKeyGestureCommandMetadata>[] Commands { get; set; }
 
         private IDisposable CreateActivityWindowOpenSubscription;
         private HistoryWindow HistoryWindow;
@@ -98,11 +101,6 @@ namespace WorkBalance
             this.DragMove();
         }
 
-        private void CreateActivity_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CreateActivity);
-        }
-
         private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CopyActivitiesToClipboard);
@@ -123,9 +121,12 @@ namespace WorkBalance
             
         }
 
-        private void ToggleTimer_Executed(object sender, ExecutedRoutedEventArgs e)
+        public void OnImportsSatisfied()
         {
-            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.ToggleTimer);
+            foreach (var command in Commands)
+            {
+                this.InputBindings.Add(new InputBinding(command.Value, new KeyGesture(command.Metadata.Key, command.Metadata.ModifierKeys)));
+            }
         }
     }
 }

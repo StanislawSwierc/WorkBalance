@@ -113,6 +113,7 @@
     </ApplicationDefinition>
     <Compile Include="ActivityFormatters\TextActivityFormatter.cs" />
     <Compile Include="Aspects\NotifyPropertyChangedAttribute.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="Contracts\IActivityFormatter.cs" />
     <Compile Include="Contracts\ISprintListener.cs" />
     <Compile Include="Controls\DigitalClock.xaml.cs">
@@ -140,6 +141,7 @@
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
+    <Compile Include="Utilities\KeyGestureCommandExportAttribute.cs" />
     <Compile Include="Utilities\ObservableEventHandler.cs" />
     <Compile Include="ViewModel\ActivityInventoryViewModel.cs" />
     <Compile Include="ViewModel\EditActivityViewModel.cs" />
