@@ -53,7 +53,7 @@ namespace WorkBalance
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            CreateActivityWindowOpenSubscription = MessageBus.Listen<Unit>(Notifications.CreateActivityWindowOpen)
+            CreateActivityWindowOpenSubscription = MessageBus.Listen<Unit>(Notifications.CreateActivity)
                 .ObserveOnDispatcher()
                 .Subscribe(o => OpenCreateActivityWindow());
 
@@ -100,11 +100,7 @@ namespace WorkBalance
 
         private void CreateActivity_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var vm = DataContext as MainViewModel;
-            if (vm != null)
-            {
-                vm.CreateActivityCommand.Execute(this);
-            }
+            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CreateActivity);
         }
 
         private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
