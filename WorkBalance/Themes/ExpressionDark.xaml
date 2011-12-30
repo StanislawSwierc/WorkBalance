@@ -97,7 +97,7 @@
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
         <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
-   </Style>
+    </Style>
 
     <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
         <ControlTemplate.Resources>
@@ -1310,7 +1310,7 @@
         <ControlTemplate.Triggers>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    
+
     <Style TargetType="{x:Type ComboBox}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="SnapsToDevicePixels" Value="true" />
@@ -2971,13 +2971,13 @@
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
         <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-						<Setter Property="FontSize" Value="10"/>
-				<Setter Property="MinHeight" Value="18"/>
-				<Setter Property="MinWidth" Value="50"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="MinHeight" Value="18"/>
+        <Setter Property="MinWidth" Value="50"/>
     </Style>
 
     <Style x:Key="{x:Static ToolBar.CheckBoxStyleKey}" TargetType="{x:Type CheckBox}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
@@ -2987,7 +2987,7 @@
     </Style>
 
     <Style x:Key="{x:Static ToolBar.RadioButtonStyleKey}" TargetType="{x:Type RadioButton}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
@@ -3006,14 +3006,14 @@
     </Style>
 
     <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}" TargetType="{x:Type ComboBox}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="Template" Value="{DynamicResource ComboBoxTemplate}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
     </Style>
 
     <Style x:Key="{x:Static ToolBar.TextBoxStyleKey}" TargetType="{x:Type TextBox}">
-			<Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="AllowDrop" Value="true" />
