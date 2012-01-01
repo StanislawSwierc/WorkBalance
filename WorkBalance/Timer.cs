@@ -23,7 +23,7 @@ namespace WorkBalance
     {
         Ready,
         Sprint,
-        SprintFinish,
+        HomeStraight,
         Break,
         BreakOverrun
     }
@@ -42,7 +42,7 @@ namespace WorkBalance
 
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
-        TimeSpan m_SprintFinishDuration;
+        TimeSpan m_HomeStraightDuration;
         TimeSpan m_BreakDuration;
         TimeSpan m_MaxBreakDuration;
         ITimerState m_InternalState;
@@ -55,14 +55,14 @@ namespace WorkBalance
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 m_SprintDuration = TimeSpan.FromSeconds(10);
-                m_SprintFinishDuration = TimeSpan.FromSeconds(1);
+                m_HomeStraightDuration = TimeSpan.FromSeconds(1);
                 m_BreakDuration = TimeSpan.FromSeconds(5);
                 m_MaxBreakDuration = TimeSpan.FromSeconds(10);
             }
             else
             {
                 m_SprintDuration = TimeSpan.FromMinutes(25);
-                m_SprintFinishDuration = TimeSpan.FromMinutes(1);
+                m_HomeStraightDuration = TimeSpan.FromMinutes(1);
                 m_BreakDuration = TimeSpan.FromMinutes(5);
                 m_MaxBreakDuration = TimeSpan.FromMinutes(60);
             }
@@ -70,7 +70,7 @@ namespace WorkBalance
             m_InternalStates = new Dictionary<TimerState, ITimerState>();
             m_InternalStates.Add(TimerState.Ready, new ReadyTimerState(this));
             m_InternalStates.Add(TimerState.Sprint, new SprintTimerState(this));
-            m_InternalStates.Add(TimerState.SprintFinish, new SprintFinishTimerState(this));
+            m_InternalStates.Add(TimerState.HomeStraight, new HomeStraightTimerState(this));
             m_InternalStates.Add(TimerState.Break, new BreakTimerState(this));
             m_InternalStates.Add(TimerState.BreakOverrun, new BreakOverrunTimerState(this));
 
@@ -123,7 +123,7 @@ namespace WorkBalance
                 if (_PendingActivity != value)
                 {
                     _PendingActivity = value;
-                    if (State != TimerState.Sprint && State != TimerState.SprintFinish)
+                    if (State != TimerState.Sprint && State != TimerState.HomeStraight)
                     {
                         CurrentActivity = _PendingActivity;
                     }
@@ -235,9 +235,9 @@ namespace WorkBalance
             public override void HandleSecondElapsed()
             {
                 m_Timer.Time = m_Timer.Time.Subtract(TimeSpan.FromSeconds(1));
-                if (m_Timer.Time.Ticks <= m_Timer.m_SprintFinishDuration.Ticks)
+                if (m_Timer.Time.Ticks <= m_Timer.m_HomeStraightDuration.Ticks)
                 {
-                    m_Timer.State = TimerState.SprintFinish;
+                    m_Timer.State = TimerState.HomeStraight;
                 }
             }
 
@@ -268,9 +268,9 @@ namespace WorkBalance
             }
         }
 
-        internal class SprintFinishTimerState : TimerStateBase
+        internal class HomeStraightTimerState : TimerStateBase
         {
-            public SprintFinishTimerState(Timer timer)
+            public HomeStraightTimerState(Timer timer)
                 :base(timer)
             {
             }

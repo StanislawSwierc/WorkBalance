@@ -23,7 +23,7 @@
     SizeToContent="Height">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter1" />
-        <converters:TimerStateToBrushConverter x:Key="TimerStateToBrushConverter" ReadyBrush="Yellow" SprintBrush="Yellow" SprintFinishBrush="Red" BreakBrush="Green" BreanOverrunBrush="#FF00C400" />
+        <converters:TimerStateToBrushConverter x:Key="TimerStateToBrushConverter" ReadyBrush="Yellow" SprintBrush="Yellow" HomeStraightBrush="Red" BreakBrush="Green" BreanOverrunBrush="#FF00C400" />
     </Window.Resources>
     <Window.DataContext>
         <Binding Path="Main" Source="{StaticResource Locator}"/>

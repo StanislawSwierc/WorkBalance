@@ -14,7 +14,7 @@ namespace WorkBalance.Converters
 
         public Brush ReadyBrush { get; set; }
         public Brush SprintBrush { get; set; }
-        public Brush SprintFinishBrush { get; set; }
+        public Brush HomeStraightBrush { get; set; }
         public Brush BreakBrush { get; set; }
         public Brush BreanOverrunBrush { get; set; }
 
@@ -53,8 +53,8 @@ namespace WorkBalance.Converters
                 case TimerState.Sprint:
                     result = SprintBrush;
                     break;
-                case TimerState.SprintFinish:
-                    result = SprintFinishBrush;
+                case TimerState.HomeStraight:
+                    result = HomeStraightBrush;
                     break;
                 case TimerState.Break:
                     result = BreakBrush;
