@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\TimerStateToBrushConverter.cs" />
+    <Compile Include="Debug\TimerTrace.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\Interruption.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Domain\InterruptionTag.cs" />
     <Compile Include="Domain\InterruptionType.cs" />
     <Compile Include="Domain\Sprint.cs" />
+    <Compile Include="ITimer.cs" />
     <Compile Include="Notifications.cs" />
     <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
     <Compile Include="Repositories\Db4o\Repositories.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerState.cs" />
+    <Compile Include="TimerStateChangedEventArgs.cs" />
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />

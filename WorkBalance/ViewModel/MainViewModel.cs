@@ -46,6 +46,8 @@ namespace WorkBalance.ViewModel
         public IEnumerable<IObserver<TimerState>> TimerStateObservers { get; set; }
         private IDisposable _TimerStateObserversSubsription;
 
+        [Import]
+        WorkBalance.Debug.TimerTrace tr { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.

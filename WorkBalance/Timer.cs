@@ -20,7 +20,8 @@ using WorkBalance.Contracts;
 namespace WorkBalance
 {
     [Export]
-    public class Timer : ViewModelBase, IPartImportsSatisfiedNotification
+    [Export(typeof(ITimer))]
+    public class Timer : ViewModelBase, ITimer, IPartImportsSatisfiedNotification
     {
         [Import]
         public IActivityRepository ActivityRepository { get; set; }
@@ -39,7 +40,7 @@ namespace WorkBalance
         public ReactiveCommand ToggleTimerCommand { get; set; }
 
         public Timer()
-        {
+        {   
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 m_SprintDuration = TimeSpan.FromSeconds(10);
@@ -134,16 +135,20 @@ namespace WorkBalance
             {
                 if (_State != value)
                 {
+                    var previousState = _State;
                     m_InternalState.OnLeave();
                     _State = value;
                     m_InternalState = m_InternalStates[_State];
                     m_InternalState.OnEnter();
                     this.RaisePropertyChanged(self => self.State);
+                    TimerStateChangedEventArgs.InvokeEventHandler(StateChanged, this, previousState, _State);
                     this.RaisePropertyChanged(self => self.ToggleTimerActionName);
                     this.MessageBus.SendMessage<TimerState>(_State);
                 }
             }
         }
+
+        public event EventHandler<TimerStateChangedEventArgs> StateChanged;
 
         #region Internal Types
 
