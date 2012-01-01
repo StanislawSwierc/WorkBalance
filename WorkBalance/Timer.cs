@@ -28,9 +28,6 @@ namespace WorkBalance
         [Import]
         public ISprintRepository SprintRepository { get; set; }
 
-        [ImportMany]
-        public ISprintListener[] SprintListeners { get; set; }
-
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
         TimeSpan m_HomeStraightDuration;
@@ -252,10 +249,6 @@ namespace WorkBalance
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
                 m_Timer.SprintRepository.Add(sprint);
                 m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
-                foreach (var listener in m_Timer.SprintListeners)
-                {
-                    listener.OnSprintStarted(sprint);
-                }
             }
         }
 
@@ -297,10 +290,6 @@ namespace WorkBalance
                     m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
                 }
                 m_Timer.SprintRepository.Update(sprint);
-                foreach (var listener in m_Timer.SprintListeners)
-                {
-                    listener.OnSprintEnded(sprint);
-                }
             }
         }
 

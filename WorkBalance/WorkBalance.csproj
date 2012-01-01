@@ -115,13 +115,11 @@
     <Compile Include="Aspects\NotifyPropertyChangedAttribute.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Contracts\IActivityFormatter.cs" />
-    <Compile Include="Contracts\ISprintListener.cs" />
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\TimerStateToBrushConverter.cs" />
-    <Compile Include="Debug\TraceSprintListener.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\Interruption.cs" />
