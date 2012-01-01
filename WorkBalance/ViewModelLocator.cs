@@ -31,7 +31,7 @@ namespace WorkBalance
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
     /// </summary>
-    public class ViewModelLocator: IDisposable
+    public class ViewModelLocator : IDisposable
     {
         private const string c_Storage = "WorkBalance.db4o";
         private CompositionContainer m_Container;
@@ -41,8 +41,12 @@ namespace WorkBalance
         /// </summary>
         public ViewModelLocator()
         {
-            var catalog = new DesignTimeCatalog(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            m_Container = new CompositionContainer(catalog);                
+            var innerCatalog = new AggregateCatalog(
+                new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()),
+                new DirectoryCatalog("Plugins"));
+
+            var catalog = new DesignTimeCatalog(innerCatalog);
+            m_Container = new CompositionContainer(catalog);
 
             if (GalaSoft.MvvmLight.ViewModelBase.IsInDesignModeStatic)
             {
@@ -54,7 +58,7 @@ namespace WorkBalance
                 m_Container.ComposeExportedValue<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
             }
             m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());
-            
+
         }
 
         public void Dispose()

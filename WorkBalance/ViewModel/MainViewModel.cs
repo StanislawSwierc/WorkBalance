@@ -36,18 +36,14 @@ namespace WorkBalance.ViewModel
     /// </para>
     /// </summary>
     [Export]
-    public class MainViewModel : ViewModelBase, IPartImportsSatisfiedNotification
+    public class MainViewModel : ViewModelBase
 
     {
         [Import]
         public Timer Timer { get; set; }
 
         [ImportMany]
-        public IEnumerable<IObserver<TimerState>> TimerStateObservers { get; set; }
-        private IDisposable _TimerStateObserversSubsription;
-
-        [ImportMany]
-        IPlugin[] Plugins { get; set; }
+        IEnumerable<IPlugin> Plugins { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -55,12 +51,6 @@ namespace WorkBalance.ViewModel
         public MainViewModel()
         {
             // Translate state change notification and propagate it to the user interface
-        }
-
-        public void OnImportsSatisfied()
-        {
-            var source = MessageBus.Listen<TimerState>();
-            _TimerStateObserversSubsription = new CompositeDisposable(TimerStateObservers.Select(o => source.ObserveOnDispatcher().Subscribe(o)));
         }
     }
 }
