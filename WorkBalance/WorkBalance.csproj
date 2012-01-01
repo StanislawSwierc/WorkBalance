@@ -115,6 +115,7 @@
     <Compile Include="Aspects\NotifyPropertyChangedAttribute.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Contracts\IActivityFormatter.cs" />
+    <Compile Include="Contracts\IPlugin.cs" />
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
     </Compile>
@@ -140,6 +141,7 @@
     <Compile Include="Timer.cs" />
     <Compile Include="TimerState.cs" />
     <Compile Include="TimerStateChangedEventArgs.cs" />
+    <Compile Include="TimerStateTransition.cs" />
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />

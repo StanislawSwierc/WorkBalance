@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using WorkBalance.Contracts;
 
 namespace WorkBalance.Debug
 {
-    [Export]
-    public class TimerTrace: IPartImportsSatisfiedNotification
+    [Export(typeof(IPlugin))]
+    public class TimerTrace : IPlugin, IPartImportsSatisfiedNotification
     {
         [Import]
         ITimer Timer { get; set; }
