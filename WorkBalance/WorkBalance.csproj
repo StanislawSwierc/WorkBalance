@@ -138,6 +138,7 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="TimerState.cs" />
     <Compile Include="Utilities\DesignTimeCatalog.cs" />
     <Compile Include="Utilities\DesignTimeExportAttribute.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />

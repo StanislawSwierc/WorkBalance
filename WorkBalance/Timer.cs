@@ -19,15 +19,6 @@ using WorkBalance.Contracts;
 
 namespace WorkBalance
 {
-    public enum TimerState
-    {
-        Ready,
-        Sprint,
-        HomeStraight,
-        Break,
-        BreakOverrun
-    }
-
     [Export]
     public class Timer : ViewModelBase, IPartImportsSatisfiedNotification
     {
