@@ -3606,14 +3606,9 @@
 			Width="28" -->
 
                                 <!-- Start: Month Content Grid -->
-                                <Grid x:Name="PART_MonthView" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Visible" Margin="3,3,3,3">
+                                <Grid Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="3,3,3,3">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -3625,8 +3620,36 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                </Grid>
 
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Mo" TextAlignment="Center" FontSize="10"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Tu" TextAlignment="Center" FontSize="10"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="We" TextAlignment="Center" FontSize="10"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Th" TextAlignment="Center" FontSize="10"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="4" Text="Fr" TextAlignment="Center" FontSize="10"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="5" Text="Sa" TextAlignment="Center" FontSize="10"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="6" Text="Su" TextAlignment="Center" FontSize="10"/>
+
+                                    <Grid x:Name="PART_MonthView" Grid.Row="1" Grid.ColumnSpan="7" Visibility="Visible" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </Grid>
                                 <!-- End: Year Content Grid -->
                                 <Grid x:Name="PART_YearView" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="3" Visibility="Hidden" Margin="6,-3,7,6">
                                     <Grid.RowDefinitions>
