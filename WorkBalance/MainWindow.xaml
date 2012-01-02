@@ -81,7 +81,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5,2,5">
@@ -103,10 +102,10 @@
                     </Button>
                 </StackPanel>
             </Border>
-            <Border Grid.ColumnSpan="2" Margin="2,0" Grid.Row="2" Background="{DynamicResource ToolBarButtonHover}" BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="1" CornerRadius="2" >
-                <TextBlock Text="{Binding Timer.CurrentActivity.Name}" Foreground="{DynamicResource TextBrush}" Margin="10,0"/>
-            </Border>
-            <Expander x:Name="expander" Grid.Row="3" Grid.ColumnSpan="2" Header="Activity Inventory">
+            <Expander x:Name="expander" Grid.Row="2" Grid.ColumnSpan="2" >
+                <Expander.Header>
+                    <Binding Path="Timer.CurrentActivity.Name" FallbackValue="Activity Inventory" />
+                </Expander.Header>
                 <local:ActivityInventoryView x:Name="activityInventory" Height="200">
                     <local:ActivityInventoryView.LayoutTransform>
                         <ScaleTransform ScaleX="1" ScaleY="0"/>
