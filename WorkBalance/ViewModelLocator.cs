@@ -41,19 +41,19 @@ namespace WorkBalance
         /// </summary>
         public ViewModelLocator()
         {
-            var innerCatalog = new AggregateCatalog(
-                new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()),
-                new DirectoryCatalog("Plugins"));
-
-            var catalog = new DesignTimeCatalog(innerCatalog);
-            m_Container = new CompositionContainer(catalog);
-
+            
             if (GalaSoft.MvvmLight.ViewModelBase.IsInDesignModeStatic)
             {
-                // Create design time services and viewmodels
+                var catalog = new DesignTimeCatalog(new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()));
+                m_Container = new CompositionContainer(catalog);
             }
             else
             {
+                var catalog = new AggregateCatalog(
+                    new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()),
+                    new DirectoryCatalog("Plugins"));
+                m_Container = new CompositionContainer(catalog);
+
                 Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
                 m_Container.ComposeExportedValue<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
             }
