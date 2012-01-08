@@ -34,6 +34,11 @@
     <Reference Include="Microsoft.Lync.Model">
       <HintPath>lib\Microsoft.Lync.Model.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Uc, Version=4.0.7577.5, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>lib\Microsoft.Office.Uc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -51,6 +56,7 @@
     <ProjectReference Include="..\..\WorkBalance\WorkBalance.csproj">
       <Project>{C4FE13BB-7941-47C1-91B6-AE17C52A01BF}</Project>
       <Name>WorkBalance</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
