@@ -59,7 +59,10 @@ namespace WorkBalance.Lync
                             var finishTime = DateTime.Now + Timer.SprintDuration;
                             var personalNote = string.Format("I'm working till {0} on: {1}",
                                                              finishTime.ToShortTimeString(), Timer.CurrentActivity.Name);
-                            SetStatus(ContactAvailability.Busy, personalNote);
+                            var availability = Timer.CurrentActivity.Tags.Any(t => t.Name == "dnd")
+                                                   ? ContactAvailability.Busy
+                                                   : _snapshotAvailability;
+                            SetStatus(availability, personalNote);
                             break;
                         case TimerStateTransition.SprintToReady:
                             RestoreFromSnapshot();
