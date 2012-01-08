@@ -92,6 +92,11 @@ namespace WorkBalance
             ToggleTimerCommand.Subscribe(o => m_InternalState.ToggleTimer());
         }
 
+        public TimeSpan SprintDuration
+        {
+            get { return m_SprintDuration; }
+        }
+
         private TimeSpan _Time;
         public TimeSpan Time
         {

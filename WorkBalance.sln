@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6869
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sound", "Plugins\Sound\Sound.csproj", "{F95717B3-8547-4013-8A4D-8A57684FF231}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkBalance.Lync", "Plugins\WorkBalance.Lync\WorkBalance.Lync.csproj", "{36E033B6-8CCF-440C-A530-D44120FF464A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,11 +39,22 @@ Global
 		{F95717B3-8547-4013-8A4D-8A57684FF231}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F95717B3-8547-4013-8A4D-8A57684FF231}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F95717B3-8547-4013-8A4D-8A57684FF231}.Release|x86.ActiveCfg = Release|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{36E033B6-8CCF-440C-A530-D44120FF464A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F95717B3-8547-4013-8A4D-8A57684FF231} = {68693941-A114-4B27-A647-43D067D08481}
+		{36E033B6-8CCF-440C-A530-D44120FF464A} = {68693941-A114-4B27-A647-43D067D08481}
 	EndGlobalSection
 EndGlobal

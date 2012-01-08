@@ -13,6 +13,7 @@ namespace WorkBalance
         Activity CurrentActivity { get; }
 
         TimerState State { get; }
+        TimeSpan SprintDuration { get; }
 
         event EventHandler<TimerStateChangedEventArgs> StateChanged;
     }
