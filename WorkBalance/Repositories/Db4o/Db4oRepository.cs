@@ -33,16 +33,19 @@ namespace WorkBalance.Repositories.Db4o
         public void Add(TEntity entity)
         {
             m_Container.Store(entity);
+            m_Container.Commit();
         }
 
         public void Delete(TEntity entity)
         {
             m_Container.Delete(entity);
+            m_Container.Commit();
         }
 
         public void Update(TEntity entity)
         {
             m_Container.Store(entity);
+            m_Container.Commit();
         }
     }
 }
