@@ -8,86 +8,87 @@ using ReactiveUI.Xaml;
 
 namespace WorkBalance.Domain
 {
-    public class Activity : ReactiveObject
+    public class Activity : Entity
     {
         /// <summary>
         /// The name of the Activity
         /// </summary>
-        private string _Name;
+        private string _name;
         public string Name
         {
-            get { return _Name; }
-            set { this.RaiseAndSetIfChanged(self => self.Name, value); }
+            get { return _name; }
+            set { Set(ref _name, value, "Name"); }
         }
 
         /// <summary>
         /// Expected effort measured in sprints
         /// </summary>
-        private int _ExpectedEffort;
+        private int _expectedEffort;
         public int ExpectedEffort
         {
-            get { return _ExpectedEffort; }
-            set { this.RaiseAndSetIfChanged(self => self.ExpectedEffort, value); }
+            get { return _expectedEffort; }
+            set { Set(ref _expectedEffort, value, "ExpectedEffort"); }
         }
 
         /// <summary>
         /// Actual effort measured in sprints
         /// </summary>
-        private int _ActualEffort;
+        private int _actualEffort;
+
         public int ActualEffort
         {
-            get { return _ActualEffort; }
-            set { this.RaiseAndSetIfChanged(self => self.ActualEffort, value); }
+            get { return _actualEffort; }
+            set { Set(ref _actualEffort, value, "ActualEffort"); }
         }
 
         /// <summary>
         /// Gets or sets the value indicating wheather the Activity is archived
         /// </summary>
-        private bool _Archived;
+        private bool _archived;
         public bool Archived
         {
-            get { return _Archived; }
-            set { this.RaiseAndSetIfChanged(self => self.Archived, value); }
+            get { return _archived; }
+            set { Set(ref _archived, value, "Archived"); }
         }
 
         /// <summary>
         /// Gets or sets the value indicating wheather the Activity is completed
         /// </summary>
-        private bool _Completed;
+        private bool _completed;
         public bool Completed
         {
-            get { return _Completed; }
-            set { this.RaiseAndSetIfChanged(self => self.Completed, value); }
+            get { return _completed; }
+            set { Set(ref _completed, value, "Completed"); }
         }
 
         /// <summary>
         /// Gets or sets the time when the Activity was created
         /// </summary>
-        private DateTime _CreationTime;
+        private DateTime _creationTime;
         public DateTime CreationTime
         {
-            get { return _CreationTime; }
-            set { this.RaiseAndSetIfChanged(self => self.CreationTime, value); }
+            get { return _creationTime; }
+            set { Set(ref _creationTime, value, "CreationTime"); }
         }
 
         /// <summary>
         /// Gets or sets the collection of associated tags
         /// </summary>
-        private ICollection<ActivityTag> _Tags;
+        private ICollection<ActivityTag> _tags;
         public ICollection<ActivityTag> Tags
         {
-            get { return _Tags; }
-            set { this.RaiseAndSetIfChanged(self => self.Tags, value); }
+            get { return _tags; }
+            set { Set(ref _tags, value, "Tags"); }
         }
 
         /// <summary>
         /// Gets of sets the collection of sprints
         /// </summary>
-        private ICollection<Sprint> _Sprints;
+        private ICollection<Sprint> _sprints;
         public ICollection<Sprint> Sprints
         {
-            get { return _Sprints; }
-            set { this.RaiseAndSetIfChanged(self => self.Sprints, value); }
+            get { return _sprints; }
+            set { Set(ref _sprints, value, "Sprints"); }
         }
 
         public Activity()
