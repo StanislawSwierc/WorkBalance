@@ -12,3 +12,4 @@ Obj/
 TestResults/
 _Resharper.*/
 StyleCop.Cache
+packages/
