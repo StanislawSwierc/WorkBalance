@@ -123,11 +123,13 @@
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\Entity.cs" />
+    <Compile Include="Domain\IDomainFactory.cs" />
     <Compile Include="Domain\Interruption.cs" />
     <Compile Include="Domain\InterruptionRecord.cs" />
     <Compile Include="Domain\InterruptionTag.cs" />
     <Compile Include="Domain\InterruptionType.cs" />
     <Compile Include="Domain\Sprint.cs" />
+    <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="Notifications.cs" />
     <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
@@ -135,7 +137,7 @@
     <Compile Include="Repositories\Design\Repositories.cs" />
     <Compile Include="Repositories\Design\DesignRepository.cs" />
     <Compile Include="Repositories\Repositories.cs" />
-    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Infrastructure\IRepository.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerState.cs" />
     <Compile Include="TimerStateChangedEventArgs.cs" />

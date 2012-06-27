@@ -30,7 +30,7 @@ namespace WorkBalance.Repositories.Design
                 ExpectedEffort = 5,
                 Name = "Sample Activity",
             };
-            result.Sprints = SprintRepository.GetAll().Select(s => { s.Activity = result; return s; }).ToList();
+            result.Sprints = SprintRepository.Get().ToList().Select(s => { s.Activity = result; return s; }).ToList();
             return result;
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Linq;
 using System.Diagnostics.Contracts;
+using WorkBalance.Infrastructure;
 
 
 namespace WorkBalance.Repositories.Db4o
@@ -20,14 +21,9 @@ namespace WorkBalance.Repositories.Db4o
             m_Container = container;
         }
 
-        public IEnumerable<TEntity> Get(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        public IQueryable<TEntity> Get()
         {
-            return m_Container.AsQueryable<TEntity>().Where(predicate);
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            return m_Container.Query<TEntity>();
+            return m_Container.Query<TEntity>().AsQueryable();
         }
 
         public void Add(TEntity entity)

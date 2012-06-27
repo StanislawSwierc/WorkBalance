@@ -19,7 +19,7 @@ namespace WorkBalance.Repositories.Db4o
 
         public IEnumerable<Activity> GetActive()
         {
-            return Get(a => !a.Archived);
+            return Get().Where(a => !a.Archived);
         }
     }
 

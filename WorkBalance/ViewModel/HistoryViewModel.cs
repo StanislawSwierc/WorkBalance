@@ -123,7 +123,7 @@ namespace WorkBalance.ViewModel
             Activities.Clear();
             if (DatesFilter.Count > 0)
             {
-                ActivityRepository.Get(
+                ActivityRepository.Get().Where(
                     a => DatesFilter.Contains(a.CreationTime.Date) &&
                         (string.IsNullOrWhiteSpace(NameFilter) || a.Name.Contains(NameFilter))
                     ).ForEach(Activities.Add);

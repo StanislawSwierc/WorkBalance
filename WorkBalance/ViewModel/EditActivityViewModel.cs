@@ -98,7 +98,7 @@ namespace WorkBalance.ViewModel
             // Convert tag names to real tags stored in the database
             var tags = tagNames.Select(name =>
             {
-                var tag = ActivityTagRepository.Get(t => t.Name == name).SingleOrDefault();
+                var tag = ActivityTagRepository.Get().Where(t => t.Name == name).SingleOrDefault();
                 if (tag == null)
                 {
                     tag = new ActivityTag() { Name = name };

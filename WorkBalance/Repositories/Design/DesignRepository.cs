@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using WorkBalance.Infrastructure;
 
 namespace WorkBalance.Repositories.Design
 {
@@ -14,14 +15,9 @@ namespace WorkBalance.Repositories.Design
             return Enumerable.Range(0, 10).Select(i => CreateInstance());
         }
 
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> expression)
+        public IQueryable<TEntity> Get()
         {
-            return CreateInstances();
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            return CreateInstances();
+            return CreateInstances().AsQueryable();
         }
 
         public void Add(TEntity entity)

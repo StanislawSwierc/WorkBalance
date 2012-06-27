@@ -49,7 +49,7 @@ namespace WorkBalance.ViewModel
                 .Select(c => Name)
                 .ObserveOnDispatcher()
                 // Access to the ActivityRepository synchronized on the main thread... maybe not the best idea
-                .Select(n => ActivityRepository.Get(a => a.Name == n).OrderByDescending(a => a.CreationTime).FirstOrDefault())
+                .Select(n => ActivityRepository.Get().Where(a => a.Name == n).OrderByDescending(a => a.CreationTime).FirstOrDefault())
                 .Where(a => a != null);
 
             prototypeActivity
@@ -104,7 +104,7 @@ namespace WorkBalance.ViewModel
             // Convert tag names to real tags stored in the database
             var tags = tagNames.Select(name =>
             {
-                var tag = ActivityTagRepository.Get(t => t.Name == name).SingleOrDefault();
+                var tag = ActivityTagRepository.Get().Where(t => t.Name == name).SingleOrDefault();
                 if (tag == null)
                 {
                     tag = new ActivityTag() { Name = name };
