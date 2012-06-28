@@ -132,11 +132,12 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="Notifications.cs" />
+    <Compile Include="Repositories\Db4o\Db4oDomainFactory.cs" />
     <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
-    <Compile Include="Repositories\Db4o\Repositories.cs" />
-    <Compile Include="Repositories\Design\Repositories.cs" />
+    <Compile Include="Repositories\Db4o\Db4oUnitOfWork.cs" />
+    <Compile Include="Repositories\Design\DesignDomainFactory.cs" />
+    <Compile Include="Repositories\Design\DesignUnitOfWork.cs" />
     <Compile Include="Repositories\Design\DesignRepository.cs" />
-    <Compile Include="Repositories\Repositories.cs" />
     <Compile Include="Infrastructure\IRepository.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerState.cs" />

@@ -12,36 +12,38 @@ namespace WorkBalance.Repositories.Db4o
 {
     public class Db4oRepository<TEntity> :IRepository<TEntity>
     {
-        IObjectContainer m_Container;
+        private readonly Db4oUnitOfWork _unitOfWork;
 
-        public Db4oRepository(IObjectContainer container)
+        public Db4oRepository(Db4oUnitOfWork unitOfWork)
         {
-            Contract.Requires(container != null);
+            Contract.Requires<ArgumentNullException>(unitOfWork != null, "unitOfWork");
 
-            m_Container = container;
+            _unitOfWork = unitOfWork;
+        }
+
+        public IUnitOfWork UnitOfWork
+        {
+            get { return _unitOfWork; }
         }
 
         public IQueryable<TEntity> Get()
         {
-            return m_Container.Query<TEntity>().AsQueryable();
+            return _unitOfWork.Container.Query<TEntity>().AsQueryable();
         }
 
         public void Add(TEntity entity)
         {
-            m_Container.Store(entity);
-            m_Container.Commit();
+            _unitOfWork.Container.Store(entity);
         }
 
         public void Delete(TEntity entity)
         {
-            m_Container.Delete(entity);
-            m_Container.Commit();
+            _unitOfWork.Container.Delete(entity);
         }
 
         public void Update(TEntity entity)
         {
-            m_Container.Store(entity);
-            m_Container.Commit();
+            _unitOfWork.Container.Store(entity);
         }
     }
 }

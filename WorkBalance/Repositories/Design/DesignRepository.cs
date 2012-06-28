@@ -4,15 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using WorkBalance.Infrastructure;
+using WorkBalance.Repositories.Db4o;
 
 namespace WorkBalance.Repositories.Design
 {
-    public abstract class DesignRepository<TEntity> : IRepository<TEntity>
+    public class DesignRepository<TEntity> : IRepository<TEntity>
     {
-        protected abstract TEntity CreateInstance();
+        private readonly Func<TEntity> _entityFactory;
+
+        public DesignRepository(Func<TEntity> entityFactory)
+        {
+            _entityFactory = entityFactory;
+        }
+
         protected IEnumerable<TEntity> CreateInstances()
         {
-            return Enumerable.Range(0, 10).Select(i => CreateInstance());
+            return Enumerable.Range(0, 10).Select(i => _entityFactory());
+        }
+
+        public IUnitOfWork UnitOfWork
+        {
+            get { return new DesignUnitOfWork();}
         }
 
         public IQueryable<TEntity> Get()

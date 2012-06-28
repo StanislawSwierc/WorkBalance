@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Threading;
 
 using System.ComponentModel.Composition;
+using WorkBalance.Infrastructure;
 using WorkBalance.ViewModel;
 using ReactiveUI;
 using WorkBalance.Domain;
@@ -24,10 +25,11 @@ namespace WorkBalance
     public class Timer : ViewModelBase, ITimer, IPartImportsSatisfiedNotification
     {
         [Import]
-        public IActivityRepository ActivityRepository { get; set; }
+        public IDomainFactory DomainFactory { get; set; }
 
-        [Import]
-        public ISprintRepository SprintRepository { get; set; }
+        public IRepository<Activity> ActivityRepository { get; set; }
+
+        public IRepository<Sprint> SprintRepository { get; set; }
 
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
@@ -73,6 +75,10 @@ namespace WorkBalance
 
         public void OnImportsSatisfied()
         {
+            var unitOfWork = DomainFactory.CreateUnitOfWork();
+            ActivityRepository = DomainFactory.CreateActivityRepository(unitOfWork);
+            SprintRepository = DomainFactory.CreateSprintRepository(unitOfWork);
+
             MessageBus.Listen<Activity>(Notifications.ActivitySelected)
                 .ObserveOnDispatcher()
                 .Subscribe(a => PendingActivity = a);

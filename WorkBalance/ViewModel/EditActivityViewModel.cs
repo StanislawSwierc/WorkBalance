@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
-
+using WorkBalance.Infrastructure;
 using WorkBalance.Repositories;
 using System.ComponentModel.Composition;
 using WorkBalance.Domain;
@@ -22,14 +22,12 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EditActivityViewModel : ViewModelBase
     {
-        [Import]
-        public IActivityRepository ActivityRepository;
-
-        [Import]
-        private IActivityTagRepository ActivityTagRepository;
+        
+        private IRepository<Activity> ActivityRepository;
+        private IRepository<ActivityTag> ActivityTagRepository;
 
         [ImportingConstructor]
-        public EditActivityViewModel()
+        public EditActivityViewModel(IDomainFactory factory, IUnitOfWork unit)
         {
             int result = 0;
             var canSave = this.WhenAny(
