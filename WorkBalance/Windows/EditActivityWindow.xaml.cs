@@ -23,7 +23,6 @@ namespace WorkBalance.Windows
     public partial class EditActivityWindow : Window
     {
         private EditActivityViewModel _ViewModel;
-        private IDisposable _CloseSubscription;
 
         public EditActivityWindow()
         {
@@ -61,21 +60,11 @@ namespace WorkBalance.Windows
             {
                 _ViewModel = (EditActivityViewModel)this.DataContext;
                 _ViewModel.Activity = Activity;
-                _CloseSubscription = _ViewModel.MessageBus
-                    .Listen<Unit>(Notifications.EditActivityWindowClose)
+                _ViewModel.CloseRequest
                     .ObserveOnDispatcher()
                     .Subscribe(o => this.Close());
             }
             nameTextBox.Focus();
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            if (_CloseSubscription != null)
-            {
-                _CloseSubscription.Dispose();
-                _CloseSubscription = null;
-            }
         }
     }
 }

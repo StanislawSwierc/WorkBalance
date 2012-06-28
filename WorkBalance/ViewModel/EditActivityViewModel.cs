@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
-
 
 using WorkBalance.Repositories;
 using System.ComponentModel.Composition;
@@ -123,7 +123,10 @@ namespace WorkBalance.ViewModel
 
         private void Close()
         {
-            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.EditActivityWindowClose);
+            CloseRequestSubject.OnNext(Unit.Default);
         }
+
+        public Subject<Unit> CloseRequestSubject = new Subject<Unit>();
+        public IObservable<Unit> CloseRequest { get { return CloseRequestSubject; } } 
     }
 }
