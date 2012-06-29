@@ -19,6 +19,7 @@
     <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
     <RestorePackages>true</RestorePackages>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -29,6 +30,39 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>True</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsInferRequires>False</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestEnsures>False</CodeContractsSuggestEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsDisjunctiveRequires>False</CodeContractsDisjunctiveRequires>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -51,6 +85,9 @@
     </Reference>
     <Reference Include="Db4objects.Db4o.Linq">
       <HintPath>..\packages\db4o-devel.8.1.184.15492\lib\net40\Db4objects.Db4o.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WPF4">
       <HintPath>..\packages\MvvmLight.3.0.3\lib\net40\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
@@ -81,7 +118,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx_Experimental-Main.1.1.11011\lib\Net4\System.Reactive.dll</HintPath>
@@ -122,23 +161,23 @@
     <Compile Include="Debug\TimerTrace.cs" />
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
+    <Compile Include="Domain\Design\DesignDomainContext.cs" />
     <Compile Include="Domain\Entity.cs" />
-    <Compile Include="Domain\IDomainFactory.cs" />
+    <Compile Include="Domain\IDomainContext.cs" />
     <Compile Include="Domain\Interruption.cs" />
     <Compile Include="Domain\InterruptionRecord.cs" />
     <Compile Include="Domain\InterruptionTag.cs" />
     <Compile Include="Domain\InterruptionType.cs" />
     <Compile Include="Domain\Sprint.cs" />
-    <Compile Include="Infrastructure\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\Db4o\Db4oObjectContext.cs" />
+    <Compile Include="Infrastructure\IObjectContext.cs" />
+    <Compile Include="Infrastructure\IObjectSet.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="Notifications.cs" />
-    <Compile Include="Repositories\Db4o\Db4oDomainFactory.cs" />
-    <Compile Include="Repositories\Db4o\Db4oRepository.cs" />
-    <Compile Include="Repositories\Db4o\Db4oUnitOfWork.cs" />
-    <Compile Include="Repositories\Design\DesignDomainFactory.cs" />
-    <Compile Include="Repositories\Design\DesignUnitOfWork.cs" />
-    <Compile Include="Repositories\Design\DesignRepository.cs" />
-    <Compile Include="Infrastructure\IRepository.cs" />
+    <Compile Include="Domain\Db4o\Db4oDomainContext.cs" />
+    <Compile Include="Infrastructure\Db4o\Db4oObjectSet.cs" />
+    <Compile Include="Infrastructure\Design\DesignObjectContext.cs" />
+    <Compile Include="Infrastructure\Design\DesignObjectSet.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerState.cs" />
     <Compile Include="TimerStateChangedEventArgs.cs" />
@@ -222,6 +261,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\WorkBalance.Domain.Activity.datasource" />
     <None Include="Properties\DataSources\WorkBalance.Domain.ActivityTag.datasource" />

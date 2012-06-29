@@ -27,7 +27,7 @@ namespace WorkBalance.ViewModel
     public class ActivityInventoryViewModel : ViewModelBase, IPartImportsSatisfiedNotification
     {
         [Import]
-        public IActivityRepository ActivityRepository { get; private set; }
+        public IDomainContext DomainContext { get; set; }
 
         [ImportMany]
         public Lazy<IActivityFormatter, IActivityFormatterMetadata>[] ActivityFormatters { get; set; }
@@ -106,13 +106,15 @@ namespace WorkBalance.ViewModel
         private void IncreaseActualEffort(Activity activity)
         {
             activity.ActualEffort += 1;
-            ActivityRepository.Update(activity);
+            DomainContext.Activities.Update(activity);
+            DomainContext.Commit();
         }
 
         private void DecreaseActualEffort(Activity activity)
         {
             activity.ActualEffort -= 1;
-            ActivityRepository.Update(activity);
+            DomainContext.Activities.Update(activity);
+            DomainContext.Commit();
         }
 
         private void AddActivity(Activity activity)
@@ -124,14 +126,16 @@ namespace WorkBalance.ViewModel
         private void DeleteActivity(Activity activity)
         {
             Activities.Remove(activity);
-            ActivityRepository.Delete(activity);
+            DomainContext.Activities.DeleteObject(activity);
+            DomainContext.Commit();
         }
 
         private void ArchiveActivity(Activity activity)
         {
             Activities.Remove(activity);
             activity.Archived = true;
-            ActivityRepository.Update(activity);
+            DomainContext.Activities.Update(activity);
+            DomainContext.Commit();
         }
 
         private void CopyActivitiesToClipboard(IEnumerable<Activity> activities)
@@ -152,7 +156,7 @@ namespace WorkBalance.ViewModel
                 .Where(u => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities))
                 .Subscribe((u) => CopyActivitiesToClipboard(SelectedActivities));
 
-            ActivityRepository.GetActive().ForEach(AddActivity);
+            DomainContext.Activities.Where(a => !a.Archived).ForEach(AddActivity);
         }
     }
 }

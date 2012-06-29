@@ -26,16 +26,16 @@ namespace WorkBalance.Domain
 
         private void RaisePropertyChanged(string propertyName)
         {
-            var handler = this.PropertyChanging;
+            var handler = PropertyChanged;
             if (handler != null) 
             {
-                handler(this, new PropertyChangingEventArgs(propertyName));
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
         private void RaisePropertyChanging(string propertyName)
         {
-            var handler = this.PropertyChanging;
+            var handler = PropertyChanging;
             if (handler != null) 
             {
                 handler(this, new PropertyChangingEventArgs(propertyName));

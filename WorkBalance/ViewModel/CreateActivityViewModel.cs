@@ -23,12 +23,7 @@ namespace WorkBalance.ViewModel
     public class CreateActivityViewModel : ViewModelBase
     {
         [Import]
-        public IActivityRepository ActivityRepository;
-
-        [Import]
-        private IActivityTagRepository ActivityTagRepository;
-
-
+        public IDomainContext DomainContext { get; set; }
 
         private string _ExpectedEffort;
 
@@ -49,7 +44,7 @@ namespace WorkBalance.ViewModel
                 .Select(c => Name)
                 .ObserveOnDispatcher()
                 // Access to the ActivityRepository synchronized on the main thread... maybe not the best idea
-                .Select(n => ActivityRepository.Get().Where(a => a.Name == n).OrderByDescending(a => a.CreationTime).FirstOrDefault())
+                .Select(n => DomainContext.Activities.Where(a => a.Name == n).OrderByDescending(a => a.CreationTime).FirstOrDefault())
                 .Where(a => a != null);
 
             prototypeActivity
@@ -104,11 +99,10 @@ namespace WorkBalance.ViewModel
             // Convert tag names to real tags stored in the database
             var tags = tagNames.Select(name =>
             {
-                var tag = ActivityTagRepository.Get().Where(t => t.Name == name).SingleOrDefault();
+                var tag = DomainContext.ActivityTags.SingleOrDefault(t => t.Name == name);
                 if (tag == null)
                 {
                     tag = new ActivityTag() { Name = name };
-                    ActivityTagRepository.Add(tag);
                 }
                 return tag;
             }).ToList();
@@ -118,7 +112,8 @@ namespace WorkBalance.ViewModel
             activity.ExpectedEffort = int.Parse(ExpectedEffort);
             activity.Tags = tags;
 
-            ActivityRepository.Add(activity);
+            DomainContext.Activities.Add(activity);
+            DomainContext.Commit();
             MessageBus.SendMessage(activity, Notifications.ActivityCreated);
             Close();
         }

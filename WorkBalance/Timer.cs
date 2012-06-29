@@ -6,7 +6,6 @@ using System.Text;
 using System.Windows.Threading;
 
 using System.ComponentModel.Composition;
-using WorkBalance.Infrastructure;
 using WorkBalance.ViewModel;
 using ReactiveUI;
 using WorkBalance.Domain;
@@ -25,11 +24,7 @@ namespace WorkBalance
     public class Timer : ViewModelBase, ITimer, IPartImportsSatisfiedNotification
     {
         [Import]
-        public IDomainFactory DomainFactory { get; set; }
-
-        public IRepository<Activity> ActivityRepository { get; set; }
-
-        public IRepository<Sprint> SprintRepository { get; set; }
+        public IDomainContext DomainContext { get; set; }
 
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
@@ -75,10 +70,6 @@ namespace WorkBalance
 
         public void OnImportsSatisfied()
         {
-            var unitOfWork = DomainFactory.CreateUnitOfWork();
-            ActivityRepository = DomainFactory.CreateActivityRepository(unitOfWork);
-            SprintRepository = DomainFactory.CreateSprintRepository(unitOfWork);
-
             MessageBus.Listen<Activity>(Notifications.ActivitySelected)
                 .ObserveOnDispatcher()
                 .Subscribe(a => PendingActivity = a);
@@ -263,8 +254,9 @@ namespace WorkBalance
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
 
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
-                m_Timer.SprintRepository.Add(sprint);
-                m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
+                m_Timer.DomainContext.Sprints.Add(sprint);
+                m_Timer.DomainContext.Activities.Update(m_Timer.CurrentActivity);
+                m_Timer.DomainContext.Commit();
             }
         }
 
@@ -303,9 +295,10 @@ namespace WorkBalance
                 {
                     // Record sprint as actual effort
                     m_Timer.CurrentActivity.ActualEffort++;
-                    m_Timer.ActivityRepository.Update(m_Timer.CurrentActivity);
+                    m_Timer.DomainContext.Activities.Update(m_Timer.CurrentActivity);
                 }
-                m_Timer.SprintRepository.Update(sprint);
+                m_Timer.DomainContext.Sprints.Update(sprint);
+                m_Timer.DomainContext.Commit();
             }
         }
 

@@ -22,7 +22,7 @@ namespace WorkBalance.ViewModel
         #region Imports
 
         [Import]
-        public IActivityRepository ActivityRepository { get; set; }
+        public IDomainContext DomainContext { get; set; }
 
         public void OnImportsSatisfied()
         {
@@ -123,7 +123,7 @@ namespace WorkBalance.ViewModel
             Activities.Clear();
             if (DatesFilter.Count > 0)
             {
-                ActivityRepository.Get().Where(
+                DomainContext.Activities.Where(
                     a => DatesFilter.Contains(a.CreationTime.Date) &&
                         (string.IsNullOrWhiteSpace(NameFilter) || a.Name.Contains(NameFilter))
                     ).ForEach(Activities.Add);

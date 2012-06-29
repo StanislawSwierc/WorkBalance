@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
-using WorkBalance.Infrastructure;
 using WorkBalance.Repositories;
 using System.ComponentModel.Composition;
 using WorkBalance.Domain;
@@ -22,12 +21,9 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EditActivityViewModel : ViewModelBase
     {
-        
-        private IRepository<Activity> ActivityRepository;
-        private IRepository<ActivityTag> ActivityTagRepository;
 
         [ImportingConstructor]
-        public EditActivityViewModel(IDomainFactory factory, IUnitOfWork unit)
+        public EditActivityViewModel()
         {
             int result = 0;
             var canSave = this.WhenAny(
@@ -60,6 +56,8 @@ namespace WorkBalance.ViewModel
             get { return _Tags; }
             set { this.RaiseAndSetIfChanged(x => x.Tags, value); }
         }
+
+        public IDomainContext DomainContext { get; set; }
 
         private Activity _Activity;
         public Activity Activity
@@ -96,11 +94,10 @@ namespace WorkBalance.ViewModel
             // Convert tag names to real tags stored in the database
             var tags = tagNames.Select(name =>
             {
-                var tag = ActivityTagRepository.Get().Where(t => t.Name == name).SingleOrDefault();
+                var tag = DomainContext.ActivityTags.SingleOrDefault(t => t.Name == name);
                 if (tag == null)
                 {
                     tag = new ActivityTag() { Name = name };
-                    ActivityTagRepository.Add(tag);
                 }
                 return tag;
             }).ToList();
@@ -109,7 +106,8 @@ namespace WorkBalance.ViewModel
             Activity.ExpectedEffort = int.Parse(ExpectedEffort);
             Activity.Tags = tags;
 
-            ActivityRepository.Update(Activity);
+            // TODO: This should be updated by the caller
+            DomainContext.Activities.Update(Activity);
             
             Close();
         }

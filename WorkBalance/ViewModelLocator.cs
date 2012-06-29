@@ -13,6 +13,8 @@
 */
 
 
+using WorkBalance.Domain;
+using WorkBalance.Domain.Db4o;
 using WorkBalance.ViewModel;
 using System;
 using System.Linq;
@@ -57,7 +59,9 @@ namespace WorkBalance
                             new DirectoryCatalog("Plugins"))));
 
                 Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
-                m_Container.ComposeExportedValue<Db4objects.Db4o.IObjectContainer>(Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage));
+                var objectContainer = Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage);
+                var domainContext = new Db4oDomainContext(objectContainer);
+                m_Container.ComposeExportedValue<IDomainContext>(domainContext);
             }
             m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());
 
