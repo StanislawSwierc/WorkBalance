@@ -21,8 +21,9 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EditActivityViewModel : ViewModelBase
     {
+        [Import]
+        public IDomainContext DomainContext { get; set; }
 
-        [ImportingConstructor]
         public EditActivityViewModel()
         {
             int result = 0;
@@ -56,8 +57,6 @@ namespace WorkBalance.ViewModel
             get { return _Tags; }
             set { this.RaiseAndSetIfChanged(x => x.Tags, value); }
         }
-
-        public IDomainContext DomainContext { get; set; }
 
         private Activity _Activity;
         public Activity Activity
