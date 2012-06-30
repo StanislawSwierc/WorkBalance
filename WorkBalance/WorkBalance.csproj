@@ -162,6 +162,7 @@
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\Design\DesignDomainContext.cs" />
+    <Compile Include="Domain\Ef\EfDomainContext.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\IDomainContext.cs" />
     <Compile Include="Domain\Interruption.cs" />
@@ -170,6 +171,8 @@
     <Compile Include="Domain\InterruptionType.cs" />
     <Compile Include="Domain\Sprint.cs" />
     <Compile Include="Infrastructure\Db4o\Db4oObjectContext.cs" />
+    <Compile Include="Infrastructure\Ef\EfObjectContext.cs" />
+    <Compile Include="Infrastructure\Ef\EfObjectSet.cs" />
     <Compile Include="Infrastructure\IObjectContext.cs" />
     <Compile Include="Infrastructure\IObjectSet.cs" />
     <Compile Include="ITimer.cs" />
@@ -261,7 +264,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\WorkBalance.Domain.Activity.datasource" />
     <None Include="Properties\DataSources\WorkBalance.Domain.ActivityTag.datasource" />

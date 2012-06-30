@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace WorkBalance.Domain
 {
-    public class ActivityTag
+    public class ActivityTag : Entity
     {
         private const char c_Separator = '\\';
         private static readonly Regex c_NameValidator = new Regex(@"^[^\s]+");

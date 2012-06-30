@@ -11,6 +11,19 @@ namespace WorkBalance.Domain
 {
     public abstract class Entity : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        #region Properties
+
+        /// <summary>
+        /// Identifier
+        /// </summary>
+        /// <remarks>
+        /// In order to use Entities with Entity Framework they all have to 
+        /// have key property.
+        /// </remarks>
+        public int Id { get; set; }
+
+        #endregion
+
         #region Methods
 
         protected bool Set<T>(ref T field, T value, string propertyName)

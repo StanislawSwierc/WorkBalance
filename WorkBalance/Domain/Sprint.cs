@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WorkBalance.Domain
 {
-    public class Sprint
+    public class Sprint : Entity
     {
         public Activity Activity { get; set; }
         public DateTime StartTime {get; set;}

@@ -58,9 +58,11 @@ namespace WorkBalance
                             new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()),
                             new DirectoryCatalog("Plugins"))));
 
-                Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
-                var objectContainer = Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage);
-                var domainContext = new Db4oDomainContext(objectContainer);
+                //Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
+                //var objectContainer = Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage);
+                //var domainContext = new Db4oDomainContext(objectContainer);
+                //m_Container.ComposeExportedValue<IDomainContext>(domainContext);
+                var domainContext = new WorkBalance.Domain.Ef.EfDomainContext();
                 m_Container.ComposeExportedValue<IDomainContext>(domainContext);
             }
             m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());

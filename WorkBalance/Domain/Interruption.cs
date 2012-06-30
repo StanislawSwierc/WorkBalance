@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WorkBalance.Domain
 {
-    public class Interruption
+    public class Interruption : Entity
     {
         public string Name { get; private set; }
         public InterruptionType Type { get; private set; }
