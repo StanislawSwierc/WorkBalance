@@ -6,6 +6,18 @@ using System.Text.RegularExpressions;
 
 namespace WorkBalance.Domain
 {
+    /// <summary>
+    /// Tag for the activity
+    /// </summary>
+    /// <remarks>
+    /// There are few different ways one could implement tags.
+    /// A good comparison of solutions can be found at:
+    /// http://www.pui.ch/phred/archives/2005/04/tags-database-schemas.html
+    ///
+    ///  I decided that creating and entity for tag will be the best option
+    /// because it is possible to add some metadata to tags like description
+    /// or parent to organize them into hierarchies.
+    /// </remarks>
     public class ActivityTag : Entity
     {
         private const char c_Separator = '\\';
@@ -34,6 +46,13 @@ namespace WorkBalance.Domain
         public bool Archived { get; set; }
 
         public ActivityTag Parent { get; set; }
+
+        private ICollection<Activity> _activities;
+        public ICollection<Activity> Activities
+        {
+            get { return _activities; }
+            set { Set(ref _activities, value, "Activities"); }
+        }
 
         public override string ToString()
         {
