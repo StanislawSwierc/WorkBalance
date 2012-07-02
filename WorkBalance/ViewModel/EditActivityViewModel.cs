@@ -90,16 +90,12 @@ namespace WorkBalance.ViewModel
             string[] tagNames = string.IsNullOrWhiteSpace(Tags) ? new string[0] :
                 Tags.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            // Convert tag names to real tags stored in the database
-            var tags = tagNames.Select(name =>
+            var tags = DomainContext.ActivityTags.GetOrCreate(tagNames);
+
+            foreach (var tag in tags)
             {
-                var tag = DomainContext.ActivityTags.SingleOrDefault(t => t.Name == name);
-                if (tag == null)
-                {
-                    tag = new ActivityTag() { Name = name };
-                }
-                return tag;
-            }).ToList();
+               tag.Activities.Add(Activity);
+            }
 
             Activity.Name = Name;
             Activity.ExpectedEffort = int.Parse(ExpectedEffort);
