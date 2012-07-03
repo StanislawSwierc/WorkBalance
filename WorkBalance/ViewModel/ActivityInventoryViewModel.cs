@@ -62,7 +62,7 @@ namespace WorkBalance.ViewModel
             ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectedActivitiesNotEmpty);
             IncreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(IncreaseActualEffort), selectedActivitiesNotEmpty);
             DecreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(DecreaseActualEffort), selectedActivitiesNotEmpty);
-            EditActivityCommand = new RelayCommand(() => MessageBus.SendMessage(SelectedActivities[0], Notifications.Edit), selectedActivitiesNotEmpty);
+            EditActivityCommand = new RelayCommand(() => MessageBus.SendMessage(new Tuple<IDomainContext, Activity>(DomainContext, SelectedActivities[0]), Notifications.Edit), selectedActivitiesNotEmpty);
 
             this.ObservableForProperty(self => self.SelectedActivity)
                 .Subscribe(e => MessageBus.SendMessage(e.Value, Notifications.ActivitySelected));

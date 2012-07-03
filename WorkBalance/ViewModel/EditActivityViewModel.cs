@@ -21,7 +21,6 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class EditActivityViewModel : ViewModelBase
     {
-        [Import]
         public IDomainContext DomainContext { get; set; }
 
         public EditActivityViewModel()

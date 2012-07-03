@@ -54,6 +54,11 @@ namespace WorkBalance.Domain
             set { Set(ref _activities, value, "Activities"); }
         }
 
+        public ActivityTag()
+        {
+            Activities = new List<Activity>();
+        }
+
         public override string ToString()
         {
             return (Parent == null) ? Name : string.Format("{0}{1}{2}", Parent, c_Separator, Name);

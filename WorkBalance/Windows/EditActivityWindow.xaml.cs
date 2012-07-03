@@ -22,15 +22,17 @@ namespace WorkBalance.Windows
     /// </summary>
     public partial class EditActivityWindow : Window
     {
-        private EditActivityViewModel _ViewModel;
+        public EditActivityViewModel ViewModel { get; private set; }
 
         public EditActivityWindow()
         {
             App.LoadStaticResources(this);
             InitializeComponent();
+            ViewModel = (EditActivityViewModel)this.DataContext;
+            ViewModel.CloseRequest
+                .ObserveOnDispatcher()
+                .Subscribe(o => this.Close());
         }
-
-        public Activity Activity { get; set; }
 
         private void expectedEffortTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -56,14 +58,6 @@ namespace WorkBalance.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) && _ViewModel == null)
-            {
-                _ViewModel = (EditActivityViewModel)this.DataContext;
-                _ViewModel.Activity = Activity;
-                _ViewModel.CloseRequest
-                    .ObserveOnDispatcher()
-                    .Subscribe(o => this.Close());
-            }
             nameTextBox.Focus();
         }
     }

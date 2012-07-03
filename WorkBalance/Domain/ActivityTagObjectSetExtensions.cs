@@ -20,7 +20,7 @@ namespace WorkBalance.Domain
                 dictionary[tag.Name] = tag;
             }
 
-            foreach (var tagName in dictionary.Keys.Where(k => dictionary[k] == null))
+            foreach (var tagName in dictionary.Keys.Where(k => dictionary[k] == null).ToList())
             {
                 var tag = new ActivityTag() { Name = tagName };
                 dictionary[tagName] = tag;

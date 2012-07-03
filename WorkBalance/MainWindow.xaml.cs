@@ -60,7 +60,7 @@ namespace WorkBalance
                 .ObserveOnDispatcher()
                 .Subscribe(o => OpenCreateActivityWindow());
 
-            MessageBus.Listen<Activity>(Notifications.Edit)
+            MessageBus.Listen<Tuple<IDomainContext, Activity>>(Notifications.Edit)
                     .ObserveOnDispatcher()
                     .Subscribe(EditActivity);
         }
@@ -80,10 +80,11 @@ namespace WorkBalance
             ShowCustomDialog(window);
         }
 
-        private void EditActivity(Activity activity)
+        private void EditActivity(Tuple<IDomainContext, Activity> tuple)
         {
             var window = new WorkBalance.Windows.EditActivityWindow();
-            window.Activity = activity;
+            window.ViewModel.DomainContext = tuple.Item1;
+            window.ViewModel.Activity = tuple.Item2;
             ShowCustomDialog(window);
         }
 
