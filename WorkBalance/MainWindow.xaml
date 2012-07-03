@@ -18,7 +18,6 @@
     Background="#FF454545" 
     WindowStyle="None" 
     FontSize="10.667"
-    Loaded="Window_Loaded" 
     Closed="Window_Closed" 
     SizeToContent="Height">
     <Window.Resources>

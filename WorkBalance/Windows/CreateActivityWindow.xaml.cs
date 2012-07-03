@@ -21,13 +21,21 @@ namespace WorkBalance.Windows
     /// </summary>
     public partial class CreateActivityWindow : Window
     {
-        private CreateActivityViewModel _ViewModel;
-        private IDisposable _CloseSubscription;
+        public CreateActivityViewModel ViewModel { get; set; }
 
         public CreateActivityWindow()
         {
             App.LoadStaticResources(this);
             InitializeComponent();
+
+            ViewModel = (CreateActivityViewModel)this.DataContext;
+            ViewModel.CloseRequest
+                .ObserveOnDispatcher()
+                .Subscribe(result =>
+                    {
+                        this.DialogResult = result;
+                        this.Close();
+                    });
         }
 
         private void expectedEffortTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -54,24 +62,7 @@ namespace WorkBalance.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) && _ViewModel == null)
-            {
-                _ViewModel = (CreateActivityViewModel)this.DataContext;
-                _CloseSubscription = _ViewModel.MessageBus
-                    .Listen<Unit>(Notifications.CreateActivityWindowClose)
-                    .ObserveOnDispatcher()
-                    .Subscribe(o => this.Close());
-            }
             nameTextBox.Focus();
         }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            if (_CloseSubscription != null)
-            {
-                _CloseSubscription.Dispose();
-                _CloseSubscription = null;
-            }
-        }  
     }
 }

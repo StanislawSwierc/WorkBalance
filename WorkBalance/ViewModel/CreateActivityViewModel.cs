@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 
 
@@ -22,7 +23,6 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class CreateActivityViewModel : ViewModelBase
     {
-        [Import]
         public IDomainContext DomainContext { get; set; }
 
         private string _ExpectedEffort;
@@ -62,6 +62,8 @@ namespace WorkBalance.ViewModel
             CancelCommand = new RelayCommand(Cancel);
         }
 
+        public Activity Activity { get; set; }
+
         private string _Name;
         public string Name
         {
@@ -96,36 +98,20 @@ namespace WorkBalance.ViewModel
             string[] tagNames = string.IsNullOrWhiteSpace(Tags) ? new string[0] :
                 Tags.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            // Convert tag names to real tags stored in the database
-            var tags = tagNames.Select(name =>
-            {
-                var tag = DomainContext.ActivityTags.SingleOrDefault(t => t.Name == name);
-                if (tag == null)
-                {
-                    tag = new ActivityTag() { Name = name };
-                }
-                return tag;
-            }).ToList();
+            Activity = new Activity();
+            Activity.Name = Name;
+            Activity.ExpectedEffort = int.Parse(ExpectedEffort);
+            Activity.Tags = DomainContext.ActivityTags.GetOrCreate(tagNames);
 
-            var activity = new Activity();
-            activity.Name = Name;
-            activity.ExpectedEffort = int.Parse(ExpectedEffort);
-            activity.Tags = tags;
-
-            DomainContext.Activities.Add(activity);
-            DomainContext.Commit();
-            MessageBus.SendMessage(activity, Notifications.ActivityCreated);
-            Close();
+            CloseRequestSubject.OnNext(true);
         }
 
         public void Cancel()
         {
-            Close();
+            CloseRequestSubject.OnNext(false);
         }
 
-        private void Close()
-        {
-            MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CreateActivityWindowClose);
-        }
+        public Subject<bool?> CloseRequestSubject = new Subject<bool?>();
+        public IObservable<bool?> CloseRequest { get { return CloseRequestSubject; } } 
     }
 }

@@ -30,7 +30,8 @@ namespace WorkBalance
     /// </summary>
     [Export]
     [Export(typeof(IEditActivityService))]
-    public partial class MainWindow : Window, IPartImportsSatisfiedNotification, IEditActivityService
+    [Export(typeof(ICreateActivityService))]
+    public partial class MainWindow : Window, IPartImportsSatisfiedNotification, IEditActivityService, ICreateActivityService
     {
         [Import]
         public IMessageBus MessageBus { get; set; }
@@ -56,13 +57,6 @@ namespace WorkBalance
             this.Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            CreateActivityWindowOpenSubscription = MessageBus.Listen<Unit>(Notifications.CreateActivity)
-                .ObserveOnDispatcher()
-                .Subscribe(o => OpenCreateActivityWindow());
-        }
-
         private void Window_Closed(object sender, EventArgs e)
         {
             if (CreateActivityWindowOpenSubscription != null)
@@ -72,19 +66,14 @@ namespace WorkBalance
             }
         }
 
-        private void OpenCreateActivityWindow()
-        {
-            var window = new WorkBalance.Windows.CreateActivityWindow();
-            ShowCustomDialog(window);
-        }
-
-        private void ShowCustomDialog(Window window)
+        private bool? ShowCustomDialog(Window window)
         {
             window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
             window.Owner = this;
             VisualStateManager.GoToElementState(LayoutRoot, "Disabled", true);
-            window.ShowDialog();
+            var result = window.ShowDialog();
             VisualStateManager.GoToElementState(LayoutRoot, "Enabled", true);
+            return result;
         }
 
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -128,6 +117,23 @@ namespace WorkBalance
             window.ViewModel.DomainContext = context;
             window.ViewModel.Activity = activity;
             ShowCustomDialog(window);
+        }
+
+        #endregion
+
+        #region Implementation of ICreateActivityService
+
+        public Activity CreateActivity(IDomainContext context)
+        {
+            Activity activity = null;
+            var window = new CreateActivityWindow();
+            window.ViewModel.DomainContext = context;
+            var dialogResult = ShowCustomDialog(window);
+            if(dialogResult.HasValue && dialogResult.Value)
+            {
+                activity = window.ViewModel.Activity;
+            }
+            return activity;
         }
 
         #endregion
