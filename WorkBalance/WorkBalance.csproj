@@ -162,6 +162,7 @@
     <Compile Include="Domain\Activity.cs" />
     <Compile Include="Domain\ActivityTag.cs" />
     <Compile Include="Domain\ActivityTagObjectSetExtensions.cs" />
+    <Compile Include="Domain\ActivityObjectSetExtensions.cs" />
     <Compile Include="Domain\Design\DesignDomainContext.cs" />
     <Compile Include="Domain\Ef\EfDomainContext.cs" />
     <Compile Include="Domain\Entity.cs" />

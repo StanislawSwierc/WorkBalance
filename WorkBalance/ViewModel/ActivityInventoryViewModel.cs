@@ -167,7 +167,10 @@ namespace WorkBalance.ViewModel
                 .Where(u => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities))
                 .Subscribe((u) => CopyActivitiesToClipboard(SelectedActivities));
 
-            DomainContext.Activities.Where(a => !a.Archived).ForEach(AddActivity);
+            DomainContext.Activities
+                .FetchWithTags()
+                .Where(a => !a.Archived)
+                .ForEach(AddActivity);
         }
     }
 }
