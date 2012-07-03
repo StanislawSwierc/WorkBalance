@@ -90,6 +90,14 @@ namespace WorkBalance.Repositories.Db4o
             _container.Store(entity);
         }
 
+        /// <remarks>
+        /// In Db4o the object graph is five levels deep by default.
+        /// </remarks>
+        public IQueryable<T> FetchWith<TProperty>(Expression<Func<T, TProperty>> path)
+        {
+            return _container.Query<T>().AsQueryable();
+        }
+
         #endregion
     }
 }

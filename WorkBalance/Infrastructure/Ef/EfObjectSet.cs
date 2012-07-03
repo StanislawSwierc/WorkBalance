@@ -88,6 +88,11 @@ namespace WorkBalance.Infrastructure.Ef
         {
         }
 
+        public IQueryable<T> FetchWith<TProperty>(Expression<Func<T, TProperty>> path)
+        {
+            return _internal.Include(path);
+        }
+
         #endregion
     }
 }

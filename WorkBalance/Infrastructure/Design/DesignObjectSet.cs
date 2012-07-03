@@ -84,6 +84,11 @@ namespace WorkBalance.Infrastructure.Design
         {
         }
 
+        public IQueryable<T> FetchWith<TProperty>(Expression<Func<T, TProperty>> path)
+        {
+            return this;
+        }
+
         #endregion
     }
 }
