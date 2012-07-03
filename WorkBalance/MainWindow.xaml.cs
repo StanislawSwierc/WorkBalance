@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WorkBalance.Services;
 using WorkBalance.Windows;
 using WorkBalance.ViewModel;
 using WorkBalance.Utilities;
@@ -28,7 +29,8 @@ namespace WorkBalance
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Export]
-    public partial class MainWindow : Window, IPartImportsSatisfiedNotification
+    [Export(typeof(IEditActivityService))]
+    public partial class MainWindow : Window, IPartImportsSatisfiedNotification, IEditActivityService
     {
         [Import]
         public IMessageBus MessageBus { get; set; }
@@ -59,10 +61,6 @@ namespace WorkBalance
             CreateActivityWindowOpenSubscription = MessageBus.Listen<Unit>(Notifications.CreateActivity)
                 .ObserveOnDispatcher()
                 .Subscribe(o => OpenCreateActivityWindow());
-
-            MessageBus.Listen<Tuple<IDomainContext, Activity>>(Notifications.Edit)
-                    .ObserveOnDispatcher()
-                    .Subscribe(EditActivity);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -77,14 +75,6 @@ namespace WorkBalance
         private void OpenCreateActivityWindow()
         {
             var window = new WorkBalance.Windows.CreateActivityWindow();
-            ShowCustomDialog(window);
-        }
-
-        private void EditActivity(Tuple<IDomainContext, Activity> tuple)
-        {
-            var window = new WorkBalance.Windows.EditActivityWindow();
-            window.ViewModel.DomainContext = tuple.Item1;
-            window.ViewModel.Activity = tuple.Item2;
             ShowCustomDialog(window);
         }
 
@@ -129,5 +119,17 @@ namespace WorkBalance
                 this.InputBindings.Add(new InputBinding(command.Value, new KeyGesture(command.Metadata.Key, command.Metadata.ModifierKeys)));
             }
         }
+
+        #region Implementation of IEditActivityService
+
+        public void EditActivity(IDomainContext context, Activity activity)
+        {
+            var window = new EditActivityWindow();
+            window.ViewModel.DomainContext = context;
+            window.ViewModel.Activity = activity;
+            ShowCustomDialog(window);
+        }
+
+        #endregion
     }
 }

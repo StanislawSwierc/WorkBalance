@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using WorkBalance.Domain;
 using WorkBalance.Repositories;
+using WorkBalance.Services;
 using WorkBalance.Utilities;
 using System.ComponentModel.Composition;
 using System.Collections.ObjectModel;
@@ -31,6 +32,9 @@ namespace WorkBalance.ViewModel
 
         [ImportMany]
         public Lazy<IActivityFormatter, IActivityFormatterMetadata>[] ActivityFormatters { get; set; }
+
+        [Import]
+        public IEditActivityService EditActivityService { get; set; }
 
         public ActivityInventoryViewModel()
         {
@@ -62,7 +66,7 @@ namespace WorkBalance.ViewModel
             ArchiveActivityCommand = new RelayCommand(() => SelectedActivities.ForEach(ArchiveActivity), selectedActivitiesNotEmpty);
             IncreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(IncreaseActualEffort), selectedActivitiesNotEmpty);
             DecreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(DecreaseActualEffort), selectedActivitiesNotEmpty);
-            EditActivityCommand = new RelayCommand(() => MessageBus.SendMessage(new Tuple<IDomainContext, Activity>(DomainContext, SelectedActivities[0]), Notifications.Edit), selectedActivitiesNotEmpty);
+            EditActivityCommand = new RelayCommand(() => EditActivity(SelectedActivities[0]), selectedActivitiesNotEmpty);
 
             this.ObservableForProperty(self => self.SelectedActivity)
                 .Subscribe(e => MessageBus.SendMessage(e.Value, Notifications.ActivitySelected));
@@ -121,6 +125,13 @@ namespace WorkBalance.ViewModel
         {
             Activities.Add(activity);
             SelectedActivity = activity;
+        }
+
+        private void EditActivity(Activity activity)
+        {
+            EditActivityService.EditActivity(DomainContext, activity);
+            DomainContext.Activities.Update(activity);
+            DomainContext.Commit();
         }
 
         private void DeleteActivity(Activity activity)

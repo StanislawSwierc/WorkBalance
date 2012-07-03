@@ -182,6 +182,7 @@
     <Compile Include="Infrastructure\Db4o\Db4oObjectSet.cs" />
     <Compile Include="Infrastructure\Design\DesignObjectContext.cs" />
     <Compile Include="Infrastructure\Design\DesignObjectSet.cs" />
+    <Compile Include="Services\IEditActivityService.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="TimerState.cs" />
     <Compile Include="TimerStateChangedEventArgs.cs" />
