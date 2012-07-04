@@ -93,12 +93,17 @@ namespace WorkBalance.ViewModel
             Activity.ExpectedEffort = int.Parse(ExpectedEffort);
             Activity.Tags = DomainContext.ActivityTags.GetOrCreate(Tags);
 
-            CloseRequestSubject.OnNext(true);
+            Close(true);
         }
 
         public void Cancel()
         {
-            CloseRequestSubject.OnNext(false);
+            Close(false);
+        }
+
+        private void Close(bool? result)
+        {
+            CloseRequestSubject.OnNext(result);
         }
 
         public Subject<bool?> CloseRequestSubject = new Subject<bool?>();
