@@ -48,8 +48,7 @@ namespace WorkBalance.ViewModel
                 .Where(a => a != null);
 
             prototypeActivity
-                .Where(a => string.IsNullOrWhiteSpace(Tags) && a.Tags != null)
-                .Select(a => string.Join(" ", a.Tags.Select(t => t.ToString())))
+                .Select(a => a.Tags.Select(t => t.Name).ToArray())
                 .ObserveOnDispatcher()
                 .Subscribe(t => Tags = t);
 
@@ -77,8 +76,8 @@ namespace WorkBalance.ViewModel
             set { this.RaiseAndSetIfChanged(x => x.ExpectedEffort, value); }
         }
 
-        private string _Tags;
-        public string Tags 
+        private string[] _Tags;
+        public string[] Tags
         {
             get { return _Tags; }
             set { this.RaiseAndSetIfChanged(x => x.Tags, value); }
@@ -95,13 +94,10 @@ namespace WorkBalance.ViewModel
 
         public void Save()
         {
-            string[] tagNames = string.IsNullOrWhiteSpace(Tags) ? new string[0] :
-                Tags.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
             Activity = new Activity();
             Activity.Name = Name;
             Activity.ExpectedEffort = int.Parse(ExpectedEffort);
-            Activity.Tags = DomainContext.ActivityTags.GetOrCreate(tagNames);
+            Activity.Tags = DomainContext.ActivityTags.GetOrCreate(Tags);
 
             CloseRequestSubject.OnNext(true);
         }

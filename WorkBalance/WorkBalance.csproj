@@ -156,6 +156,9 @@
     <Compile Include="Controls\DigitalClock.xaml.cs">
       <DependentUpon>DigitalClock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TagTextBox.xaml.cs">
+      <DependentUpon>TagTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BrushToColorConverter.cs" />
     <Compile Include="Converters\TimerStateToBrushConverter.cs" />
     <Compile Include="Debug\TimerTrace.cs" />
@@ -214,6 +217,10 @@
       <DependentUpon>CreateActivityWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\DigitalClock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TagTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
