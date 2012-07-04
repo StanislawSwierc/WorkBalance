@@ -86,12 +86,6 @@ namespace WorkBalance.ViewModel
         public ReactiveCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
-        public bool CanExecuteSave()
-        {
-            //return !string.IsNullOrWhiteSpace(Activity.Name);
-            return true;
-        }
-
         public void Save()
         {
             Activity = new Activity();
