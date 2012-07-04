@@ -25,8 +25,6 @@ namespace WorkBalance.ViewModel
     {
         public IDomainContext DomainContext { get; set; }
 
-        private string _ExpectedEffort;
-
         [ImportingConstructor]
         public CreateActivityViewModel()
         {
@@ -70,6 +68,7 @@ namespace WorkBalance.ViewModel
             set { this.RaiseAndSetIfChanged(x => x.Name, value); }
         }
 
+        private string _ExpectedEffort;
         public string ExpectedEffort
         {
             get { return _ExpectedEffort; }
@@ -103,10 +102,10 @@ namespace WorkBalance.ViewModel
 
         private void Close(bool? result)
         {
-            CloseRequestSubject.OnNext(result);
+            _closeRequestSubject.OnNext(result);
         }
 
-        public Subject<bool?> CloseRequestSubject = new Subject<bool?>();
-        public IObservable<bool?> CloseRequest { get { return CloseRequestSubject; } } 
+        private Subject<bool?> _closeRequestSubject = new Subject<bool?>();
+        public IObservable<bool?> CloseRequest { get { return _closeRequestSubject; } } 
     }
 }
