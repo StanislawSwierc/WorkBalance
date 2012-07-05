@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 using WorkBalance.Services;
 using WorkBalance.Windows;
 using WorkBalance.ViewModel;
@@ -31,7 +32,7 @@ namespace WorkBalance
     [Export]
     [Export(typeof(IEditActivityService))]
     [Export(typeof(ICreateActivityService))]
-    public partial class MainWindow : Window, IPartImportsSatisfiedNotification, IEditActivityService, ICreateActivityService
+    public partial class MainWindow : MetroWindow, IPartImportsSatisfiedNotification, IEditActivityService, ICreateActivityService
     {
         [Import]
         public IMessageBus MessageBus { get; set; }
