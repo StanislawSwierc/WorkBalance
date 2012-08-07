@@ -14,7 +14,6 @@
 
 
 using WorkBalance.Domain;
-using WorkBalance.Domain.Db4o;
 using WorkBalance.ViewModel;
 using System;
 using System.Linq;
@@ -58,12 +57,16 @@ namespace WorkBalance
                             new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()),
                             new DirectoryCatalog("Plugins"))));
 
-                //Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
-                //var objectContainer = Db4objects.Db4o.Db4oFactory.OpenFile(c_Storage);
-                //var domainContext = new Db4oDomainContext(objectContainer);
-                //m_Container.ComposeExportedValue<IDomainContext>(domainContext);
-                var domainContext = new WorkBalance.Domain.Ef.EfDomainContext();
-                m_Container.ComposeExportedValue<IDomainContext>(domainContext);
+#if Db4o
+                Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
+                var server = Db4objects.Db4o.CS.Db4oClientServer.OpenServer(c_Storage, 0);
+                var factory = new DelegateDomainContextFactory(() => new Domain.Db4o.Db4oDomainContext(server.OpenClient()));
+#elif Ef
+                var factory = new DelegateDomainContextFactory(() => new Domain.Ef.EfDomainContext());
+#endif
+                var context = factory.Create();
+                m_Container.ComposeExportedValue<IDomainContext>(context);
+                m_Container.ComposeExportedValue<IDomainContextFactory>(factory);
             }
             m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());
 

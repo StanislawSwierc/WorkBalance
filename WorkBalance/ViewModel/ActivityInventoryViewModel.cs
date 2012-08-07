@@ -28,6 +28,9 @@ namespace WorkBalance.ViewModel
     public class ActivityInventoryViewModel : ViewModelBase, IPartImportsSatisfiedNotification
     {
         [Import]
+        private IDomainContextFactory DomainContextFactory { get; set; }
+
+        [Import]
         public IDomainContext DomainContext { get; set; }
 
         [ImportMany]
@@ -126,12 +129,29 @@ namespace WorkBalance.ViewModel
 
         private void CreateActivity()
         {
-            var activity = CreateActivityService.CreateActivity(DomainContext);
-            if(activity != null)
+            var context = DomainContextFactory.Create();
+            CreateActivityService.CreateActivity(context);
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            var activities = DomainContext.Activities
+                .Where(a => !a.Archived);
+            var last = default(Activity);
+
+            foreach (var activity in activities)
             {
-                DomainContext.Activities.Add(activity);
-                DomainContext.Commit();
-                AddActivity(activity);
+                if(!Activities.Contains(activity))
+                {
+                    Activities.Add(activity);
+                    last = activity;
+                }
+            }
+
+            if(last != null)
+            {
+                SelectedActivity = last;
             }
         }
 

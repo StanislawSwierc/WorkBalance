@@ -94,6 +94,8 @@ namespace WorkBalance.ViewModel
             {
                 Activity.Tags = DomainContext.ActivityTags.GetOrCreate(Tags);
             }
+            DomainContext.Activities.Add(Activity);
+            DomainContext.Commit();
 
             Close(true);
         }
