@@ -9,6 +9,7 @@
 	x:Class="WorkBalance.ActivityInventoryView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="200" Loaded="UserControl_Loaded"
+    d:DataContext="{Binding Path=ActivityInventory, Source={StaticResource Locator}}"
 	>
 	<UserControl.Resources>
 		<Style x:Key="ColumnTextBlockStyle" TargetType="{x:Type TextBlock}">
@@ -27,9 +28,6 @@
     <UserControl.CommandBindings>
         <CommandBinding Command="Delete" Executed="CommandBinding_Executed" />
     </UserControl.CommandBindings>
-	<UserControl.DataContext>
-		<Binding Path="ActivityInventory" Source="{StaticResource Locator}"/>
-	</UserControl.DataContext>
 	
     <Grid x:Name="LayoutRoot" >
     	<Grid.RowDefinitions>

@@ -26,12 +26,7 @@ using WorkBalance.Views;
 
 namespace WorkBalance
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     [Export]
-    [Export(typeof(IEditActivityService))]
-    [Export(typeof(ICreateActivityService))]
     public partial class MainWindow : MetroWindow, IPartImportsSatisfiedNotification, IEditActivityService, ICreateActivityService
     {
         [Import]
@@ -134,6 +129,28 @@ namespace WorkBalance
                 activity = window.ViewModel.Activity;
             }
             return activity;
+        }
+
+        #endregion
+    }
+
+    [Export(typeof(IEditActivityService))]
+    [Export(typeof(ICreateActivityService))]
+    public partial class MainWindowA : IEditActivityService, ICreateActivityService
+    {
+        #region Implementation of IEditActivityService
+
+        public void EditActivity(IDomainContext context, Activity activity)
+        {
+        }
+
+        #endregion
+
+        #region Implementation of ICreateActivityService
+
+        public Activity CreateActivity(IDomainContext context)
+        {
+            return null;
         }
 
         #endregion

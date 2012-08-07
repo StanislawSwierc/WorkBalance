@@ -23,6 +23,9 @@
     TitlebarHeight="23"
     Template="{StaticResource WindowTemplateKey}"
     >
+    <Window.DataContext>
+        <Binding Path="Main" Source="{StaticResource Locator}"/>
+    </Window.DataContext>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter1" />
         <converters:TimerStateToBrushConverter x:Key="TimerStateToBrushConverter" ReadyBrush="Yellow" SprintBrush="Yellow" HomeStraightBrush="Red" BreakBrush="Green" BreanOverrunBrush="#FF00C400" />
@@ -154,9 +157,6 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Window.DataContext>
-        <Binding Path="Main" Source="{StaticResource Locator}"/>
-    </Window.DataContext>
     <Window.CommandBindings>
         <CommandBinding Command="Copy" Executed="Copy_Executed"/>
         <CommandBinding Command="Replace" Executed="OpenHistoryWindow_Executed" />
@@ -226,7 +226,7 @@
             <Expander.Header>
                 <Binding Path="Timer.CurrentActivity.Name" FallbackValue="Activity Inventory" />
             </Expander.Header>
-            <local:ActivityInventoryView x:Name="activityInventory" Height="200">
+            <local:ActivityInventoryView x:Name="activityInventory" Height="200" DataContext="{Binding ActivityInventory}" >
                 <local:ActivityInventoryView.LayoutTransform>
                     <ScaleTransform ScaleX="1" ScaleY="0"/>
                 </local:ActivityInventoryView.LayoutTransform>
