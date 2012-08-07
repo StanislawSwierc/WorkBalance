@@ -128,7 +128,6 @@ namespace WorkBalance
         {
             Activity activity = null;
             var window = new CreateActivityWindow();
-            window.ViewModel.DomainContext = context;
             var dialogResult = ShowCustomDialog(window);
             if(dialogResult.HasValue && dialogResult.Value)
             {

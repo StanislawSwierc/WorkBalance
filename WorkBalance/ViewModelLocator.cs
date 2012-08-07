@@ -13,6 +13,7 @@
 */
 
 
+using MefContrib.Hosting;
 using WorkBalance.Domain;
 using WorkBalance.ViewModel;
 using System;
@@ -51,22 +52,25 @@ namespace WorkBalance
             }
             else
             {
+#if Db4o
+                Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
+                var server = Db4objects.Db4o.CS.Db4oClientServer.OpenServer(c_Storage, 0);
+                var factory = new Func<ExportProvider, IDomainContext>(
+                    ep => new Domain.Db4o.Db4oDomainContext(server.OpenClient()));
+#elif Ef
+                var factory = new DelegateDomainContextFactory(() => new Domain.Ef.EfDomainContext());
+#endif
+
+                var provider = new FactoryExportProvider();
+                provider.Register<IDomainContext>(factory);
+
                 m_Container = new CompositionContainer(
                     new DesignTimeCatalog(
                         new AggregateCatalog(
                             new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()),
-                            new DirectoryCatalog("Plugins"))));
+                            new DirectoryCatalog("Plugins"))),
+                    provider);
 
-#if Db4o
-                Db4objects.Db4o.Db4oFactory.Configure().CallConstructors(true);
-                var server = Db4objects.Db4o.CS.Db4oClientServer.OpenServer(c_Storage, 0);
-                var factory = new DelegateDomainContextFactory(() => new Domain.Db4o.Db4oDomainContext(server.OpenClient()));
-#elif Ef
-                var factory = new DelegateDomainContextFactory(() => new Domain.Ef.EfDomainContext());
-#endif
-                var context = factory.Create();
-                m_Container.ComposeExportedValue<IDomainContext>(context);
-                m_Container.ComposeExportedValue<IDomainContextFactory>(factory);
             }
             m_Container.ComposeExportedValue<IMessageBus>(new MessageBus());
 

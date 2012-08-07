@@ -101,6 +101,9 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.8.0.0\lib\net40\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="MefContrib">
+      <HintPath>..\packages\MefContrib.1.2.2.1\lib\net40-Client\MefContrib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Effects" />
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Reactive.Testing">
@@ -184,11 +187,9 @@
     <Compile Include="Domain\ActivityTagObjectSetExtensions.cs" />
     <Compile Include="Domain\ActivityObjectSetExtensions.cs" />
     <Compile Include="Domain\IDomainContext.cs" />
-    <Compile Include="Domain\DelegateDomainContextFactory.cs" />
     <Compile Include="Domain\Design\DesignDomainContext.cs" />
     <Compile Include="Domain\Ef\EfDomainContext.cs" />
     <Compile Include="Domain\Entity.cs" />
-    <Compile Include="Domain\IDomainContextFactory.cs" />
     <Compile Include="Domain\Interruption.cs" />
     <Compile Include="Domain\InterruptionRecord.cs" />
     <Compile Include="Domain\InterruptionTag.cs" />

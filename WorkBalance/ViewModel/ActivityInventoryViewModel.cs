@@ -28,9 +28,6 @@ namespace WorkBalance.ViewModel
     public class ActivityInventoryViewModel : ViewModelBase, IPartImportsSatisfiedNotification
     {
         [Import]
-        private IDomainContextFactory DomainContextFactory { get; set; }
-
-        [Import]
         public IDomainContext DomainContext { get; set; }
 
         [ImportMany]
@@ -129,8 +126,7 @@ namespace WorkBalance.ViewModel
 
         private void CreateActivity()
         {
-            var context = DomainContextFactory.Create();
-            CreateActivityService.CreateActivity(context);
+            CreateActivityService.CreateActivity(DomainContext);
             Refresh();
         }
 

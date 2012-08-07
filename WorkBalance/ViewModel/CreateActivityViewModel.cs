@@ -23,6 +23,7 @@ namespace WorkBalance.ViewModel
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class CreateActivityViewModel : ViewModelBase
     {
+        [Import]
         public IDomainContext DomainContext { get; set; }
 
         [ImportingConstructor]
