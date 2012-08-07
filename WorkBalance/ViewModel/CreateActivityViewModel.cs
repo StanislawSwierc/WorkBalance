@@ -90,7 +90,10 @@ namespace WorkBalance.ViewModel
             Activity = new Activity();
             Activity.Name = Name;
             Activity.ExpectedEffort = int.Parse(ExpectedEffort);
-            Activity.Tags = DomainContext.ActivityTags.GetOrCreate(Tags);
+            if (Tags != null)
+            {
+                Activity.Tags = DomainContext.ActivityTags.GetOrCreate(Tags);
+            }
 
             Close(true);
         }
