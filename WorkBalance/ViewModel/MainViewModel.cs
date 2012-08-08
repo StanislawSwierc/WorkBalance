@@ -33,9 +33,21 @@ namespace WorkBalance.ViewModel
         [Import]
         public ActivityInventoryViewModel ActivityInventory { get; set; }
 
+        public ReactiveCommand CreateActivityCommand { get; private set; }
+
         public MainViewModel()
         {
             // Translate state change notification and propagate it to the user interface
+            CreateActivityCommand = new ReactiveCommand();
+        }
+
+        public override void OnImportsSatisfied()
+        {
+            CreateActivityCommand
+                .Subscribe(o => MessageBus.SendMessage(Unit.Default, Notifications.CreateActivity));
+
+            MessageBus.Listen<Unit>(Notifications.ActivityCreated)
+                .Subscribe(o => ActivityInventory.Refresh());
         }
     }
 }

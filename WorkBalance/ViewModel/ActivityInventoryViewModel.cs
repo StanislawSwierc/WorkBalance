@@ -36,9 +36,6 @@ namespace WorkBalance.ViewModel
         [Import]
         public IEditActivityService EditActivityService { get; set; }
 
-        [Import]
-        public ICreateActivityService CreateActivityService { get; set; }
-        
         public ActivityInventoryViewModel()
         {
             Activities = new ObservableCollection<Activity>();
@@ -124,13 +121,7 @@ namespace WorkBalance.ViewModel
             DomainContext.Commit();
         }
 
-        private void CreateActivity()
-        {
-            CreateActivityService.CreateActivity(DomainContext);
-            Refresh();
-        }
-
-        private void Refresh()
+        public void Refresh()
         {
             var activities = DomainContext.Activities
                 .Where(a => !a.Archived);
@@ -188,10 +179,6 @@ namespace WorkBalance.ViewModel
 
         public void OnImportsSatisfied()
         {
-            MessageBus.Listen<Unit>(Notifications.CreateActivity)
-                .ObserveOnDispatcher()
-                .Subscribe(u => CreateActivity());
-
             MessageBus.Listen<Unit>(Notifications.CopyActivitiesToClipboard)
                 .ObserveOnDispatcher()
                 .Where(u => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities))

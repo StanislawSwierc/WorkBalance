@@ -27,7 +27,7 @@ using WorkBalance.Views;
 namespace WorkBalance
 {
     [Export]
-    public partial class MainWindow : MetroWindow, IPartImportsSatisfiedNotification, IEditActivityService, ICreateActivityService
+    public partial class MainWindow : MetroWindow, IPartImportsSatisfiedNotification, IEditActivityService
     {
         [Import]
         public IMessageBus MessageBus { get; set; }
@@ -103,6 +103,9 @@ namespace WorkBalance
             {
                 this.InputBindings.Add(new InputBinding(command.Value, new KeyGesture(command.Metadata.Key, command.Metadata.ModifierKeys)));
             }
+            MessageBus.Listen<Unit>(Notifications.CreateActivity)
+                .ObserveOnDispatcher()
+                .Subscribe(o => CreateActivity(null));
         }
 
         #region Implementation of IEditActivityService
@@ -126,31 +129,21 @@ namespace WorkBalance
             var dialogResult = ShowCustomDialog(window);
             if(dialogResult.HasValue && dialogResult.Value)
             {
-                activity = window.ViewModel.Activity;
+                MessageBus.SendMessage(Unit.Default, Notifications.ActivityCreated);
             }
-            return activity;
+            return null;
         }
 
         #endregion
     }
 
     [Export(typeof(IEditActivityService))]
-    [Export(typeof(ICreateActivityService))]
-    public partial class MainWindowA : IEditActivityService, ICreateActivityService
+    public partial class MainWindowA : IEditActivityService
     {
         #region Implementation of IEditActivityService
 
         public void EditActivity(IDomainContext context, Activity activity)
         {
-        }
-
-        #endregion
-
-        #region Implementation of ICreateActivityService
-
-        public Activity CreateActivity(IDomainContext context)
-        {
-            return null;
         }
 
         #endregion
