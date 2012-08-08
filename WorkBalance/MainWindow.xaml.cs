@@ -43,16 +43,6 @@ namespace WorkBalance
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = System.Windows.WindowState.Minimized;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         private void Window_Closed(object sender, EventArgs e)
         {
             if (CreateActivityWindowOpenSubscription != null)
