@@ -19,17 +19,11 @@ namespace WorkBalance
         [Import]
         public IMessageBus MessageBus;
 
-        [KeyGestureCommandExport(Key.N, ModifierKeys.Control)]
-        public ReactiveCommand CreateActivityCommand { get; private set; }
-
         [KeyGestureCommandExport(Key.T, ModifierKeys.Control)]
         public ReactiveCommand ToggleTimerCommand { get; private set; }
 
         public void OnImportsSatisfied()
         {
-            CreateActivityCommand = new ReactiveCommand();
-            CreateActivityCommand.Subscribe(o => MessageBus.SendMessage<Unit>(Unit.Default, Notifications.CreateActivity));
-
             ToggleTimerCommand = new ReactiveCommand();
             ToggleTimerCommand.Subscribe(o => MessageBus.SendMessage<Unit>(Unit.Default, Notifications.ToggleTimer));
         }

@@ -162,7 +162,7 @@
         <CommandBinding Command="Replace" Executed="OpenHistoryWindow_Executed" />
     </Window.CommandBindings>
     <Window.InputBindings>
-        <KeyBinding Command="{Binding CreateActivityCommand}" Key="M" Modifiers="Control" />
+        <KeyBinding Command="{Binding CreateActivityCommand}" Key="N" Modifiers="Control" />
     </Window.InputBindings>
     <Window.Triggers>
         <EventTrigger RoutedEvent="Expander.Expanded" SourceName="expander">
