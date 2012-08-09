@@ -23,9 +23,6 @@ namespace WorkBalance
     [Export(typeof(ITimer))]
     public class Timer : ViewModelBase, ITimer, IPartImportsSatisfiedNotification
     {
-        [Import]
-        public IDomainContext DomainContext { get; set; }
-
         DispatcherTimer m_Timer;
         TimeSpan m_SprintDuration;
         TimeSpan m_HomeStraightDuration;
@@ -70,9 +67,9 @@ namespace WorkBalance
 
         public void OnImportsSatisfied()
         {
-            MessageBus.Listen<Activity>(Notifications.ActivitySelected)
+            MessageBus.Listen<Tuple<Activity, IDomainContext>>(Notifications.ActivitySelected)
                 .ObserveOnDispatcher()
-                .Subscribe(a => PendingActivity = a);
+                .Subscribe(t => OnActivitySelected(t.Item1,t.Item2));
 
             MessageBus.Listen<Unit>(Notifications.ToggleTimer)
                 // TODO this code is currently in two places that's wrong
@@ -106,21 +103,9 @@ namespace WorkBalance
             get { return m_InternalState.ToggleTimerActionName; }
         }
 
-        private Activity _PendingActivity;
-        public Activity PendingActivity
-        {
-            get { return _PendingActivity; }
-            set {
-                if (_PendingActivity != value)
-                {
-                    _PendingActivity = value;
-                    if (State != TimerState.Sprint && State != TimerState.HomeStraight)
-                    {
-                        CurrentActivity = _PendingActivity;
-                    }
-                }
-            }
-        }
+        public IDomainContext PendingDomainContext { get; private set; }
+        public IDomainContext CurrentDomainContext { get; private set; }
+        public Activity PendingActivity { get; set; }
 
         private Activity _CurrentActivity;
         public Activity CurrentActivity
@@ -147,6 +132,17 @@ namespace WorkBalance
                     this.RaisePropertyChanged(self => self.ToggleTimerActionName);
                     this.MessageBus.SendMessage<TimerState>(_State);
                 }
+            }
+        }
+
+        private void OnActivitySelected(Activity activity, IDomainContext context)
+        {
+            PendingActivity = activity;
+            PendingDomainContext = context;
+            if (State != TimerState.Sprint && State != TimerState.HomeStraight)
+            {
+                CurrentActivity = activity;
+                CurrentDomainContext = context;
             }
         }
 
@@ -207,6 +203,7 @@ namespace WorkBalance
                 m_Timer.Time = m_Timer.m_SprintDuration;
                 m_Timer.m_Timer.Stop();
                 m_Timer.CurrentActivity = m_Timer.PendingActivity;
+                m_Timer.CurrentDomainContext = m_Timer.PendingDomainContext;
             }
 
             public override void ToggleTimer()
@@ -254,9 +251,9 @@ namespace WorkBalance
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
 
                 m_Timer.CurrentActivity.Sprints.Add(sprint);
-                m_Timer.DomainContext.Sprints.Add(sprint);
-                m_Timer.DomainContext.Activities.Update(m_Timer.CurrentActivity);
-                m_Timer.DomainContext.Commit();
+                m_Timer.CurrentDomainContext.Sprints.Add(sprint);
+                m_Timer.CurrentDomainContext.Activities.Update(m_Timer.CurrentActivity);
+                m_Timer.CurrentDomainContext.Commit();
             }
         }
 
@@ -295,10 +292,10 @@ namespace WorkBalance
                 {
                     // Record sprint as actual effort
                     m_Timer.CurrentActivity.ActualEffort++;
-                    m_Timer.DomainContext.Activities.Update(m_Timer.CurrentActivity);
+                    m_Timer.CurrentDomainContext.Activities.Update(m_Timer.CurrentActivity);
                 }
-                m_Timer.DomainContext.Sprints.Update(sprint);
-                m_Timer.DomainContext.Commit();
+                m_Timer.CurrentDomainContext.Sprints.Update(sprint);
+                m_Timer.CurrentDomainContext.Commit();
             }
         }
 
@@ -331,6 +328,7 @@ namespace WorkBalance
             public override void OnEnter()
             {
                 m_Timer.CurrentActivity = m_Timer.PendingActivity;
+                m_Timer.CurrentDomainContext = m_Timer.PendingDomainContext;
             }
         }
 

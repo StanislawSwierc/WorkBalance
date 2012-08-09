@@ -67,9 +67,6 @@ namespace WorkBalance.ViewModel
             IncreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(IncreaseActualEffort), selectedActivitiesNotEmpty);
             DecreaseActualEffortCommand = new RelayCommand(() => SelectedActivities.ForEach(DecreaseActualEffort), selectedActivitiesNotEmpty);
             EditActivityCommand = new RelayCommand(() => EditActivity(SelectedActivities[0]), selectedActivitiesNotEmpty);
-
-            this.ObservableForProperty(self => self.SelectedActivity)
-                .Subscribe(e => MessageBus.SendMessage(e.Value, Notifications.ActivitySelected));
         }
 
         private IList<Activity> _SelectedActivities;
@@ -183,6 +180,12 @@ namespace WorkBalance.ViewModel
                 .ObserveOnDispatcher()
                 .Where(u => !EnumerableExtensions.IsNullOrEmpty(SelectedActivities))
                 .Subscribe((u) => CopyActivitiesToClipboard(SelectedActivities));
+
+            // Send Activity together with the DomainContext it belongs to.
+            MessageBus.RegisterMessageSource(
+                this.ObservableForProperty(self => self.SelectedActivity)
+                    .Select(e => new Tuple<Activity, IDomainContext>(e.Value, DomainContext)),
+                Notifications.ActivitySelected);
 
             DomainContext.Activities
                 .FetchWithTags()
